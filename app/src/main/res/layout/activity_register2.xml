@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fitsSystemWindows="true"
+    android:id="@+id/register2_container">
+
+    <RelativeLayout
+        android:id="@+id/rl_register"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+
+        <FrameLayout
+            android:id="@+id/fl_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="90dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/iv_image_ins"
+                android:layout_width="110sp"
+                android:layout_height="110sp"
+                android:layout_gravity="center"
+                android:background="@drawable/register_password"
+                android:scaleType="centerCrop" />
+        </FrameLayout>
+
+        <RelativeLayout
+            android:id="@+id/username_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:gravity="center"
+            android:layout_below="@+id/fl_image" >
+
+            <EditText
+                android:id="@+id/et_userInput"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_centerVertical="true"
+                android:background="@drawable/editshape"
+                android:ems="19"
+                android:textColorHint="#80ffffff"
+                android:hint="请输入全名"
+                android:padding="1dp"
+                android:textSize="15sp" >
+
+            </EditText>
+
+            <!--ImageView
+                android:id="@+id/iv_delUser"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="3dp"
+                android:visibility="invisible"
+                android:src="@drawable/delete" /-->
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_password"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:gravity="center"
+            android:layout_below="@+id/username_layout" >
+
+            <EditText
+                android:id="@+id/et_passInput"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_centerVertical="true"
+                android:background="@drawable/editshape"
+                android:ems="19"
+                android:inputType="textPassword"
+                android:singleLine="true"
+                android:textColorHint="#80ffffff"
+                android:hint="请输入密码"
+                android:padding="1dp"
+                android:textSize="15sp" >
+
+            </EditText>
+            <!--ImageView
+                android:id="@+id/iv_delName"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="3dp"
+                android:visibility="invisible"
+                android:src="@drawable/delete" /-->
+        </RelativeLayout>
+        <Button
+            android:id="@+id/btn_finish"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:layout_below="@id/rl_password"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:gravity="center"
+            android:background="@drawable/buttonshape"
+            android:text="完成"
+            android:textColor="#50000000" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

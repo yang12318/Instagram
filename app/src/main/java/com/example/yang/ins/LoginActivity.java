@@ -61,18 +61,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         tv_register.setOnClickListener(this);
         RelativeLayout container = (RelativeLayout) findViewById(R.id.container);
         container.setBackgroundResource(R.drawable.animation_list);
-        final AnimationDrawable anim = (AnimationDrawable) container.getBackground();
+        anim = (AnimationDrawable) container.getBackground();
         anim.setEnterFadeDuration(6000);
         anim.setExitFadeDuration(2000);
-
-    container.post(new Runnable()
-    {
-        @Override
-        public void run()
-        {
-            anim.start();
-        }
-    });
+        anim.start();
     }
     @Override
     public void onClick(View v) {
