@@ -7,8 +7,9 @@
     tools:context="com.example.yang.ins.MainActivity">
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/rl1">
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -26,5 +27,27 @@
          android:layout_toRightOf="@id/register"
          android:text="注册2"
          android:id="@+id/register2"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/register2"
+            android:text="忘记"
+            android:id="@+id/forget"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/rl1">
+
+        <Button
+            android:id="@+id/change"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="35dp"
+            android:text="修改密码" />
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

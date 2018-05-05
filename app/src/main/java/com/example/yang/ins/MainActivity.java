@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
-    private Button login,register,register2;
+    private Button login,register,register2,forget,change;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +36,24 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, Register2Activity.class);
+                startActivity(intent);
+            }
+        });
+        forget = (Button) findViewById(R.id.forget);
+
+        forget.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, ForgetActivity.class);
+                startActivity(intent);
+            }
+        });
+        change = (Button) findViewById(R.id.change);
+
+        change.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, ChangeCodeActivity.class);
                 startActivity(intent);
             }
         });
