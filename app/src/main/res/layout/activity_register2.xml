@@ -111,7 +111,16 @@
             android:background="@drawable/buttonshape"
             android:text="完成"
             android:textColor="#50000000" />
-
+        <Button
+            android:id="@+id/tv_login2"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="已有账户？请登录"
+            android:background="@drawable/editshape"
+            android:layout_alignParentBottom="true"
+            android:textColor="#80ffffff"
+            android:textSize="15sp"
+            />
     </RelativeLayout>
 
 </RelativeLayout>

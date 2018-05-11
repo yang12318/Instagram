@@ -23,7 +23,7 @@
         android:id="@+id/rl_old"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="90dp"
+        android:layout_marginTop="75dp"
         android:gravity="center" >
         <EditText
             android:id="@+id/et_old"
@@ -32,6 +32,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:hint="旧密码"
+            android:drawableLeft="@drawable/password"
             android:singleLine="true"
             android:inputType="textPassword"
             android:paddingBottom="13dp"
@@ -64,6 +65,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:hint="新密码"
+            android:drawableLeft="@drawable/password"
             android:inputType="textPassword"
             android:singleLine="true"
             android:textSize="15sp"
@@ -94,6 +96,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:hint="再次输入新密码"
+            android:drawableLeft="@drawable/password"
             android:inputType="textPassword"
             android:singleLine="true"
             android:textSize="15sp"
@@ -125,5 +128,5 @@
         android:layout_alignParentRight="true"
         android:layout_marginTop="20dp"
         android:background="#00000000"
-        android:src="@drawable/go1" />
+        android:src="@drawable/finish1" />
 </RelativeLayout>
