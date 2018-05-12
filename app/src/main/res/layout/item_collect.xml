@@ -14,11 +14,13 @@
         <ImageView
             android:layout_width="125dp"
             android:layout_height="120dp"
+            android:id="@+id/collect_picture"
             android:background="@drawable/n1"/>
         <ImageView
             android:layout_width="38dp"
             android:layout_height="38dp"
             android:tint="#fff"
+            android:id="@+id/collect_multi"
             android:layout_gravity="end"
             android:src="@drawable/multi"
             />

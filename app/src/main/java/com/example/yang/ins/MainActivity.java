@@ -130,9 +130,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
                  *  BACKGROUND_STYLE_RIPPLE: 波纹样式 点击有波纹效果
                  */
 
-                .setActiveColor("#000") //选中颜色
+                .setActiveColor("#000000") //选中颜色
                 .setInActiveColor("#696969") //未选中颜色
-                .setBarBackgroundColor("#fff");//导航栏背景色
+                .setBarBackgroundColor("#ffffff");//导航栏背景色
 
         /** 添加导航按钮 */
         bottomNavigationBar
@@ -220,9 +220,5 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
     @Override
     public void onTabReselected(int position) {
 
-    }
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.user_menu,menu) ;
-        return true;
     }
 }

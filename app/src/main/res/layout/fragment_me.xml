@@ -15,13 +15,14 @@
             android:layout_height="wrap_content"
             android:text="null"
             android:id="@+id/tv_me"
-            android:layout_marginTop="17dp"
+            android:gravity="center_vertical"
             android:textColor="#000"
             android:textSize="20sp"
-            android:layout_marginLeft="70dp"/>
+            android:layout_marginLeft="15dp"/>
     </android.support.v7.widget.Toolbar>
 
     <RelativeLayout
+        android:id="@+id/rl_me"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
@@ -123,14 +124,23 @@
             android:textSize="16sp" />
     </RelativeLayout>
     </RelativeLayout>
+    <!--FrameLayout
+        android:id="@+id/realtabcontent"
+        android:layout_below="@+id/rl_me"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
-        <ImageButton
-            android:id="@+id/ib_me_back"
-            android:layout_width="33dp"
-            android:layout_height="22dp"
-            android:layout_alignParentTop="true"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="16dp"
-            android:background="#00000000"
-            android:src="@drawable/back" />
+    <android.support.v4.app.FragmentTabHost
+
+        android:id="@android:id/tabhost"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <FrameLayout
+            android:id="@android:id/tabcontent"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="0" />
+
+    </android.support.v4.app.FragmentTabHost-->
 </RelativeLayout>
