@@ -44,9 +44,7 @@
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="5dp"
                 android:text="内容"
-                android:textSize="15sp"
-
-                />
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/comment_time"
