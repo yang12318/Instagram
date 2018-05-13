@@ -77,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 }*/
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
@@ -136,11 +137,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
 
         /** 添加导航按钮 */
         bottomNavigationBar
-                .addItem(new BottomNavigationItem(R.drawable.home, "首页"))
-                .addItem(new BottomNavigationItem(R.drawable.search, "搜索"))
-                .addItem(new BottomNavigationItem(R.drawable.add, "添加"))
-                .addItem(new BottomNavigationItem(R.drawable.about, "关于"))
-                .addItem(new BottomNavigationItem(R.drawable.me, "个人"))
+                .addItem(new BottomNavigationItem(R.drawable.home))
+                .addItem(new BottomNavigationItem(R.drawable.search))
+                .addItem(new BottomNavigationItem(R.drawable.add))
+                .addItem(new BottomNavigationItem(R.drawable.about))
+                .addItem(new BottomNavigationItem(R.drawable.me))
                 .setFirstSelectedPosition(lastSelectedPosition )
                 .initialise(); //initialise 一定要放在 所有设置的最后一项
 
@@ -220,5 +221,13 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
     @Override
     public void onTabReselected(int position) {
 
+    }
+
+    public void gotoHomeFragment() {
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        Fragment mHomeFragement = new HomeFragment();
+        ft.replace(R.id.tb, mHomeFragement);
+        ft.commit();
     }
 }

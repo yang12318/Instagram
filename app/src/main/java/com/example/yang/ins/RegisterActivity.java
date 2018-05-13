@@ -24,17 +24,19 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class RegisterActivity extends AppCompatActivity  {
+public class RegisterActivity extends AppCompatActivity implements View.OnClickListener{
 
     private Button btn_next;
     private EditText et_email, et_name;
     private RelativeLayout relativeLayout;
     private AnimationDrawable anim;
+    private Button btn_login;
     //private ImageView iv_username,iv_email;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        btn_login = (Button) findViewById(R.id.tv_login);
         btn_next = (Button) findViewById(R.id.btn_next);
         et_email = (EditText) findViewById(R.id.et_emailInput);
         et_name = (EditText) findViewById(R.id.et_nameInput);
@@ -118,9 +120,17 @@ public class RegisterActivity extends AppCompatActivity  {
         Toast.makeText(this, text, Toast.LENGTH_LONG).show();
     }
 
-    /*@Override
+    @Override
     public void onClick(View v) {
         if(v.getId() == R.id.btn_next) {
+
+        }
+        else if(v.getId() == R.id.btn_login) {
+            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+            startActivity(intent);
+        }
+    }
+        /*if(v.getId() == R.id.btn_next) {
             String user = et_username.getText().toString();
             String password = et_password.getText().toString();
             String nickname = et_nickname.getText().toString();

@@ -68,6 +68,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_concern"
                 android:orientation="vertical"
                 android:layout_marginLeft="215dp"
                 android:layout_width="match_parent"
@@ -91,6 +92,7 @@
         </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_follow"
                 android:orientation="vertical"
                 android:layout_marginLeft="310dp"
                 android:layout_width="match_parent"

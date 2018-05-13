@@ -68,6 +68,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
     @Override
     public void onClick(View v) {
+        if(v.getId() == R.id.btn_login) {
+
+        }
+        else if(v.getId() == R.id.tv_register) {
+            Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+            startActivity(intent);
+        }
+        else if(v.getId() == R.id.tv_forget) {
+            Intent intent = new Intent(LoginActivity.this, ForgetActivity.class);
+            startActivity(intent);
+        }
         /*if(v.getId() == R.id.btn_login) {
             FlowerHttp flowerHttp = new FlowerHttp("http://118.25.40.220/api/login/");
             Map<String, Object> map = new HashMap<>();
@@ -121,14 +132,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);
             }
-        }
-        else if(v.getId() == R.id.tv_register) {
-            Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-            startActivity(intent);
-        }
-        else if(v.getId() == R.id.tv_forget) {
-            Intent intent = new Intent(LoginActivity.this, ForgetActivity.class);
-            startActivity(intent);
         }
         else if(v.getId() == R.id.iv_delPassword) {
             et_password.setText(null);
