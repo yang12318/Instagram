@@ -30,7 +30,7 @@
                 android:textSize="13sp"
                 android:textStyle="bold" />
             <TextView
-                android:id="@+id/follow_nickname"
+                android:id="@+id/concern_nickname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/concern_username"
@@ -42,7 +42,7 @@
                 android:textColor="#696969"
                 android:textSize="13sp" />
             <Button
-                android:id="@+id/concern_cancel"
+                android:id="@+id/concern_follow"
                 android:layout_width="110dp"
                 android:layout_height="28dp"
                 android:text="关注"
