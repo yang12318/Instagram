@@ -1,4 +1,4 @@
-apply plugin: 'com.android.application'
+﻿apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 27
@@ -48,7 +48,7 @@ dependencies {
     implementation 'com.android.support:support-v4:27.1.1'
 
     //图片加载框架所需要用到的依赖
-   // implementation 'com.github.bumptech.glide:glide:4.5.0'
+    //implementation 'com.github.bumptech.glide:glide:4.5.0'
     //implementation project(':com.github.bumptech.glide:glide:4.5.0')
 
     //某些简单粗暴的style所在的adapter包，如果用不到的话你就把他删了         --lly
