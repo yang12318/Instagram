@@ -1,28 +1,19 @@
 package com.example.yang.ins;
 
 import android.Manifest;
-import android.annotation.TargetApi;
-import android.content.ContentUris;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.graphics.Color;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Environment;
-import android.os.Looper;
-import android.provider.DocumentsContract;
-import android.provider.MediaStore;
+import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -30,14 +21,36 @@ import android.widget.TextView;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
+import com.lljjcoder.style.citypickerview.CityPickerView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.w3c.dom.Text;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-/*import com.bumptech.glide.Glide;
-import com.example.yang.douban.Bean.Article;
+import cn.bingoogolapple.baseadapter.BGABaseAdapterUtil;
+import cn.bingoogolapple.photopicker.imageloader.BGAImage;
+import cn.bingoogolapple.photopicker.util.BGAPhotoHelper;
+import cn.bingoogolapple.photopicker.util.BGAPhotoPickerUtil;
+import de.hdodenhof.circleimageview.CircleImageView;
+import pub.devrel.easypermissions.AfterPermissionGranted;
+import pub.devrel.easypermissions.EasyPermissions;
+import okhttp3.FormBody;
+import okhttp3.Headers;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 import com.lljjcoder.Interface.OnCityItemClickListener;
 import com.lljjcoder.bean.CityBean;
 import com.lljjcoder.bean.DistrictBean;
@@ -48,6 +61,7 @@ import com.lljjcoder.style.citylist.bean.CityInfoBean;
 import com.lljjcoder.style.citylist.utils.CityListLoader;
 import com.lljjcoder.style.citypickerview.CityPickerView;
 
+/*import com.bumptech.glide.Glide;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -57,51 +71,262 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import de.hdodenhof.circleimageview.CircleImageView;
-import okhttp3.FormBody;
-import okhttp3.Headers;
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
+
 
 import static android.os.Build.TYPE;*/
 
-public class ReviseActivity extends AppCompatActivity {
+public class ReviseActivity extends AppCompatActivity implements View.OnClickListener, EasyPermissions.PermissionCallbacks{
 
-    /*public static final int CHOOSE_PHOTO = 2;
-    private LinearLayout ll_revise_head, ll_revise_pass, ll_revise_birth, ll_revise_location;
-    private LinearLayout ll_revise_gender;
     private CircleImageView iv_head;
-    private ImageButton ib_back;
-    private String imagepath = null;
-    private TextView tv_birth, tv_location, tv_email, tv_gender;
+    private Button  btn_head;
+    private TextView tv_birth, tv_location, tv_gender;
+    private ImageButton ib_back, ib_finish;
+    private BGAPhotoHelper bgaPhotoHelper;
+    CityPickerView mPicker = new CityPickerView();
+    private static final int REQUEST_CODE_PERMISSION_CHOOSE_PHOTO = 1;
+    private static final int REQUEST_CODE_PERMISSION_TAKE_PHOTO = 2;
+
+    private static final int REQUEST_CODE_CHOOSE_PHOTO = 1;
+    private static final int REQUEST_CODE_TAKE_PHOTO = 2;
+    private static final int REQUEST_CODE_CROP = 3;
+
+    /*private String imagepath = null;
+
     public static final String TAG = "ReviseActivity";
     CityPickerView mPicker = new CityPickerView();*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_revise);
-        /*mPicker.init(this);
-        ll_revise_head = (LinearLayout) findViewById(R.id.ll_revise_head);
-        ll_revise_pass = (LinearLayout) findViewById(R.id.ll_revise_pass);
-        ll_revise_location = (LinearLayout) findViewById(R.id.ll_revise_location);
-        ll_revise_birth = (LinearLayout) findViewById(R.id.ll_revise_birth);
-        ll_revise_gender = (LinearLayout) findViewById(R.id.ll_revise_gender);
-        tv_birth = (TextView) findViewById(R.id.tv_birth);
-        tv_location = (TextView) findViewById(R.id.tv_location);
-        tv_email = (TextView) findViewById(R.id.tv_email);
-        tv_gender = (TextView) findViewById(R.id.tv_gender);
-        iv_head = (CircleImageView) findViewById(R.id.iv_head);
+        File takePhotoDir = new File(Environment.getExternalStorageDirectory(), "InsTakePhoto");
+        bgaPhotoHelper = new BGAPhotoHelper(takePhotoDir);
+        mPicker.init(this);
+        btn_head = (Button) findViewById(R.id.revise_image);
+        iv_head = (CircleImageView) findViewById(R.id.head_revise);
+        tv_birth = (TextView) findViewById(R.id.revise_birth);
+        tv_gender = (TextView) findViewById(R.id.revise_gender);
+        tv_location = (TextView) findViewById(R.id.revise_location);
         ib_back = (ImageButton) findViewById(R.id.ib_revise_back);
-        ib_back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
+        ib_finish = (ImageButton) findViewById(R.id.ib_revise_finish);
+        btn_head.setOnClickListener(this);
+        iv_head.setOnClickListener(this);
+        tv_location.setOnClickListener(this);
+        tv_gender.setOnClickListener(this);
+        tv_birth.setOnClickListener(this);
+        ib_finish.setOnClickListener(this);
+        ib_back.setOnClickListener(this);
+
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState);
+        BGAPhotoHelper.onSaveInstanceState(bgaPhotoHelper, outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        BGAPhotoHelper.onRestoreInstanceState(bgaPhotoHelper, savedInstanceState);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+
+    @Override
+    public void onClick(View view) {
+        if(view.getId() == R.id.revise_image || view.getId() == R.id.head_revise) {
+            registerForContextMenu(view);
+            openContextMenu(view);
+            unregisterForContextMenu(view);
+        }
+        else if(view.getId() == R.id.revise_birth) {
+            Calendar c = Calendar.getInstance();
+            String birthday = null;
+            new BirthActivity(ReviseActivity.this, 0, new BirthActivity.OnDateSetListener() {
+                @Override
+                public void onDateSet(DatePicker DatePicker, int Year, int MonthOfYear,
+                                      int DayOfMonth) {
+                    String birthday = String.format("%d-%d-%d", Year, MonthOfYear + 1,DayOfMonth);
+                    tv_birth.setText(birthday);
+                    //调用接口
+                }
+            }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DATE), false).show();
+
+        }
+        else if(view.getId() == R.id.revise_gender) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this); //定义一个AlertDialog
+            String[] strarr = {"男","女","保密"};
+            builder.setItems(strarr, new DialogInterface.OnClickListener()
+            {
+                public void onClick(DialogInterface arg0, int arg1)
+                {
+                    String sex = "保密";
+                    if (arg1 == 0) {
+                        sex = "男";
+                    }else if(arg1 == 1){
+                        sex = "女";
+                    }
+                    else {
+                        sex = "保密";
+                    }
+                    tv_gender.setText(sex);
+                    //调用接口
+                }
+            });
+            builder.show();
+        }
+        else if(view.getId() == R.id.revise_location) {
+            CityConfig cityConfig = new CityConfig.Builder()
+                    .title("选择城市")//标题
+                    .titleTextSize(18)//标题文字大小
+                    .titleTextColor("#585858")//标题文字颜  色
+                    .titleBackgroundColor("#E9E9E9")//标题栏背景色
+                    .confirTextColor("#585858")//确认按钮文字颜色
+                    .confirmText("确定")//确认按钮文字
+                    .confirmTextSize(16)//确认按钮文字大小
+                    .cancelTextColor("#585858")//取消按钮文字颜色
+                    .cancelText("取消")//取消按钮文字
+                    .cancelTextSize(16)//取消按钮文字大小
+                    .setCityWheelType(CityConfig.WheelType.PRO_CITY)//显示类，只显示省份一级，显示省市两级还是显示省市区三级
+                    .showBackground(true)//是否显示半透明背景
+                    .visibleItemsCount(7)//显示item的数量
+                    .province("山东省")//默认显示的省份
+                    .city("青岛市")//默认显示省份下面的城市
+                    //.district("崂山区")//默认显示省市下面的区县数据
+                    .provinceCyclic(false)//省份滚轮是否可以循环滚动
+                    .cityCyclic(false)//城市滚轮是否可以循环滚动
+                    .districtCyclic(false)//区县滚轮是否循环滚动
+                    //.setCustomItemLayout(R.layout.item_city)//自定义item的布局
+                    //.setCustomItemTextViewId(R.id.item_city_name_tv)//自定义item布局里面的textViewid
+                    .drawShadows(false)//滚轮不显示模糊效果
+                    .setLineColor("#03a9f4")//中间横线的颜色
+                    .setLineHeigh(5)//中间横线的高度
+                    .setShowGAT(true)//是否显示港澳台数据，默认不显示
+                    .build();
+            mPicker.setConfig(cityConfig);
+            mPicker.setOnCityItemClickListener(new OnCityItemClickListener() {
+                @Override
+                public void onSelected(ProvinceBean province, CityBean city, DistrictBean district) {
+                    String Province = null;
+                    String City = null;
+                    if (province != null) {
+                        Province = province.getName();
+                    }
+                    if (city != null) {
+                        City = city.getName();
+                    }
+                    if (district != null) {
+                    }
+                    String location = Province + "-" + City;
+                    if (Province.equals(City))
+                        location = Province;
+                    tv_location.setText(location);
+                    //调用接口
+                }
+            });
+            mPicker.showCityPicker( );
+        }
+
+        else if(view.getId() == R.id.ib_revise_back) {
+            finish();
+        }
+        else if(view.getId() == R.id.ib_revise_finish) {
+            //调用接口
+        }
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        getMenuInflater().inflate(R.menu.photo_menu, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.menu_album) {
+            choosePhoto();
+        } else if (id == R.id.menu_take_photo) {
+            takePhoto();
+        }
+        return true;
+    }
+
+    @Override
+    public void onPermissionsGranted(int requestCode, List<String> perms) {
+
+    }
+
+    @Override
+    public void onPermissionsDenied(int requestCode, List<String> perms) {
+
+    }
+
+    @AfterPermissionGranted(REQUEST_CODE_PERMISSION_CHOOSE_PHOTO)
+    public void choosePhoto() {
+        String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        if (EasyPermissions.hasPermissions(this, perms)) {
+            startActivityForResult(bgaPhotoHelper.getChooseSystemGalleryIntent(), REQUEST_CODE_CHOOSE_PHOTO);
+        } else {
+            EasyPermissions.requestPermissions(this, "请开启存储空间权限，以正常使用Instagram", REQUEST_CODE_PERMISSION_CHOOSE_PHOTO, perms);
+        }
+    }
+
+    @AfterPermissionGranted(REQUEST_CODE_PERMISSION_TAKE_PHOTO)
+    public void takePhoto() {
+        String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
+        if (EasyPermissions.hasPermissions(this, perms)) {
+            try {
+                startActivityForResult(bgaPhotoHelper.getTakePhotoIntent(), REQUEST_CODE_TAKE_PHOTO);
+            } catch (Exception e) {
+                BGAPhotoPickerUtil.show(R.string.bga_pp_not_support_take_photo);
             }
-        });
+        } else {
+            EasyPermissions.requestPermissions(this, "请开启存储空间和相机权限，以正常使用Instagram", REQUEST_CODE_PERMISSION_TAKE_PHOTO, perms);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == REQUEST_CODE_CHOOSE_PHOTO) {
+                try {
+                    startActivityForResult(bgaPhotoHelper.getCropIntent(bgaPhotoHelper.getFilePathFromUri(data.getData()), 200, 200), REQUEST_CODE_CROP);
+                } catch (Exception e) {
+                    bgaPhotoHelper.deleteCropFile();
+                    BGAPhotoPickerUtil.show(R.string.bga_pp_not_support_crop);
+                    e.printStackTrace();
+                }
+            } else if (requestCode == REQUEST_CODE_TAKE_PHOTO) {
+                try {
+                    startActivityForResult(bgaPhotoHelper.getCropIntent(bgaPhotoHelper.getCameraFilePath(), 200, 200), REQUEST_CODE_CROP);
+                } catch (Exception e) {
+                    bgaPhotoHelper.deleteCameraFile();
+                    bgaPhotoHelper.deleteCropFile();
+                    BGAPhotoPickerUtil.show(R.string.bga_pp_not_support_crop);
+                    e.printStackTrace();
+                }
+            } else if (requestCode == REQUEST_CODE_CROP) {
+                BGAImage.display(iv_head, R.mipmap.bga_pp_ic_holder_light, bgaPhotoHelper.getCropFilePath(), BGABaseAdapterUtil.dp2px(200));
+            }
+        } else {
+            if (requestCode == REQUEST_CODE_CROP) {
+                bgaPhotoHelper.deleteCameraFile();
+                bgaPhotoHelper.deleteCropFile();
+            }
+        }
+    }
+
+    private void showToast(String s) {
+        Toast.makeText(ReviseActivity.this, s, Toast.LENGTH_SHORT).show();
+    }
+}
+
+/*
         FlowerHttp flowerHttp = new FlowerHttp("http://118.25.40.220/api/getInfo/");
         Map<String, Object> map = new HashMap<>();
         String response = flowerHttp.post(map);
@@ -141,145 +366,6 @@ public class ReviseActivity extends AppCompatActivity {
             tv_gender.setText(gender);
             Glide.with(this).load(src).into(iv_head);
         }
-        ll_revise_birth.setOnClickListener(new View.OnClickListener() {
-            Calendar c = Calendar.getInstance();
-            @Override
-            public void onClick(View v) {
-                String birthday = null;
-                new BirthActivity(ReviseActivity.this, 0, new BirthActivity.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker DatePicker, int Year, int MonthOfYear,
-                                          int DayOfMonth) {
-                        String birthday = String.format("%d-%d-%d", Year, MonthOfYear + 1,DayOfMonth);
-                        tv_birth.setText(birthday);
-                        FlowerHttp flowerHttp1 = new FlowerHttp("http://118.25.40.220/api/changeInfo/");
-                        Map<String, Object> map = new HashMap<>();
-                        map.put("birthday", birthday);
-                        String gender = tv_gender.getText().toString();
-                        if(gender.equals("男"))
-                            gender = "M";
-                        else if(gender.equals("女"))
-                            gender = "F";
-                        else if(gender.equals("保密"))
-                            gender = "S";
-                        map.put("gender", gender);
-                        map.put("address", tv_location.getText().toString());
-                        String response = flowerHttp1.post(map);
-                        int result = 0;
-                        try {
-                            result = new JSONObject(response).getInt("rsNum");
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        if(result == 1) {
-                            showToast("修改成功");
-                        }
-                        else if(result == 0) {
-                            showToast("未知错误");
-                            return;
-                        }
-                        else if(result == -1) {
-                            showToast("用户不存在");
-                            return;
-                        }
-                    }
-                }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DATE), false).show();
-
-            }
-        });
-        ll_revise_location.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CityConfig cityConfig = new CityConfig.Builder()
-                        .title("选择城市")//标题
-                        .titleTextSize(18)//标题文字大小
-                        .titleTextColor("#585858")//标题文字颜  色
-                        .titleBackgroundColor("#E9E9E9")//标题栏背景色
-                        .confirTextColor("#585858")//确认按钮文字颜色
-                        .confirmText("确定")//确认按钮文字
-                        .confirmTextSize(16)//确认按钮文字大小
-                        .cancelTextColor("#585858")//取消按钮文字颜色
-                        .cancelText("取消")//取消按钮文字
-                        .cancelTextSize(16)//取消按钮文字大小
-                        .setCityWheelType(CityConfig.WheelType.PRO_CITY)//显示类，只显示省份一级，显示省市两级还是显示省市区三级
-                        .showBackground(true)//是否显示半透明背景
-                        .visibleItemsCount(7)//显示item的数量
-                        .province("山东省")//默认显示的省份
-                        .city("青岛市")//默认显示省份下面的城市
-                        //.district("崂山区")//默认显示省市下面的区县数据
-                        .provinceCyclic(false)//省份滚轮是否可以循环滚动
-                        .cityCyclic(false)//城市滚轮是否可以循环滚动
-                        .districtCyclic(false)//区县滚轮是否循环滚动
-                        //.setCustomItemLayout(R.layout.item_city)//自定义item的布局
-                        //.setCustomItemTextViewId(R.id.item_city_name_tv)//自定义item布局里面的textViewid
-                        .drawShadows(false)//滚轮不显示模糊效果
-                        .setLineColor("#03a9f4")//中间横线的颜色
-                        .setLineHeigh(5)//中间横线的高度
-                        .setShowGAT(true)//是否显示港澳台数据，默认不显示
-                        .build();
-                mPicker.setConfig(cityConfig);
-                mPicker.setOnCityItemClickListener(new OnCityItemClickListener() {
-                    @Override
-                    public void onSelected(ProvinceBean province, CityBean city, DistrictBean district) {
-                        String Province = null;
-                        String City = null;
-                        if (province != null) {
-                            Province = province.getName();
-                        }
-                        if (city != null) {
-                            City = city.getName();
-                        }
-                        if (district != null) {
-                        }
-                        String location = Province + "-" + City;
-                        if(Province.equals(City))
-                            location = Province;
-                        tv_location.setText(location);
-                        FlowerHttp flowerHttp1 = new FlowerHttp("http://118.25.40.220/api/changeInfo/");
-                        Map<String, Object> map = new HashMap<>();
-                        map.put("birthday", tv_birth.getText().toString());
-                        String gender = tv_gender.getText().toString();
-                        if(gender.equals("男"))
-                            gender = "M";
-                        else if(gender.equals("女"))
-                            gender = "F";
-                        else if(gender.equals("保密"))
-                            gender = "S";
-                        map.put("gender", gender);
-                        map.put("address", location);
-                        String response = flowerHttp1.post(map);
-                        int result = 0;
-                        try {
-                            result = new JSONObject(response).getInt("rsNum");
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        if(result == 1) {
-                            showToast("修改成功");
-                        }
-                        else if(result == 0) {
-                            showToast("未知错误");
-                            return;
-                        }
-                        else if(result == -1) {
-                            showToast("用户不存在");
-                            return;
-                        }
-                    }
-                    @Override
-                    public void onCancel() {
-                        showToast("已取消");
-                    }
-                });
-                mPicker.showCityPicker( );
-            }
-        });
-        ll_revise_gender.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                change_sex();
-            }
-        });
         ll_revise_pass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -287,82 +373,8 @@ public class ReviseActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        ll_revise_head.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (ContextCompat.checkSelfPermission(ReviseActivity.this,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.
-                        PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(ReviseActivity.this, new
-                            String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-                } else {
-                    openAlbum();
-                }
-            }
-        });
-    }
 
-    private void showToast(String s) {
-        Toast.makeText(ReviseActivity.this, s, Toast.LENGTH_SHORT).show();
-    }
 
-    private void openAlbum() {
-        Intent intent = new Intent("android.intent.action.GET_CONTENT");
-        intent.setType("image/*");
-        startActivityForResult(intent, CHOOSE_PHOTO);
-    }
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch(requestCode) {
-            case 1:
-                if(grantResults.length > 0 && grantResults[0]==PackageManager.PERMISSION_GRANTED) {
-                    openAlbum();
-                }
-                else {
-                    showToast("您拒绝了我们的权限请求");
-                }
-                break;
-            default:
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == CHOOSE_PHOTO) {
-            if(resultCode == RESULT_OK) {
-                //判断手机系统版本号
-                if(Build.VERSION.SDK_INT >= 19) {
-                    handleImageOnKitKat(data);
-                }
-                else {
-                    handleImageBeforeKitKat(data);
-                }
-            }
-        }
-    }
-    @TargetApi(19)
-    private void handleImageOnKitKat(Intent data) {
-        Uri uri = data.getData();
-        if (DocumentsContract.isDocumentUri(this, uri)) {
-            String docId = DocumentsContract.getDocumentId(uri);
-            if ("com.android.providers.media.documents".equals(uri.getAuthority())) {
-                String id = docId.split(":")[1];
-                String selection = MediaStore.Images.Media._ID + "=" + id;
-                imagepath = getImagePath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, selection);
-            } else if ("com.android.providers.downloads.documents".equals(uri.getAuthority())) {
-                Uri contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), Long.valueOf(docId));
-                imagepath = getImagePath(uri, null);
-
-            } else if ("content".equalsIgnoreCase(uri.getScheme())) {
-                imagepath = getImagePath(uri, null);
-            } else if ("file".equalsIgnoreCase(uri.getScheme())) {
-                imagepath = uri.getPath();
-            }
-            displayImage();
-        }
-    }
     private void handleImageBeforeKitKat(Intent data) {
         Uri uri = data.getData();
         imagepath = getImagePath(uri, null);
@@ -474,58 +486,4 @@ public class ReviseActivity extends AppCompatActivity {
             showToast("没有找到图片");
         }
     }
-
-    public void change_sex(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this); //定义一个AlertDialog
-        String[] strarr = {"男","女","保密"};
-        builder.setItems(strarr, new DialogInterface.OnClickListener()
-        {
-            public void onClick(DialogInterface arg0, int arg1)
-            {
-                String sex = "保密";
-                if (arg1 == 0) {
-                    sex = "男";
-                }else if(arg1 == 1){
-                    sex = "女";
-                }
-                else {
-                    sex = "保密";
-                }
-                tv_gender.setText(sex);
-                String gender = tv_gender.getText().toString();
-                if(gender.equals("男"))
-                    gender = "M";
-                else if(gender.equals("女"))
-                    gender = "F";
-                else if(gender.equals("保密"))
-                    gender = "S";
-                FlowerHttp flowerHttp1 = new FlowerHttp("http://118.25.40.220/api/changeInfo/");
-                Map<String, Object> map = new HashMap<>();
-                map.put("birthday", tv_birth.getText().toString());
-                map.put("gender", sex);
-                map.put("address", tv_location.getText().toString());
-                String response = flowerHttp1.post(map);
-                int result = 0;
-                try {
-                    result = new JSONObject(response).getInt("rsNum");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                if(result == 1) {
-                    showToast("修改成功");
-                }
-                else if(result == 0) {
-                    showToast("未知错误");
-                    return;
-                }
-                else if(result == -1) {
-                    showToast("用户不存在");
-                    return;
-                }
-            }
-        });
-        builder.show();
-    }
 }*/
-    }}

@@ -9,12 +9,12 @@
         android:layout_height="?attr/actionBarSize"
         android:layout_width="match_parent"
         android:background="@null"
-        android:id="@+id/tb_me">
+        android:id="@+id/tb_user">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="null"
-            android:id="@+id/tv_me"
+            android:id="@+id/tv_user"
             android:gravity="center_vertical"
             android:textColor="#000"
             android:textSize="20sp"
@@ -22,14 +22,14 @@
     </android.support.v7.widget.Toolbar>
 
     <RelativeLayout
-        android:id="@+id/rl_me"
+        android:id="@+id/rl_user"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginTop="60dp">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/me_image"
+            android:id="@+id/user_image"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_marginTop="10dp"
@@ -38,17 +38,17 @@
             android:scaleType="centerCrop" />
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="65dp"
                 android:layout_marginLeft="110dp"
                 android:orientation="vertical"
-                android:id="@+id/linearLayout">
+                android:id="@+id/ll_user">
 
                 <TextView
-                    android:id="@+id/me_dynamic"
+                    android:id="@+id/user_dynamic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="28dp"
@@ -58,7 +58,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/tv_dynamic"
+                    android:id="@+id/tv_user_dynamic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="28dp"
@@ -76,7 +76,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/me_concern"
+                    android:id="@+id/user_concern"
                     android:textSize="18sp"
                     android:text="1.6m"
                     android:textColor="#000"
@@ -84,7 +84,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/tv_concern"
+                    android:id="@+id/tv_user_concern"
                     android:textSize="18sp"
                     android:text="关注者"
                     android:layout_marginTop="5dp"/>
@@ -99,7 +99,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/me_follow"
+                    android:id="@+id/user_follow"
                     android:textSize="18sp"
                     android:text="17"
                     android:textColor="#000"
@@ -107,7 +107,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/tv_follow"
+                    android:id="@+id/tv_user_follow"
                     android:textSize="18sp"
                     android:text="关注"
                     android:layout_marginTop="5dp"/>
@@ -118,15 +118,40 @@
                 android:layout_width="220dp"
                 android:layout_height="33dp"
                 android:background="@drawable/buttonshape2"
-                android:layout_below="@+id/linearLayout"
+                android:layout_below="@+id/ll_user"
                 android:layout_marginLeft="130dp"
                 android:text="关注"
                 android:textSize="16sp" />
         </RelativeLayout>
     </RelativeLayout>
+    <LinearLayout
+        android:layout_below="@+id/rl_user"
+        android:orientation="vertical"
+        android:id="@+id/user_ll"
+        android:layout_marginLeft="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/user_nickname"
+            android:textSize="15sp"
+            android:text="null"
+            android:textColor="#000"
+            android:textStyle="bold"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/user_bio"
+            android:textSize="15sp"
+            android:text="简介"
+            android:maxLines="4"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="5dp"/>
+    </LinearLayout>
     <!--FrameLayout
         android:id="@+id/realtabcontent"
-        android:layout_below="@+id/rl_me"
+        android:layout_below="@+id/user_ll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
