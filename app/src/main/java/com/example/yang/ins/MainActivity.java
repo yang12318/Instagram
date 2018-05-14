@@ -1,4 +1,4 @@
-﻿package com.example.yang.ins;
+package com.example.yang.ins;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
                  */
 
                 .setActiveColor("#000000") //选中颜色
-                .setInActiveColor("#696969") //未选中颜色
+                .setInActiveColor("#bfbfbf") //未选中颜色
                 .setBarBackgroundColor("#ffffff");//导航栏背景色
 
         /** 添加导航按钮 */

@@ -5,7 +5,8 @@
     android:layout_height="fill_parent"
     android:fitsSystemWindows="true" >
     <android.support.v7.widget.Toolbar
-        android:layout_height="?attr/actionBarSize"
+        android:layout_height="50dp"
+        android:id="@+id/tb_forget"
         android:layout_width="match_parent"
         android:background="@null">
 
@@ -15,10 +16,15 @@
             android:text="忘记密码"
             android:textColor="#000"
             android:textSize="19sp"
-            android:layout_marginTop="17dp"
+            android:layout_marginTop="10dp"
             android:layout_marginLeft="65dp"/>
     </android.support.v7.widget.Toolbar>
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_below="@+id/tb_forget"
+        android:background="@drawable/toolbar">
+    </View>
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -29,7 +35,7 @@
             android:id="@+id/rl_email"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="85dp"
+            android:layout_marginTop="70dp"
             android:gravity="center">
 
             <EditText
@@ -92,7 +98,8 @@
         android:id="@+id/ib_forget_back"
         android:layout_width="33dp"
         android:layout_height="22dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="15dp"
+        android:scaleType="centerInside"
         android:layout_marginLeft="6dp"
         android:background="#00000000"
         android:src="@drawable/back" />
@@ -100,8 +107,9 @@
         android:id="@+id/ib_forget_go"
         android:layout_width="33dp"
         android:layout_height="22dp"
+        android:scaleType="centerInside"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="15dp"
         android:background="#00000000"
         android:src="@drawable/go1" />
 </RelativeLayout>

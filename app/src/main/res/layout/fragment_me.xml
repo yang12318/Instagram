@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:fitsSystemWindows="true" >
+    xmlns:app="http://schemas.android.com/tools"
+    android:fitsSystemWindows="true">
     <android.support.v7.widget.Toolbar
-        android:layout_height="?attr/actionBarSize"
+        android:layout_height="50dp"
         android:layout_width="match_parent"
         android:background="@null"
         android:id="@+id/tb_me">
@@ -20,12 +20,17 @@
             android:textSize="20sp"
             android:layout_marginLeft="15dp"/>
     </android.support.v7.widget.Toolbar>
-
+    <View
+          android:layout_width="match_parent"
+          android:layout_height="3dp"
+          android:layout_below="@+id/tb_me"
+          android:background="@drawable/toolbar">
+      </View>
     <RelativeLayout
         android:id="@+id/rl_me"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp">
+        android:layout_marginTop="70dp">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/me_image"
@@ -129,6 +134,7 @@
     <LinearLayout
         android:layout_below="@+id/rl_me"
         android:orientation="vertical"
+        android:id="@+id/ll_me"
         android:layout_marginLeft="15dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -150,23 +156,23 @@
             android:layout_marginRight="10dp"
             android:layout_marginTop="5dp"/>
     </LinearLayout>
-    <!--FrameLayout
-        android:id="@+id/realtabcontent"
-        android:layout_below="@+id/rl_me"
+    <View
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-    <android.support.v4.app.FragmentTabHost
-
-        android:id="@android:id/tabhost"
+        android:layout_height="2px"
+        android:id="@+id/view"
+        android:layout_below="@+id/ll_me"
+        android:layout_marginTop="20dp"
+        android:background="#bfbfbf"/>
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tab_me"
+        android:layout_below="@+id/view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-
-        <FrameLayout
-            android:id="@android:id/tabcontent"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="0" />
-
-    </android.support.v4.app.FragmentTabHost-->
+        android:layout_height="50dp"
+        app:tabSelectedTextColor="#ffff"
+        app:tabTextColor="#ffffff"
+        app:tabTextAppearance="@style/TabLayoutTextStyle"
+        app:tabIndicatorColor="#fff"
+        app:tabBackground="@null"
+        app:tabIndicatorHeight="0dp"
+        app:tabGravity="fill"/>
 </RelativeLayout>

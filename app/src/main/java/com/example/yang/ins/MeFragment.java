@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -20,6 +21,7 @@ import org.w3c.dom.Text;
 
 public class MeFragment extends Fragment {
    private Button btn_revise;
+   private TabLayout tabLayout;
    private Context context;
    protected View view;
    private TextView tv_concern, tv_follow;
@@ -76,6 +78,11 @@ public class MeFragment extends Fragment {
                 startActivity(intent);
             }
         });
+        tabLayout= (TabLayout) view.findViewById(R.id.tab_me);
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.album));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.dynamic));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.like));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.collect));
         return view;
     }
     @Override

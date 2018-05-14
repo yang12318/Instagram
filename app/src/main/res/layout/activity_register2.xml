@@ -46,8 +46,9 @@
                 android:layout_centerVertical="true"
                 android:background="@drawable/editshape"
                 android:ems="19"
+                android:textColor="#ffffff"
                 android:textColorHint="#80ffffff"
-                android:hint="请输入全名"
+                android:hint="全名"
                 android:padding="1dp"
                 android:textSize="15sp" >
 
@@ -81,10 +82,11 @@
                 android:layout_centerVertical="true"
                 android:background="@drawable/editshape"
                 android:ems="19"
+                android:textColor="#ffffff"
                 android:inputType="textPassword"
                 android:singleLine="true"
                 android:textColorHint="#80ffffff"
-                android:hint="请输入密码"
+                android:hint="密码"
                 android:padding="1dp"
                 android:textSize="15sp" >
 

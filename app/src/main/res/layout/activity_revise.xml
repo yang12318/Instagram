@@ -5,7 +5,8 @@
     android:layout_height="fill_parent"
     android:fitsSystemWindows="true">
     <android.support.v7.widget.Toolbar
-        android:layout_height="?attr/actionBarSize"
+        android:layout_height="50dp"
+        android:id="@+id/tb_revise"
         android:layout_width="match_parent"
         android:background="@null" >
 
@@ -13,12 +14,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="编辑个人主页"
-            android:layout_marginTop="17dp"
+            android:layout_marginTop="10dp"
             android:textColor="#000"
             android:textSize="20sp"
             android:layout_marginLeft="70dp"/>
     </android.support.v7.widget.Toolbar>
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_below="@+id/tb_revise"
+        android:background="@drawable/toolbar">
+    </View>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -153,7 +159,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="11dp"
         android:background="#00000000"
         android:src="@drawable/cancel" />
     <ImageButton
@@ -161,7 +167,7 @@
         android:layout_width="35dp"
         android:layout_height="22dp"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="14dp"
         android:background="#00000000"
         android:src="@drawable/finish1" />
 </RelativeLayout>

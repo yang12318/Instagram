@@ -1,4 +1,4 @@
-﻿package com.example.yang.ins;
+package com.example.yang.ins;
 
 import android.Manifest;
 import android.app.Fragment;

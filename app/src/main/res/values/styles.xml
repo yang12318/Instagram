@@ -8,7 +8,9 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
-
+    <style name="TabLayoutTextStyle">
+        <item name="android:textSize">@dimen/tab_text</item>
+    </style>
     <!--style name="MatchWrapTv" parent="MatchWrap">
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">@android:color/white</item>
@@ -26,6 +28,7 @@
         <item name="android:background">@drawable/selector_btn_orange</item>
         <item name="android:layout_margin">5dp</item>
         <item name="android:onClick">onClick</item>
+
     </style-->
 
 </resources>
