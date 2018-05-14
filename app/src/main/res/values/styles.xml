@@ -11,6 +11,10 @@
     <style name="TabLayoutTextStyle">
         <item name="android:textSize">@dimen/tab_text</item>
     </style>
+    <style name="MyEditText" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">@android:color/darker_gray</item>
+        <item name="colorControlActivated">#1296db</item>
+    </style>
     <!--style name="MatchWrapTv" parent="MatchWrap">
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">@android:color/white</item>
