@@ -75,14 +75,15 @@ public class AddFragment extends Fragment implements EasyPermissions.PermissionC
     public void onClick(View view) {
         if(view.getId() == R.id.tv_publish) {
             String content = et_add.getText().toString().trim();
-            if(content.length() == 0 && mPhotosSnpl.getItemCount() == 0) {
+            if(mPhotosSnpl.getItemCount() == 0) {
                 Toast.makeText(getActivity(), "必须选择照片！", Toast.LENGTH_SHORT).show();
                 return;
             }
             Toast.makeText(getActivity(), "发表成功", Toast.LENGTH_SHORT).show();
+            et_add.setText("");
             //调用接口
-            MainActivity mainActivity = (MainActivity) getActivity();
-            mainActivity.gotoHomeFragment();
+            Intent intent = new Intent(getActivity(), MainActivity.class);
+            startActivity(intent);
         }
     }
 
