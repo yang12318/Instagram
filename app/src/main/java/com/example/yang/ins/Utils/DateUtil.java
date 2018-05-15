@@ -2,10 +2,12 @@ package com.example.yang.ins.Utils;
 
 
 import android.annotation.SuppressLint;
+import android.util.Log;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.sql.Timestamp;
 
 /**
  * Created by ouyangshen on 2016/9/24.
@@ -48,13 +50,13 @@ public class DateUtil {
         long new_time = new_date.getTime();
         long diff_time = new_time - old_time;
         long diff_days = diff_time / 24 / 60 / 60 / 1000;
-        //long diff_time = day_num * 24 * 60 * 60 * 1000;
-//		LogUtil.debug(TAG, "day_num="+day_num+", diff_time="+diff_time);
-        /*time += diff_time;
-        Date new_date = new Date(time);
-        String s_date = s_format.format(new_date);
-        return s_date;*/
         return diff_days;
+    }
+
+    public static String getTimeStamp() {
+        long time = new Date().getTime();
+        time /= 1000;
+        return Long.toString(time);
     }
 
 }

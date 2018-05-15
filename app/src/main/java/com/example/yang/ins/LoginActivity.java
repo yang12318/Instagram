@@ -18,6 +18,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.view.View.OnFocusChangeListener;
+
+import com.example.yang.ins.Utils.DateUtil;
+import com.example.yang.ins.Utils.MainApplication;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -69,7 +73,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
         if(v.getId() == R.id.btn_login) {
+            if(true) {
 
+            }
+            else if(false) {
+                String Authorization = null;
+                SharedPreferences mShared;
+                mShared = MainApplication.getContext().getSharedPreferences("share", MODE_PRIVATE);
+                SharedPreferences.Editor editor = mShared.edit();
+                editor.putString("Authorization", Authorization);
+                editor.putString("Date", DateUtil.getNowDateTime("yyyyMMddHHmmss"));
+                editor.commit();
+            }
         }
         else if(v.getId() == R.id.tv_register) {
             Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
