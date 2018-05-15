@@ -3,6 +3,7 @@ package com.example.yang.ins;
 import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Environment;
 import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
@@ -14,6 +15,7 @@ import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -79,6 +81,7 @@ public class ReviseActivity extends AppCompatActivity implements View.OnClickLis
 
     private CircleImageView iv_head;
     private Button  btn_head;
+    private EditText et_nickname,et_username,et_bio;
     private TextView tv_birth, tv_location, tv_gender;
     private ImageButton ib_back, ib_finish;
     private BGAPhotoHelper bgaPhotoHelper;
@@ -103,6 +106,9 @@ public class ReviseActivity extends AppCompatActivity implements View.OnClickLis
         mPicker.init(this);
         btn_head = (Button) findViewById(R.id.revise_image);
         iv_head = (CircleImageView) findViewById(R.id.head_revise);
+        et_nickname = (EditText) findViewById(R.id.revise_nickname);
+        et_username = (EditText) findViewById(R.id.revise_username);
+        et_bio = (EditText) findViewById(R.id.revise_bio);
         tv_birth = (TextView) findViewById(R.id.revise_birth);
         tv_gender = (TextView) findViewById(R.id.revise_gender);
         tv_location = (TextView) findViewById(R.id.revise_location);
@@ -115,7 +121,27 @@ public class ReviseActivity extends AppCompatActivity implements View.OnClickLis
         tv_birth.setOnClickListener(this);
         ib_finish.setOnClickListener(this);
         ib_back.setOnClickListener(this);
-
+        et_nickname.setOnClickListener(this);
+        et_username.setOnClickListener(this);
+        et_bio.setOnClickListener(this);
+        Drawable db_nickname=getResources().getDrawable(R.drawable.nickname);
+        db_nickname.setBounds(0,0,75,75);
+        et_nickname.setCompoundDrawables(db_nickname,null,null,null);
+        Drawable db_username=getResources().getDrawable(R.drawable.username);
+        db_username.setBounds(0,0,75,75);
+        et_username.setCompoundDrawables(db_username,null,null,null);
+        Drawable db_bio=getResources().getDrawable(R.drawable.bio);
+        db_bio.setBounds(0,0,75,75);
+        et_bio.setCompoundDrawables(db_bio,null,null,null);
+        Drawable db_birth=getResources().getDrawable(R.drawable.birth);
+        db_birth.setBounds(0,0,75,75);
+        tv_birth.setCompoundDrawables(db_birth,null,null,null);
+        Drawable db_gender=getResources().getDrawable(R.drawable.gender);
+        db_gender.setBounds(0,0,75,75);
+        tv_gender.setCompoundDrawables(db_gender,null,null,null);
+        Drawable db_location=getResources().getDrawable(R.drawable.location);
+        db_location.setBounds(0,0,75,75);
+        tv_location.setCompoundDrawables(db_location,null,null,null);
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.example.yang.ins;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -83,6 +84,8 @@ public class MeFragment extends Fragment {
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.dynamic));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.like));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.collect));
+        tabLayout.setSelectedTabIndicatorColor(Color.BLACK);
+        tabLayout.setSelectedTabIndicatorHeight(1);
         return view;
     }
     @Override

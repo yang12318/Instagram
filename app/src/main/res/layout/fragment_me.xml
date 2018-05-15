@@ -1,178 +1,185 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:custom="http://schemas.android.com/apk/res-auto"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    xmlns:app="http://schemas.android.com/tools"
-    android:fitsSystemWindows="true">
-    <android.support.v7.widget.Toolbar
-        android:layout_height="50dp"
-        android:layout_width="match_parent"
-        android:background="@null"
-        android:id="@+id/tb_me">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="null"
-            android:id="@+id/tv_me"
-            android:gravity="center_vertical"
-            android:textColor="#000"
-            android:textSize="20sp"
-            android:layout_marginLeft="15dp"/>
-    </android.support.v7.widget.Toolbar>
-    <View
-          android:layout_width="match_parent"
-          android:layout_height="3dp"
-          android:layout_below="@+id/tb_me"
-          android:background="@drawable/toolbar">
-      </View>
-    <RelativeLayout
-        android:id="@+id/rl_me"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="70dp">
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/me_image"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="20dp"
-            android:src="@drawable/n1"
-            android:scaleType="centerCrop" />
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="65dp"
-                android:layout_marginLeft="110dp"
-                android:orientation="vertical"
-                android:id="@+id/linearLayout">
-
-                <TextView
-                    android:id="@+id/me_dynamic"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="28dp"
-                    android:text="161"
-                    android:textColor="#000"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tv_dynamic"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="28dp"
-                    android:layout_marginTop="5dp"
-                    android:text="帖子"
-                    android:textSize="18sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/ll_concern"
-                android:orientation="vertical"
-                android:layout_marginLeft="215dp"
-                android:layout_width="match_parent"
-                android:layout_height="65dp"
-                android:layout_weight="1">
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:scrollbars="vertical">
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:custom="http://schemas.android.com/apk/res-auto"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        xmlns:app="http://schemas.android.com/tools"
+        android:fitsSystemWindows="true"
+        app:ignore="NamespaceTypo">
+        <android.support.v7.widget.Toolbar
+            android:layout_height="50dp"
+            android:layout_width="match_parent"
+            android:background="@null"
+            android:id="@+id/tb_me">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/me_concern"
-                android:textSize="18sp"
-                android:text="1.6m"
+                android:text="null"
+                android:id="@+id/tv_me"
+                android:gravity="center_vertical"
+                android:textColor="#000"
+                android:textSize="20sp"
+                android:layout_marginLeft="15dp"/>
+        </android.support.v7.widget.Toolbar>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:layout_below="@+id/tb_me"
+            android:background="@drawable/toolbar">
+        </View>
+        <RelativeLayout
+            android:id="@+id/rl_me"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="70dp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/me_image"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="20dp"
+                android:src="@drawable/n1"
+                android:scaleType="centerCrop" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="65dp"
+                    android:layout_marginLeft="110dp"
+                    android:orientation="vertical"
+                    android:id="@+id/linearLayout">
+
+                    <TextView
+                        android:id="@+id/me_dynamic"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="28dp"
+                        android:text="161"
+                        android:textColor="#000"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_dynamic"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="28dp"
+                        android:layout_marginTop="5dp"
+                        android:text="帖子"
+                        android:textSize="18sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_concern"
+                    android:orientation="vertical"
+                    android:layout_marginLeft="215dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="65dp"
+                    android:layout_weight="1">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/me_concern"
+                        android:textSize="18sp"
+                        android:text="1.6m"
+                        android:textColor="#000"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/tv_concern"
+                        android:textSize="18sp"
+                        android:text="关注者"
+                        android:layout_marginTop="5dp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_follow"
+                    android:orientation="vertical"
+                    android:layout_marginLeft="310dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="65dp"
+                    android:layout_weight="1">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/me_follow"
+                        android:textSize="18sp"
+                        android:text="17"
+                        android:textColor="#000"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/tv_follow"
+                        android:textSize="18sp"
+                        android:text="关注"
+                        android:layout_marginTop="5dp"/>
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/me_revise"
+                    android:layout_width="220dp"
+                    android:layout_height="33dp"
+                    android:background="@drawable/buttonshape2"
+                    android:layout_below="@+id/linearLayout"
+                    android:layout_marginLeft="130dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="编辑个人主页"
+                    android:textSize="16sp" />
+            </RelativeLayout>
+        </RelativeLayout>
+        <LinearLayout
+            android:layout_below="@+id/rl_me"
+            android:orientation="vertical"
+            android:id="@+id/ll_me"
+            android:layout_marginLeft="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/me_nickname"
+                android:textSize="15sp"
+                android:text="null"
                 android:textColor="#000"
                 android:textStyle="bold"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/tv_concern"
-                android:textSize="18sp"
-                android:text="关注者"
+                android:id="@+id/tv_bio"
+                android:textSize="15sp"
+                android:text="简介"
+                android:maxLines="4"
+                android:layout_marginRight="10dp"
                 android:layout_marginTop="5dp"/>
         </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/ll_follow"
-                android:orientation="vertical"
-                android:layout_marginLeft="310dp"
-                android:layout_width="match_parent"
-                android:layout_height="65dp"
-                android:layout_weight="1">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/me_follow"
-                    android:textSize="18sp"
-                    android:text="17"
-                    android:textColor="#000"
-                    android:textStyle="bold"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/tv_follow"
-                    android:textSize="18sp"
-                    android:text="关注"
-                    android:layout_marginTop="5dp"/>
-            </LinearLayout>
-
-        <Button
-            android:id="@+id/me_revise"
-            android:layout_width="220dp"
-            android:layout_height="33dp"
-            android:background="@drawable/buttonshape2"
-            android:layout_below="@+id/linearLayout"
-            android:layout_marginLeft="130dp"
-            android:layout_marginBottom="10dp"
-            android:text="编辑个人主页"
-            android:textSize="16sp" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2px"
+            android:id="@+id/view"
+            android:layout_below="@+id/ll_me"
+            android:layout_marginTop="20dp"
+            android:background="#bfbfbf"/>
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tab_me"
+            android:layout_below="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            app:tabSelectedTextColor="#ffffff"
+            app:tabTextColor="#ffffff"
+            app:tabTextAppearance="@style/TabLayoutTextStyle"
+            app:tabIndicatorColor="#fff"
+            app:tabBackground="@null"
+            app:tabIndicatorHeight="1dp"
+            app:tabGravity="fill"/>
     </RelativeLayout>
-    </RelativeLayout>
-    <LinearLayout
-        android:layout_below="@+id/rl_me"
-        android:orientation="vertical"
-        android:id="@+id/ll_me"
-        android:layout_marginLeft="15dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/me_nickname"
-            android:textSize="15sp"
-            android:text="null"
-            android:textColor="#000"
-            android:textStyle="bold"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/tv_bio"
-            android:textSize="15sp"
-            android:text="简介"
-            android:maxLines="4"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="5dp"/>
-    </LinearLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2px"
-        android:id="@+id/view"
-        android:layout_below="@+id/ll_me"
-        android:layout_marginTop="20dp"
-        android:background="#bfbfbf"/>
-    <android.support.design.widget.TabLayout
-        android:id="@+id/tab_me"
-        android:layout_below="@+id/view"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        app:tabSelectedTextColor="#ffff"
-        app:tabTextColor="#ffffff"
-        app:tabTextAppearance="@style/TabLayoutTextStyle"
-        app:tabIndicatorColor="#fff"
-        app:tabBackground="@null"
-        app:tabIndicatorHeight="0dp"
-        app:tabGravity="fill"/>
-</RelativeLayout>
+</ScrollView>

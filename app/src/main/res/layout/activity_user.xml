@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
     xmlns:custom="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/tools"
+    android:scrollbars="vertical"
+    app:ignore="NamespaceTypo">
+<RelativeLayout
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    xmlns:app="http://schemas.android.com/tools"
     android:fitsSystemWindows="true">
     <android.support.v7.widget.Toolbar
         android:layout_height="50dp"
@@ -172,3 +178,4 @@
         app:tabIndicatorHeight="0dp"
         app:tabGravity="fill"/>
 </RelativeLayout>
+</ScrollView>
