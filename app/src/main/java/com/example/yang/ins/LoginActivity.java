@@ -1,44 +1,37 @@
 package com.example.yang.ins;
 
-import android.app.Notification;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.AnimationDrawable;
-import android.os.Build;
+import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.view.View.OnFocusChangeListener;
 
 import com.example.yang.ins.Utils.DateUtil;
-import com.example.yang.ins.Utils.MainApplication;
+import com.example.yang.ins.Utils.HelloHttp;
+import com.example.yang.ins.Utils.MD5Util;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/*import okhttp3.Cookie;
-import okhttp3.CookieJar;
-import okhttp3.HttpUrl;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;*/
+import okhttp3.Call;
+import okhttp3.Response;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -59,6 +52,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         et_password = (EditText) findViewById(R.id.et_passwordInput);
         et_user = (EditText) findViewById(R.id.et_usernameInput);
         //checkBox = (CheckBox) findViewById(R.id.checkbox);
+        et_user.setText("instagram@mail.com");
+        et_password.setText("instagram123");
         et_user.addTextChangedListener(new JumpTextWatcher(et_user, et_password));
         btn_login.setOnClickListener(this);
         tv_forget.setOnClickListener(this);
@@ -73,18 +68,122 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
         if(v.getId() == R.id.btn_login) {
-            if(true) {
+            final String email = et_user.getText().toString();
+            String password = et_password.getText().toString();
+            if(email.length() <= 0 || email == null) {
+                showToast("您还未填写邮箱或您的全名");
+                return;
+            }
+            if(password.length() <= 0 || password == null) {
+                showToast("您还未填写密码");
+                return;
+            }
+            password = MD5Util.encode(password);
+            Map<String, Object> map = new HashMap<>();
+            map.put("account", email);
+            final String finalPassword = password;
+            HelloHttp.sendFirstPostRequest("api/user/checkout", map, new okhttp3.Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    Log.e("LoginActivity", "FAILURE");
+                    showToast("服务器错误");
+                }
 
-            }
-            else if(false) {
-                String Authorization = null;
-                SharedPreferences mShared;
-                mShared = MainApplication.getContext().getSharedPreferences("share", MODE_PRIVATE);
-                SharedPreferences.Editor editor = mShared.edit();
-                editor.putString("Authorization", Authorization);
-                editor.putString("Date", DateUtil.getNowDateTime("yyyyMMddHHmmss"));
-                editor.commit();
-            }
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    String responseData = response.body().string();
+                    Log.d("LoginActivity", responseData);
+                    String result = null;
+                    try {
+                        result = new JSONObject(responseData).getString("status");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    if(result.equals("Exist")) {
+                        Map<String, Object> map = new HashMap<>();
+                        if(isEmail(email)) {
+                            map.put("login_type", "email");
+                            map.put("email", email);
+                        }
+                        else {
+                            map.put("login_type", "username");
+                            map.put("username", email);
+                        }
+                        map.put("password", finalPassword);
+                        HelloHttp.sendFirstPostRequest("api/user/login", map, new okhttp3.Callback() {
+
+                            @Override
+                            public void onFailure(Call call, IOException e) {
+                                Log.e("LoginActivity", "FAILURE");
+                                Looper.prepare();
+                                showToast("服务器错误");
+                                Looper.loop();
+                            }
+
+                            @Override
+                            public void onResponse(Call call, Response response) throws IOException {
+                                String responseData = response.body().string();
+                                Log.d("LoginActivity", responseData);
+                                String result = null;
+                                String Authorization = null;
+                                int id = -10;
+                                try {
+                                    result = new JSONObject(responseData).getString("status");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                    Log.e("LoginActivity", "JSONException");
+                                }
+                                if(result.equals("Success")) {
+                                    Looper.prepare();
+                                    showToast("登录成功");
+                                    try {
+                                        showToast("12345678");
+                                        JSONObject jsonObject = new JSONObject(responseData);
+                                        Authorization = jsonObject.getString("Authorization");
+                                        JSONArray jsonArray = jsonObject.getJSONArray("result");
+                                        jsonObject = jsonArray.getJSONObject(0);
+                                        id = jsonObject.getInt("id");
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                        Log.e("LoginActivity", "JSONException");
+                                    }
+                                    Log.e("LoginActivity", Integer.toString(id));
+                                    SharedPreferences mShared;
+                                    mShared = LoginActivity.this.getSharedPreferences("share", MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = mShared.edit();
+                                    editor.putString("Authorization", Authorization);
+                                    editor.putString("Date", DateUtil.getNowDateTime("yyyyMMddHHmmss"));
+                                    editor.putInt("id", id);
+                                    editor.commit();
+                                    MainApplication application = MainApplication.getInstance();
+                                    application.mInfoMap.put("id", id);
+                                    showToast("跳转");
+                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                    startActivity(intent);
+                                    Looper.loop();
+                                }
+                                else {
+                                    Looper.prepare();
+                                    showToast(result);
+                                    Looper.loop();
+                                }
+                            }
+                        });
+                    }
+                    else if(result.equals("NotExist")) {
+                        Looper.prepare();
+                        showToast("该账号未注册");
+                        Looper.loop();
+                        return;
+                    }
+                    else {
+                        Looper.prepare();
+                        showToast(result);
+                        Looper.loop();
+                        return;
+                    }
+                }
+            });
         }
         else if(v.getId() == R.id.tv_register) {
             Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
@@ -94,66 +193,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             Intent intent = new Intent(LoginActivity.this, ForgetActivity.class);
             startActivity(intent);
         }
-        /*if(v.getId() == R.id.btn_login) {
-            FlowerHttp flowerHttp = new FlowerHttp("http://118.25.40.220/api/login/");
-            Map<String, Object> map = new HashMap<>();
-            map.put("type", "email");
-            map.put("text", et_user.getText().toString());
-            map.put("pwd", et_password.getText().toString());
-            String s = flowerHttp.firstPost(map);
-            int result = 10;
-            try {
-                result = new JSONObject(s).getInt("rsNum");
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            if (result == 0) {
-                showToast("未知错误");
-                return;
-            } else if (result == -1) {
-                showToast("账号不存在");
-                return;
-            } else if (result == -2) {
-                showToast("密码错误");
-                return;
-            } else if(result == 10) {
-                showToast("未返回数据");
-                return;
-            }else {
-                showToast("登录成功");
-                MainApplication application = MainApplication.getInstance();
-                application.mInfoMap.put("id", result);
-                String cookie = null;
-                FlowerHttp flowerHttp1 = new FlowerHttp("http://118.25.40.220/api/getCsrf/");
-                String csrf = flowerHttp1.get();
-                SharedPreferences mShared;
-                mShared = MainApplication.getContext().getSharedPreferences("share", MODE_PRIVATE);
-                Map<String, Object> mapParam = (Map<String, Object>) mShared.getAll();
-                for (Map.Entry<String, Object> item_map : mapParam.entrySet()) {
-                    String key = item_map.getKey();
-                    Object value = item_map.getValue();
-                    if(key.equals("Cookie")) {
-                        cookie = value.toString();
-                    }
-                }
-                boolean flag = checkBox.isChecked();
-                SharedPreferences.Editor editor = mShared.edit();
-                editor.putBoolean("flag", flag);
-                editor.putString("Date", DateUtil.getNowDateTime("yyyyMMddHHmmss"));
-                editor.putString("csrfmiddlewaretoken", csrf);
-                editor.putString("Cookie", cookie);
-                editor.putInt("id", result);
-                editor.commit();
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(intent);
-            }
-        }
-        else if(v.getId() == R.id.iv_delPassword) {
-            et_password.setText(null);
-        }
-        else if(v.getId() == R.id.iv_delUsername) {
-            et_user.setText(null);
-        }*/
     }
     private class JumpTextWatcher implements TextWatcher {
         private EditText mThisView = null;

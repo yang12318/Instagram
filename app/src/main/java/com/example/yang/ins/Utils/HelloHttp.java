@@ -2,6 +2,8 @@ package com.example.yang.ins.Utils;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.example.yang.ins.MainApplication;
+
 import java.util.Map;
 import java.util.Set;
 
@@ -44,7 +46,7 @@ public class HelloHttp {
         String timeStamp = DateUtil.getTimeStamp();
         String sign = timeStamp + AppKey;
         sign = MD5Util.encode(sign);
-        String url = adress + "/?timestamp=" + timeStamp + "&appid=" + AppID + "&sign=" + sign;
+        String url = "http://ktchen.cn/" + adress + "/?timestamp=" + timeStamp + "&appid=" + AppID + "&sign=" + sign;
         Log.d("HelloHttp", "new url = " + url);
         return url;
     }
