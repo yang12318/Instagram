@@ -52,88 +52,95 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="65dp"
-                    android:layout_marginLeft="110dp"
-                    android:orientation="vertical"
-                    android:id="@+id/linearLayout">
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="100dp"
+                    android:orientation="horizontal"
+                    android:id="@+id/ll">
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="65dp"
+                        android:orientation="vertical"
+                        android:id="@+id/linear">
 
-                    <TextView
-                        android:id="@+id/me_dynamic"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="28dp"
-                        android:text="161"
-                        android:textColor="#000"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
+                        <TextView
+                            android:id="@+id/me_dynamic"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:layout_gravity="center"
+                            android:textColor="#000"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
 
-                    <TextView
-                        android:id="@+id/tv_dynamic"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="28dp"
-                        android:layout_marginTop="5dp"
-                        android:text="帖子"
-                        android:textSize="18sp" />
+                        <TextView
+                            android:id="@+id/tv_dynamic"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="帖子"
+                            android:layout_gravity="center"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="0dp"
+                        android:layout_height="65dp"
+                        android:id="@+id/ll_concern"
+                        android:layout_weight="1">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/me_concern"
+                            android:textSize="16sp"
+                            android:text="0"
+                            android:layout_gravity="center"
+                            android:textColor="#000"
+                            android:textStyle="bold"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/tv_concern"
+                            android:textSize="16sp"
+                            android:text="关注者"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="5dp"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="0dp"
+                        android:id="@+id/ll_follow"
+                        android:layout_height="65dp"
+                        android:layout_weight="1">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/me_follow"
+                            android:textSize="16sp"
+                            android:text="0"
+                            android:layout_gravity="center"
+                            android:textColor="#000"
+                            android:textStyle="bold"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/tv_follow"
+                            android:textSize="16sp"
+                            android:layout_gravity="center"
+                            android:text="关注"
+                            android:layout_marginTop="5dp"/>
+                    </LinearLayout>
                 </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/ll_concern"
-                    android:orientation="vertical"
-                    android:layout_marginLeft="215dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="65dp"
-                    android:layout_weight="1">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/me_concern"
-                        android:textSize="18sp"
-                        android:text="1.6m"
-                        android:textColor="#000"
-                        android:textStyle="bold"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/tv_concern"
-                        android:textSize="18sp"
-                        android:text="关注者"
-                        android:layout_marginTop="5dp"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/ll_follow"
-                    android:orientation="vertical"
-                    android:layout_marginLeft="310dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="65dp"
-                    android:layout_weight="1">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/me_follow"
-                        android:textSize="18sp"
-                        android:text="17"
-                        android:textColor="#000"
-                        android:textStyle="bold"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/tv_follow"
-                        android:textSize="18sp"
-                        android:text="关注"
-                        android:layout_marginTop="5dp"/>
-                </LinearLayout>
-
                 <Button
                     android:id="@+id/me_revise"
                     android:layout_width="220dp"
                     android:layout_height="33dp"
                     android:background="@drawable/buttonshape2"
-                    android:layout_below="@+id/linearLayout"
-                    android:layout_marginLeft="130dp"
-                    android:layout_marginBottom="10dp"
-                    android:text="编辑个人主页"
+                    android:layout_below="@+id/ll"
+                    android:layout_marginLeft="120dp"
+                    android:text="关注"
                     android:textSize="16sp" />
             </RelativeLayout>
         </RelativeLayout>
@@ -148,7 +155,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/me_nickname"
-                android:textSize="15sp"
+                android:textSize="16sp"
                 android:text="null"
                 android:textColor="#000"
                 android:textStyle="bold"/>
@@ -156,7 +163,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/tv_bio"
-                android:textSize="15sp"
+                android:textSize="16sp"
                 android:text="简介"
                 android:maxLines="4"
                 android:layout_marginRight="10dp"
@@ -181,5 +188,9 @@
             app:tabBackground="@null"
             app:tabIndicatorHeight="1dp"
             app:tabGravity="fill"/>
+        <android.support.v4.view.ViewPager
+            android:id="@+id/vp_me"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
     </RelativeLayout>
 </ScrollView>

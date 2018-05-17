@@ -138,8 +138,8 @@
                 android:textSize="14sp"
                 android:drawablePadding="9dp"
                 android:gravity="center_vertical"
-                android:textColor="#939292"
-                android:text="生日"/>
+                android:textColor="#000"
+                android:hint="生日"/>
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1px"
@@ -149,13 +149,13 @@
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="48dp"
-                android:text="性别"
+                android:hint="性别"
                 android:drawablePadding="9dp"
                 android:layout_marginLeft="10dp"
                 android:id="@+id/revise_gender"
                 android:gravity="center_vertical"
                 android:textSize="14sp"
-                android:textColor="#939292"
+                android:textColor="#000"
                 android:drawableLeft="@drawable/gender"/>
             <View
                 android:layout_width="match_parent"
@@ -166,13 +166,13 @@
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="48dp"
-                android:text="地址"
+                android:hint="地址"
                 android:drawablePadding="9dp"
                 android:layout_marginLeft="10dp"
                 android:id="@+id/revise_location"
                 android:textSize="14sp"
                 android:gravity="center_vertical"
-                android:textColor="#939292"
+                android:textColor="#000"
                 android:drawableLeft="@drawable/location"/>
             <View
                 android:layout_width="match_parent"

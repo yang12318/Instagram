@@ -79,7 +79,7 @@ public class MeFragment extends Fragment {
                 startActivity(intent);
             }
         });
-        tabLayout= (TabLayout) view.findViewById(R.id.tab_me);
+        tabLayout = (TabLayout) view.findViewById(R.id.tab_me);
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.album));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.dynamic));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.like));
@@ -114,7 +114,6 @@ public class MeFragment extends Fragment {
         }
         return true;
     }
-
 }
 
 
