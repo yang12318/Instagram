@@ -1,6 +1,7 @@
 package com.example.yang.ins;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -35,6 +36,18 @@ public class Forget2Activity extends AppCompatActivity {
 
             }
         });
+        et_code = (EditText) findViewById(R.id.et_code);
+        et_pass = (EditText) findViewById(R.id.et_newcode);
+        et_repass = (EditText) findViewById(R.id.et_confirm);
+        Drawable db_code=getResources().getDrawable(R.drawable.password);
+        db_code.setBounds(0,0,75,75);
+        et_code.setCompoundDrawables(db_code,null,null,null);
+        Drawable db_pass=getResources().getDrawable(R.drawable.password);
+        db_pass.setBounds(0,0,75,75);
+        et_pass.setCompoundDrawables(db_pass,null,null,null);
+        Drawable db_repass=getResources().getDrawable(R.drawable.password);
+        db_repass.setBounds(0,0,75,75);
+        et_repass.setCompoundDrawables(db_repass,null,null,null);
         //btn_code.setOn
     }
 }

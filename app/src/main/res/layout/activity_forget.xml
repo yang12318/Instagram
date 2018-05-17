@@ -29,14 +29,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_marginTop="6dp"
+        android:layout_marginTop="70dp"
         android:gravity="center">
-        <RelativeLayout
-            android:id="@+id/rl_email"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="70dp"
-            android:gravity="center">
 
             <EditText
                 android:id="@+id/et_email"
@@ -47,52 +41,12 @@
                 android:paddingBottom="13dp"
                 android:paddingTop="13dp"
                 android:hint="邮箱"
+                android:theme="@style/MyEditText"
                 android:maxLines="1"
                 android:drawableLeft="@drawable/email"
                 android:singleLine="true"
                 android:textColor="#5000"
                 android:textSize="15sp" />
-
-        </RelativeLayout>
-        <RelativeLayout
-            android:id="@+id/rl_forget_code"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_below="@+id/rl_email"
-            android:gravity="center">
-
-            <EditText
-                android:id="@+id/et_code"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="110dp"
-                android:paddingBottom="13dp"
-                android:paddingTop="13dp"
-                android:maxLines="1"
-                android:drawableLeft="@drawable/password"
-                android:hint="验证码"
-                android:singleLine="true"
-                android:textColor="#5000"
-                android:textSize="15sp" />
-
-            <com.example.yang.ins.CountDownTimerButton
-                android:id="@+id/btn_code"
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/et_code"
-                android:layout_alignBottom="@+id/et_code"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginEnd="25dp"
-                android:layout_marginRight="25dp"
-                android:background="@null"
-                android:text="获取验证码"
-                android:textColor="#8000"
-                android:textSize="15sp" />
-
-        </RelativeLayout>
 
     </RelativeLayout>
 
