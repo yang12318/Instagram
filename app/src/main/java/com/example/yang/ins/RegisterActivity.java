@@ -45,6 +45,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         setContentView(R.layout.activity_register);
         btn_login = (Button) findViewById(R.id.tv_login);
         btn_next = (Button) findViewById(R.id.btn_next);
+        btn_login.setOnClickListener(this);
+        btn_next.setOnClickListener(this);
         et_email = (EditText) findViewById(R.id.et_emailInput);
         et_name = (EditText) findViewById(R.id.et_nameInput);
         et_email.addTextChangedListener(new JumpTextWatcher(et_email, et_name));
@@ -190,7 +192,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 }
             });
         }
-        else if(v.getId() == R.id.btn_login) {
+        else if(v.getId() == R.id.tv_login) {
             Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
             startActivity(intent);
         }

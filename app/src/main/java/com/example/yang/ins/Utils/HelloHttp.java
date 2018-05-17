@@ -6,6 +6,7 @@ import com.example.yang.ins.MainApplication;
 
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
@@ -144,6 +145,29 @@ public class HelloHttp {
                 .post(requestBody)
                 .build();
         client.newCall(request).enqueue(callback);
+    }
+
+    public static void sendFirstLongPostRequest(String adress, Map<String, Object> map, okhttp3.Callback callback) {
+        //按照开拓的方式处理url
+        String url = dealAddress(adress);
+        //将map中的数据加入表单中
+        FormBody.Builder formBody = new FormBody.Builder();
+        Set<String> sets = map.keySet();
+        for (String set : sets) {
+            formBody.add(set, String.valueOf(map.get(set)));
+        }
+        RequestBody requestBody = formBody.build();
+        Log.d("HelloHttp", "postFinalUrl = " + url);
+        //访问url
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+        OkHttpClient clientWith20sTimeout = client.newBuilder().
+                readTimeout(20, TimeUnit.SECONDS).
+                build();
+        clientWith20sTimeout.newCall(request).enqueue(callback);
     }
 
     public static void sendFirstGetRequest(String adress, Map<String, Object> map, okhttp3.Callback callback) {

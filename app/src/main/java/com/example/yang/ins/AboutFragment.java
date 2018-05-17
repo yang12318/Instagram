@@ -16,9 +16,9 @@ public class AboutFragment extends Fragment {
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
 
-    private List<String> mTitleList = new ArrayList<>();//页卡标题集合
-    private View view1, view2;//页卡视图
-    private List<View> mViewList = new ArrayList<>();//页卡视图集合
+    List<String> mTitleList;//页卡标题集合
+    View view1, view2;//页卡视图
+    List<View> mViewList;//页卡视图集合    
     public static AboutFragment newInstance(String param1) {
         AboutFragment fragment = new AboutFragment();
         Bundle args = new Bundle();
@@ -39,13 +39,15 @@ public class AboutFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        mTitleList = new ArrayList<>();//页卡标题集合
+        mViewList = new ArrayList<>();//页卡视图集合
         View view = inflater.inflate(R.layout.fragment_about, container, false);
         mViewPager = (ViewPager) view.findViewById(R.id.viewpager);
         mTabLayout = (TabLayout) view.findViewById(R.id.tabLayout);
         view1 = inflater.inflate(R.layout.fragment_about_follow, null);
         view2 = inflater.inflate(R.layout.fragment_about_me, null);
-        if(mViewList.size() <2)
-        { //添加页卡视图
+        //if(mViewList.size() <2)
+        //{ //添加页卡视图
         mViewList.add(view1);
         mViewList.add(view2);
 
@@ -55,7 +57,8 @@ public class AboutFragment extends Fragment {
 
         mTabLayout.setTabMode(TabLayout.MODE_FIXED);//设置tab模式，当前为系统默认模式
         mTabLayout.addTab(mTabLayout.newTab().setText(mTitleList.get(0)));//添加tab选项卡
-        mTabLayout.addTab(mTabLayout.newTab().setText(mTitleList.get(1)));}
+        mTabLayout.addTab(mTabLayout.newTab().setText(mTitleList.get(1)));
+        //}
 
         MyPagerAdapter mAdapter = new MyPagerAdapter(mViewList);
         mViewPager.setAdapter(mAdapter);//给ViewPager设置适配器

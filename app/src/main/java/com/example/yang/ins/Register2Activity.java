@@ -83,7 +83,9 @@ public class Register2Activity extends AppCompatActivity {
                     @Override
                     public void onFailure(Call call, IOException e) {
                         Log.e("Register2Activity", "FAILURE");
+                        Looper.prepare();
                         showToast("服务器错误！");
+                        Looper.loop();
                     }
 
                     @Override
@@ -97,7 +99,9 @@ public class Register2Activity extends AppCompatActivity {
                             e.printStackTrace();
                         }
                         if (result.equals("Exist")) {
+                            Looper.prepare();
                             showToast("重名！");
+                            Looper.loop();
                             return;
                         } else if (result.equals("NotExist")) {
                             Map<String, Object> map2 = new HashMap<>();
@@ -105,11 +109,13 @@ public class Register2Activity extends AppCompatActivity {
                             map2.put("email", email);
                             map2.put("nickname", nickname);
                             map2.put("password", finalPassword);
-                            HelloHttp.sendFirstPostRequest("api/user/register", map, new okhttp3.Callback() {
+                            HelloHttp.sendFirstLongPostRequest("api/user/register", map2, new okhttp3.Callback() {
                                 @Override
                                 public void onFailure(Call call, IOException e) {
                                     Log.e("Register2Activity", "FAILURE");
+                                    Looper.prepare();
                                     showToast("服务器错误！");
+                                    Looper.loop();
                                 }
 
                                 @Override
@@ -123,11 +129,15 @@ public class Register2Activity extends AppCompatActivity {
                                         e.printStackTrace();
                                     }
                                     if (result.equals("Success")) {
-                                        showToast("注册成功，请前往邮箱激活账号");
+                                        Looper.prepare();
+                                        Toast.makeText(Register2Activity.this, "注册成功，请前往邮箱激活账号", Toast.LENGTH_SHORT).show();
                                         Intent intent1 = new Intent(Register2Activity.this, LoginActivity.class);
                                         startActivity(intent1);
+                                        Looper.loop();
                                     } else {
+                                        Looper.prepare();
                                         showToast(result);
+                                        Looper.loop();
                                     }
                                 }
                             });
@@ -141,8 +151,6 @@ public class Register2Activity extends AppCompatActivity {
     }
 
     private void showToast(String s) {
-        Looper.prepare();
         Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
-        Looper.loop();
     }
 }
