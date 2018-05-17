@@ -13,5 +13,6 @@ public class UserActivity extends AppCompatActivity {
         tabLayout= (TabLayout)findViewById(R.id.tab_user);
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.album));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.dynamic));
+
     }
 }

@@ -41,7 +41,7 @@ public class HelloHttp {
         client.newCall(request).enqueue(callback);
     }
 
-    private static String dealAddress(String adress) {
+    public static String dealAddress(String adress) {
         String AppID = "nksy_YvyO2k8dLhaJ3g30";
         String AppKey = "07ZoCkkMBR40$m+0weghiXMo6b+naTQkn3U02Ee4833jd6E1VESnlynk=";
         String timeStamp = DateUtil.getTimeStamp();

@@ -4,9 +4,12 @@ import android.Manifest;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Looper;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,20 +17,37 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.yang.ins.Utils.HelloHttp;
 import com.example.yang.ins.bean.Moment;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerActivity;
 import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerPreviewActivity;
 import cn.bingoogolapple.photopicker.widget.BGANinePhotoLayout;
 import cn.bingoogolapple.photopicker.widget.BGASortableNinePhotoLayout;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Headers;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
 import static android.app.Activity.RESULT_OK;
+import static android.content.Context.MODE_PRIVATE;
 
 public class AddFragment extends Fragment implements EasyPermissions.PermissionCallbacks, BGANinePhotoLayout.Delegate, View.OnClickListener, BGASortableNinePhotoLayout.Delegate {
 
@@ -74,16 +94,85 @@ public class AddFragment extends Fragment implements EasyPermissions.PermissionC
     @Override
     public void onClick(View view) {
         if(view.getId() == R.id.tv_publish) {
-            String content = et_add.getText().toString().trim();
+            final String content = et_add.getText().toString().trim();
             if(mPhotosSnpl.getItemCount() == 0) {
                 Toast.makeText(getActivity(), "必须选择照片！", Toast.LENGTH_SHORT).show();
                 return;
             }
-            Toast.makeText(getActivity(), "发表成功", Toast.LENGTH_SHORT).show();
-            et_add.setText("");
             //调用接口
-            Intent intent = new Intent(getActivity(), MainActivity.class);
-            startActivity(intent);
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    //try {
+                        SharedPreferences mShared;
+                        mShared = MainApplication.getContext().getSharedPreferences("share", MODE_PRIVATE);
+                        String Authorization = null;
+                        Map<String, Object> mapParam = (Map<String, Object>) mShared.getAll();
+                        for (Map.Entry<String, Object> item_map : mapParam.entrySet()) {
+                            String key = item_map.getKey();
+                            Object value = item_map.getValue();
+                            if(key.equals("Authorization")) {
+                                Authorization = value.toString();
+                            }
+                        }
+                        MultipartBody.Builder multipartBodyBuilder = new MultipartBody.Builder();
+                        multipartBodyBuilder.setType(MultipartBody.FORM);
+                        multipartBodyBuilder.addFormDataPart("photo_num", Integer.toString(mPhotosSnpl.getItemCount()));
+                        multipartBodyBuilder.addFormDataPart("introduction", content);
+                        List<String> list = mPhotosSnpl.getData();
+                        for(int i = 0 ; i < list.size() ; i++) {
+                            String filename = list.get(i);
+                            File file = new File(filename);
+                            multipartBodyBuilder.addFormDataPart("photo_"+Integer.toString(i), filename, RequestBody.create(MediaType.parse("image/jpg"), file));
+                        }
+                        RequestBody requestBody = multipartBodyBuilder.build();
+                        String url = HelloHttp.dealAddress("api/dynamic");
+                        Request request = new Request.Builder()
+                                .url(url)
+                                .header("Authorization", Authorization)
+                                .post(requestBody)
+                                .build();
+                        Response response;
+                        OkHttpClient okHttpClient = new OkHttpClient();
+                        OkHttpClient clientWith300sTimeout = okHttpClient.newBuilder().readTimeout(300, TimeUnit.SECONDS).build();
+                        clientWith300sTimeout.newCall(request).enqueue(new Callback() {
+                            @Override
+                            public void onFailure(Call call, IOException e) {
+                                Log.e("AddFragment", "上传图片失败");
+                            }
+                            @Override
+                            public void onResponse(Call call, final Response response) throws IOException {
+                                String responseData = response.body().string();
+                                Log.d("AddFragment", responseData);
+                                String result = null;
+                                try {
+                                    result = new JSONObject(responseData).getString("status");
+                                    Looper.prepare();
+                                    if(result.equals("Success")) {
+                                        Toast.makeText(getActivity(), "发表成功", Toast.LENGTH_SHORT).show();
+                                        getActivity().runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                et_add.setText("");
+                                            }
+                                        });
+                                        Intent intent = new Intent(getActivity(), MainActivity.class);
+                                        startActivity(intent);
+                                    }
+                                    else if(result.equals("UnknownError")) {
+                                        Toast.makeText(getActivity(), "发布失败", Toast.LENGTH_SHORT).show();
+                                    }
+                                    Looper.loop();
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+                }
+            }).start();
         }
     }
 
@@ -165,4 +254,5 @@ public class AddFragment extends Fragment implements EasyPermissions.PermissionC
             mPhotosSnpl.setData(BGAPhotoPickerPreviewActivity.getSelectedPhotos(data));
         }
     }
+
 }
