@@ -1,18 +1,128 @@
 package com.example.yang.ins;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
+import com.example.yang.ins.Utils.HelloHttp;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.w3c.dom.Text;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+import de.hdodenhof.circleimageview.CircleImageView;
+import okhttp3.Call;
+import okhttp3.Response;
 
 public class UserActivity extends AppCompatActivity {
+    private int userId;
     private TabLayout tabLayout;
+    private TextView tv_dynamic, tv_concern, tv_follow, tv_user, tv_nickname, tv_bio;
+    private Button btn_follow;
+    private CircleImageView civ;
+    private String username, nickname, src, birthday, address, introduction = null;
+    private int gender = 3, follow_num = 0, concern_num = 0, posts = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
+        tv_dynamic = (TextView) findViewById(R.id.user_dynamic);
+        tv_concern = (TextView) findViewById(R.id.user_concern);
+        tv_follow = (TextView) findViewById(R.id.user_follow);
+        tv_nickname = (TextView) findViewById(R.id.user_nickname);
+        tv_user = (TextView) findViewById(R.id.tv_user);
+        tv_bio = (TextView) findViewById(R.id.user_bio);
+        btn_follow = (Button) findViewById(R.id.me_revise);
+        civ = (CircleImageView) findViewById(R.id.user_image);
         tabLayout= (TabLayout)findViewById(R.id.tab_user);
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.album));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.dynamic));
+        Intent intent = getIntent();
+        userId = intent.getIntExtra("userId", 0);
+        Log.d("UserActivity", Integer.toString(userId));
+        btn_follow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+            }
+        });
+        Map<String, Object> map = new HashMap<>();
+        HelloHttp.sendGetRequest("api/user/detail/"+Integer.toString(userId), map, new okhttp3.Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.e("UserActivity", "FAILURE");
+                Looper.prepare();
+                Toast.makeText(UserActivity.this, "服务器未响应", Toast.LENGTH_SHORT).show();
+                Looper.loop();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String responseData = response.body().string();
+                Log.d("UserActivity", responseData);
+                try {
+                    JSONObject jsonObject = new JSONObject(responseData);
+                    username = jsonObject.getString("username");
+                    nickname = jsonObject.getString("nickname");
+                    gender = jsonObject.getInt("gender");
+                    birthday = jsonObject.getString("birthday");
+                    follow_num = jsonObject.getInt("following_num");
+                    concern_num = jsonObject.getInt("followed_num");
+                    src = jsonObject.getString("profile_picture");
+                    src = "http://ktchen.cn" + src;
+                    //address = jsonObject.getString("address");
+                    //introduction = jsonObject.getString("introduction");
+                    //posts = jsonObject.getInt("posts");
+                    mHandler.sendEmptyMessageDelayed(1, 0);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    String result = null;
+                    try {
+                        result = new JSONObject(responseData).getString("status");
+                        Looper.prepare();
+                        Toast.makeText(UserActivity.this,result, Toast.LENGTH_SHORT).show();
+                        Looper.loop();
+                    } catch (JSONException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+            }
+        });
     }
+
+    @SuppressLint("HandlerLeak")
+    private Handler mHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg)
+        {
+            if(msg.what == 1)
+            {
+                tv_concern.setText(Integer.toString(concern_num));
+                tv_follow.setText(Integer.toString(follow_num));
+                tv_nickname.setText(nickname);
+                tv_user.setText(username);
+                if(introduction == null) {
+                    introduction = "这个人很懒，还没有填写个人简介";
+                }
+                tv_bio.setText(introduction);
+                tv_dynamic.setText(Integer.toString(posts));
+                Glide.with(UserActivity.this).load(src).into(civ);
+            }
+        }
+    };
 }

@@ -31,12 +31,18 @@
         android:layout_below="@+id/tb_concern"
         android:background="@drawable/toolbar">
     </View>
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_concern"
+    <com.ajguan.library.EasyRefreshLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingRight="8dp"
-        android:paddingLeft="8dp"
-        android:fadingEdge="none">
-    </android.support.v7.widget.RecyclerView>
+        android:id="@+id/easylayout"
+        >
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_concern"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingRight="8dp"
+            android:paddingLeft="8dp"
+            android:fadingEdge="none">
+        </android.support.v7.widget.RecyclerView>
+    </com.ajguan.library.EasyRefreshLayout>
 </LinearLayout>
