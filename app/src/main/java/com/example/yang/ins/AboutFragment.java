@@ -18,7 +18,7 @@ public class AboutFragment extends Fragment {
 
     List<String> mTitleList;//页卡标题集合
     View view1, view2;//页卡视图
-    List<View> mViewList;//页卡视图集合    
+    List<View> mViewList;//页卡视图集合
     public static AboutFragment newInstance(String param1) {
         AboutFragment fragment = new AboutFragment();
         Bundle args = new Bundle();

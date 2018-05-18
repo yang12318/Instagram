@@ -1,10 +1,16 @@
 package com.example.yang.ins.adapter;
 
+import android.widget.ImageView;
+
+import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.example.yang.ins.R;
 import com.example.yang.ins.bean.Review;
 
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by youxihouzainali on 2018/5/14.
@@ -17,9 +23,10 @@ public class ReviewAdapter extends BaseQuickAdapter<Review, BaseViewHolder> {
     }
 
     protected void convert(BaseViewHolder helper, Review item) {
-        /*helper.setText(R.id.myReview_bookName, item.getBookName());
-        helper.setText(R.id.myReview_pubTime, item.getPub_time());
-        helper.setText(R.id.myReview_text, item.getText());
-        helper.addOnClickListener(R.id.btn_review_delete);*/
+        helper.setText(R.id.comment_detail, item.getContent());
+        helper.setText(R.id.comment_time, item.getPub_time());
+        helper.setText(R.id.comment_username, item.getCommenter());
+        Glide.with(mContext).load(item.getSrc()).into((CircleImageView) helper.getView(R.id.comment_head));
+        helper.addOnClickListener(R.id.comment_rl);
     }
 }
