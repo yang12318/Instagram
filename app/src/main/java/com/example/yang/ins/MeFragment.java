@@ -85,7 +85,7 @@ public class MeFragment extends Fragment {
         tv_introduction = (TextView) view.findViewById(R.id.tv_bio);
         ll_concern = (LinearLayout) view.findViewById(R.id.ll_concern);
         ll_follow = (LinearLayout) view.findViewById(R.id.ll_follow);
-        civ = (CircleImageView) view.findViewById(R.id.user_image);
+        civ = (CircleImageView) view.findViewById(R.id.me_image);
         ll_follow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
