@@ -3,10 +3,7 @@ package com.example.yang.ins;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
-<<<<<<< HEAD
-=======
 import android.os.Build;
->>>>>>> fa067221271a2e7bd9c5660966f791062a1d72b7
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -64,6 +61,7 @@ public class UserActivity extends AppCompatActivity {
         Intent intent = getIntent();
         userId = intent.getIntExtra("userId", 0);
         Log.d("UserActivity", Integer.toString(userId));
+
         btn_follow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,7 +104,12 @@ public class UserActivity extends AppCompatActivity {
                             }
                             else if(result.equals("UnknownError")){
                                 Looper.prepare();
-                                //Toast.makeText(,"未知错误", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(UserActivity.this,"未知错误", Toast.LENGTH_SHORT).show();
+                                Looper.loop();
+                            }
+                            else {
+                                Looper.prepare();
+                                Toast.makeText(UserActivity.this, result, Toast.LENGTH_SHORT).show();
                                 Looper.loop();
                             }
                         }
@@ -114,6 +117,7 @@ public class UserActivity extends AppCompatActivity {
                 }
                 else {
                     //false
+
                 }
             }
         });

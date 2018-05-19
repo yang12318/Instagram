@@ -2,6 +2,8 @@ package com.example.yang.ins;
 
 import android.annotation.SuppressLint;
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -10,6 +12,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -44,7 +47,8 @@ public class MeFragment extends Fragment {
 
    private Button btn_revise;
    private TabLayout tabLayout;
-   private Context context;
+    private ViewPager mViewPager;
+    private Context context;
    protected View view;
    private TextView tv_concern, tv_follow, tv_dynamic, tv_username, tv_nickname, tv_introduction;
    private CircleImageView civ;
@@ -52,6 +56,8 @@ public class MeFragment extends Fragment {
    private int gender = 3, follow_num = 0, concern_num = 0, posts = 0;
    private LinearLayout ll_concern, ll_follow;
    private int UserId = 0;
+   private AlbumFragment mAlbumFragment;
+   private DynamicFragment mDynamicFragment;
    public static MeFragment newInstance(String param1) {
         MeFragment fragment = new MeFragment();
         Bundle args = new Bundle();
@@ -87,6 +93,7 @@ public class MeFragment extends Fragment {
         ll_concern = (LinearLayout) view.findViewById(R.id.ll_concern);
         ll_follow = (LinearLayout) view.findViewById(R.id.ll_follow);
         civ = (CircleImageView) view.findViewById(R.id.me_image);
+        mViewPager = (ViewPager) view.findViewById(R.id.vp_me);
         ll_follow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -119,12 +126,23 @@ public class MeFragment extends Fragment {
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener(){
             @Override public void onTabSelected(TabLayout.Tab tab) {
                 Log.e("TAG","tab position:"+tab.getPosition());
+                FragmentManager fm = getActivity().getFragmentManager();
+                //开启事务
+                FragmentTransaction transaction = fm.beginTransaction();
                 Intent intent;
                 switch (tab.getPosition()){
                     case 0:{
+                        if (mAlbumFragment == null) {
+                            mAlbumFragment = AlbumFragment.newInstance("相册");
+                        }
+                        transaction.replace(R.id.tb, mAlbumFragment);
                         break;
                     }
                     case 1:{
+                        if (mDynamicFragment == null) {
+                            mDynamicFragment = DynamicFragment.newInstance("详情");
+                        }
+                        transaction.replace(R.id.tb, mDynamicFragment);
                         break;
                     }
                     case 2:{

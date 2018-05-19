@@ -1,30 +1,26 @@
 package com.example.yang.ins;
 
 import android.annotation.SuppressLint;
+import android.app.Fragment;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageButton;
-import android.widget.ImageView;
+import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ajguan.library.EasyRefreshLayout;
-import com.ajguan.library.LoadModel;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.yang.ins.Utils.HelloHttp;
 import com.example.yang.ins.adapter.LikeAdapter;
 import com.example.yang.ins.bean.Dynamic;
-import com.example.yang.ins.bean.Person;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,25 +35,55 @@ import java.util.Map;
 import okhttp3.Call;
 import okhttp3.Response;
 
-public class LikeActivity extends AppCompatActivity {
+/**
+ * Created by yang on 2018/5/20.
+ */
 
+public class AlbumFragment extends Fragment{
     private List<Dynamic> mDynamicList;
     private RecyclerView recyclerView;
-    private ImageButton ib_back;
-    private EasyRefreshLayout easyRefreshLayout;
     private LikeAdapter adapter;
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_like);
-        adapter = new LikeAdapter(R.layout.item_album, mDynamicList);
-        ib_back = (ImageButton) findViewById(R.id.ib_like_back);
-        ib_back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
+    protected View view;
+    private static int Userid = -10;
+    public static AlbumFragment newInstance(String param1, int id) {
+        AlbumFragment fragment = new AlbumFragment();
+        Bundle args = new Bundle();
+        args.putString("agrs1", param1);
+        fragment.setArguments(args);
+        Userid = id;
+        return fragment;
+    }
+
+    public static AlbumFragment newInstance(String param1) {
+        AlbumFragment fragment = new AlbumFragment();
+        Bundle args = new Bundle();
+        args.putString("agrs1", param1);
+        fragment.setArguments(args);
+        MainApplication app = MainApplication.getInstance();
+        Map<String, Integer> mapParam = app.mInfoMap;
+        for(Map.Entry<String, Integer> item_map:mapParam.entrySet()) {
+            if(item_map.getKey().equals("id")) {
+                Userid = item_map.getValue();
             }
-        });
+        }
+        return fragment;
+    }
+
+    public AlbumFragment() {
+
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.fragment_album, container, false);
+        Bundle bundle = getArguments();
+        adapter = new LikeAdapter(R.layout.item_album, mDynamicList);
         initView();
         initData();
         adapter.setNewData(mDynamicList);
@@ -65,33 +91,15 @@ public class LikeActivity extends AppCompatActivity {
         adapter.bindToRecyclerView(recyclerView);
         adapter.setEmptyView(R.layout.empty_like);
         adapter.setHeaderFooterEmpty(true, true);
+        return view;
     }
+
     private void initView() {
-        recyclerView = (RecyclerView) findViewById(R.id.rv_like);
-        recyclerView.setLayoutManager(new GridLayoutManager(this,3));
+        recyclerView = (RecyclerView) view.findViewById(R.id.rv_like);
+        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(),3));
         //recyclerView.addItemDecoration();
-        easyRefreshLayout = (EasyRefreshLayout) findViewById(R.id.el_like);
-        easyRefreshLayout.setLoadMoreModel(LoadModel.NONE);
-        easyRefreshLayout.addEasyEvent(new EasyRefreshLayout.EasyEvent() {
-            @Override
-            public void onLoadMore() {
-
-            }
-
-            @Override
-            public void onRefreshing() {
-                initData();
-                initAdapter();
-                easyRefreshLayout.loadMoreComplete(new EasyRefreshLayout.Event() {
-                    @Override
-                    public void complete() {
-                        adapter.setNewData(mDynamicList);
-                        easyRefreshLayout.refreshComplete();
-                    }
-                }, 500);
-            }
-        });
     }
+
     private void initData() {
         mDynamicList = new ArrayList<>();
         /*Dynamic dynamic = mDynamicList.get(position);
@@ -99,19 +107,19 @@ public class LikeActivity extends AppCompatActivity {
         Map<String, Object> map = new HashMap<>();
         mDynamicList = new ArrayList<>();
         //map.put("id", id);
-        HelloHttp.sendGetRequest("api/post/dianzan",map,new okhttp3.Callback() {
+        HelloHttp.sendGetRequest("api/user/posts/"+Integer.toString(Userid),map,new okhttp3.Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                Log.e("LikeActivity", "FAILURE");
+                Log.e("AlbumFragment", "FAILURE");
                 Looper.prepare();
-                Toast.makeText(LikeActivity.this, "服务器未响应", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "服务器未响应", Toast.LENGTH_SHORT).show();
                 Looper.loop();
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 String responseData = response.body().string();
-                Log.d("LikeActivity", responseData);
+                Log.d("AlbumFragment", responseData);
                 try {
                     JSONObject jsonObject1 = new JSONObject(responseData);
                     JSONArray jsonArray = jsonObject1.getJSONArray("result");
@@ -129,7 +137,7 @@ public class LikeActivity extends AppCompatActivity {
                     try {
                         result = new JSONObject(responseData).getString("status");
                         Looper.prepare();
-                        Toast.makeText(LikeActivity.this, result, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), result, Toast.LENGTH_SHORT).show();
                         Looper.loop();
                     } catch (JSONException e1) {
                         e1.printStackTrace();
@@ -138,13 +146,14 @@ public class LikeActivity extends AppCompatActivity {
             }
         });
     }
+
     @SuppressWarnings("unchecked")
     private void initAdapter() {
         //firstAdapter.openLoadAnimation();
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                Intent intent = new Intent(LikeActivity.this, DetailActivity.class);
+                Intent intent = new Intent(getActivity(), DetailActivity.class);
                 int id = mDynamicList.get(position).getId();
                 intent.putExtra("id", id);
                 startActivity(intent);

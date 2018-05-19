@@ -28,10 +28,7 @@ import android.widget.TextView;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
-<<<<<<< HEAD
 import com.bumptech.glide.Glide;
-=======
->>>>>>> fa067221271a2e7bd9c5660966f791062a1d72b7
 import com.example.yang.ins.Utils.HelloHttp;
 import com.lljjcoder.style.citypickerview.CityPickerView;
 
@@ -77,7 +74,8 @@ import com.lljjcoder.style.citylist.bean.CityInfoBean;
 import com.lljjcoder.style.citylist.utils.CityListLoader;
 import com.lljjcoder.style.citypickerview.CityPickerView;
 
-/*import com.bumptech.glide.Glide;
+import com.bumptech.glide.Glide;
+/*
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
