@@ -64,7 +64,7 @@ public class Forget2Activity extends AppCompatActivity {
             public void onClick(View view) {
                 Map<String, Object> map = new HashMap<>();
                 map.put("email", email);
-                HelloHttp.sendFirstGetRequest("api/user/password", map, new okhttp3.Callback() {
+                HelloHttp.sendFirstLongGetRequest("api/user/password", map, new okhttp3.Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
                         Log.e("Forget2Activity", "FAILURE");
@@ -113,7 +113,7 @@ public class Forget2Activity extends AppCompatActivity {
                 String captcha = et_code.getText().toString();
                 String pass = et_pass.getText().toString();
                 String repass = et_repass.getText().toString();
-                if(hashkey.length() <= 0 || hashkey == null) {
+                if(hashkey == null || hashkey.length() <= 0) {
                     Toast.makeText(Forget2Activity.this, "您还未向邮箱发送验证码", Toast.LENGTH_SHORT).show();
                     return;
                 }
