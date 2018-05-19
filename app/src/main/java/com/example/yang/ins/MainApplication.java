@@ -7,9 +7,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Log;
 
-/**
- * Created by ouyangshen on 2016/10/1.
- */
 
 public class MainApplication extends Application {
     private static Context context;

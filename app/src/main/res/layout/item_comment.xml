@@ -20,8 +20,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:src="@drawable/n1" />
+                android:layout_marginTop="10dp" />
 
             <TextView
                 android:id="@+id/comment_username"
@@ -60,7 +59,7 @@
                 android:textColor="#696969"
                 android:textSize="12sp" />
 
-            <ImageButton
+            <!--ImageButton
                 android:id="@+id/comment_like"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
@@ -71,7 +70,7 @@
                 android:background="@null"
                 android:tint="#696969"
                 android:scaleType="centerCrop"
-                android:src="@drawable/like1" />
+                android:src="@drawable/like1" /-->
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 </LinearLayout>

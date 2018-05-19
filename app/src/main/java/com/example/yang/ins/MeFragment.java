@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.yang.ins.Utils.HelloHttp;
 
 import org.json.JSONException;
@@ -85,7 +86,7 @@ public class MeFragment extends Fragment {
         tv_introduction = (TextView) view.findViewById(R.id.tv_bio);
         ll_concern = (LinearLayout) view.findViewById(R.id.ll_concern);
         ll_follow = (LinearLayout) view.findViewById(R.id.ll_follow);
-        civ = (CircleImageView) view.findViewById(R.id.user_image);
+        civ = (CircleImageView) view.findViewById(R.id.me_image);
         ll_follow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -115,6 +116,40 @@ public class MeFragment extends Fragment {
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.collect));
         tabLayout.setSelectedTabIndicatorColor(Color.BLACK);
         tabLayout.setSelectedTabIndicatorHeight(1);
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener(){
+            @Override public void onTabSelected(TabLayout.Tab tab) {
+                Log.e("TAG","tab position:"+tab.getPosition());
+                Intent intent;
+                switch (tab.getPosition()){
+                    case 0:{
+                        break;
+                    }
+                    case 1:{
+                        break;
+                    }
+                    case 2:{
+                        intent = new Intent(getActivity(), LikeActivity.class);
+                        startActivity(intent);
+                        break;
+                    }case 3:{
+                        intent = new Intent(getActivity(), CollectActivity.class);
+                        startActivity(intent);
+                        break;
+                    }
+                    default:
+                        break;
+                }
+            }
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
         MainApplication app = MainApplication.getInstance();
         Map<String, Integer> mapParam = app.mInfoMap;
         for(Map.Entry<String, Integer> item_map:mapParam.entrySet()) {
@@ -201,6 +236,7 @@ public class MeFragment extends Fragment {
 
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler(){
+        @SuppressLint("CheckResult")
         @Override
         public void handleMessage(Message msg)
         {
@@ -215,10 +251,16 @@ public class MeFragment extends Fragment {
                 }
                 tv_introduction.setText(introduction);
                 tv_dynamic.setText(Integer.toString(posts));
-                Glide.with(getActivity()).load(src).into(civ);
+                RequestOptions requestOptions = new RequestOptions();
+                requestOptions.placeholder(R.drawable.n1);
+                requestOptions.error(R.drawable.n1);
+                Glide.with(getActivity())
+                        .setDefaultRequestOptions(requestOptions)
+                        .load(src).into(civ);
             }
         }
     };
+
 }
 
 

@@ -3,6 +3,7 @@ package com.example.yang.ins;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -34,6 +35,15 @@ public class ChangeCodeActivity extends AppCompatActivity {
         et_confirm= (EditText) findViewById(R.id.et_codeconfirm);
         et_old.addTextChangedListener(new JumpTextWatcher(et_old, et_new));
         et_new.addTextChangedListener(new JumpTextWatcher(et_new, et_confirm));
+        Drawable db_old=getResources().getDrawable(R.drawable.password);
+        db_old.setBounds(0,0,80,80);
+        et_old.setCompoundDrawables(db_old,null,null,null);
+        Drawable db_new=getResources().getDrawable(R.drawable.password);
+        db_new.setBounds(0,0,80,80);
+        et_new.setCompoundDrawables(db_new,null,null,null);
+        Drawable db_confirm=getResources().getDrawable(R.drawable.password);
+        db_confirm.setBounds(0,0,80,80);
+        et_confirm.setCompoundDrawables(db_confirm,null,null,null);
         /*et_old.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {

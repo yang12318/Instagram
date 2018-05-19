@@ -23,7 +23,7 @@
             android:id="@+id/tv_user"
             android:gravity="center_vertical"
             android:textColor="#000"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:layout_marginLeft="15dp"/>
     </android.support.v7.widget.Toolbar>
     <View
@@ -40,9 +40,9 @@
         android:layout_marginTop="60dp">
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/user_image"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_marginTop="10dp"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:layout_marginTop="5dp"
             android:layout_marginLeft="20dp"
             android:src="@drawable/n1"
             android:scaleType="centerCrop" />
@@ -145,6 +145,7 @@
         android:layout_below="@+id/rl_user"
         android:orientation="vertical"
         android:id="@+id/user_ll"
+        android:layout_marginTop="20dp"
         android:layout_marginLeft="15dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

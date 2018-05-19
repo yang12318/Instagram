@@ -2,6 +2,7 @@ package com.example.yang.ins;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -52,6 +53,8 @@ public class UserActivity extends AppCompatActivity {
         tabLayout= (TabLayout)findViewById(R.id.tab_user);
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.album));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.dynamic));
+        tabLayout.setSelectedTabIndicatorColor(Color.BLACK);
+        tabLayout.setSelectedTabIndicatorHeight(1);
         Intent intent = getIntent();
         userId = intent.getIntExtra("userId", 0);
         Log.d("UserActivity", Integer.toString(userId));

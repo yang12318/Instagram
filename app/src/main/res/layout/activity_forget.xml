@@ -29,7 +29,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="80dp"
         android:gravity="center">
 
             <EditText
@@ -41,6 +41,7 @@
                 android:paddingBottom="13dp"
                 android:paddingTop="13dp"
                 android:hint="邮箱"
+                android:drawablePadding="8dp"
                 android:theme="@style/MyEditText"
                 android:maxLines="1"
                 android:drawableLeft="@drawable/email"

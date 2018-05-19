@@ -10,7 +10,7 @@
         android:layout_marginTop="160dp"
         android:layout_gravity="center_horizontal"
         android:id="@+id/like_picture"
-        android:tint="#000"
+        android:tint="#515151"
         android:src="@drawable/empty_collect"/>
     <TextView
         android:layout_width="wrap_content"
@@ -18,7 +18,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dp"
         android:textSize="22sp"
-        android:textColor="#000"
+        android:textColor="#515151"
         android:text="收藏"/>
     <TextView
         android:layout_width="wrap_content"
@@ -30,6 +30,6 @@
         android:layout_marginLeft="40dp"
         android:layout_marginRight="40dp"
         android:layout_marginBottom="40dp"
-        android:textColor="#000"
+        android:textColor="#515151"
         android:text="收藏感兴趣的照片，方便再次查看。收藏的内容只对你可见。"/>
 </LinearLayout>

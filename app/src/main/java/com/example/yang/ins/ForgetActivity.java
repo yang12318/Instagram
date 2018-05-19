@@ -1,6 +1,7 @@
 package com.example.yang.ins;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -40,6 +41,9 @@ public class ForgetActivity extends AppCompatActivity {
         ib_back = (ImageButton) findViewById(R.id.ib_forget_back);
         ib_go = (ImageButton) findViewById(R.id.ib_forget_go);
         et_email = (EditText) findViewById(R.id.et_email);
+        Drawable db_email=getResources().getDrawable(R.drawable.email);
+        db_email.setBounds(0,0,85,85);
+        et_email.setCompoundDrawables(db_email,null,null,null);
         //et_email.addTextChangedListener(new JumpTextWatcher(et_email, et_code));
         ib_go.setOnClickListener(new View.OnClickListener() {
             @Override

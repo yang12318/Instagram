@@ -31,6 +31,10 @@
         android:layout_below="@+id/tb_like"
         android:background="@drawable/toolbar">
     </View>
+    <com.ajguan.library.EasyRefreshLayout
+        android:id="@+id/el_like"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_like"
             android:layout_width="match_parent"
@@ -39,4 +43,5 @@
             android:paddingLeft="8dp"
             android:fadingEdge="none">
         </android.support.v7.widget.RecyclerView>
+    </com.ajguan.library.EasyRefreshLayout>
 </LinearLayout>

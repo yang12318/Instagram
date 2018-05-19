@@ -69,4 +69,5 @@ public class Dynamic {
     public void setPhoto0(String photo0) {
         this.photo0 = photo0;
     }
+
 }

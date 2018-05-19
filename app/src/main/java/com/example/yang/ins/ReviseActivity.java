@@ -1,12 +1,17 @@
 package com.example.yang.ins;
 
 import android.Manifest;
+import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Environment;
+import android.os.Looper;
 import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,8 +28,11 @@ import android.widget.TextView;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.example.yang.ins.Utils.HelloHttp;
 import com.lljjcoder.style.citypickerview.CityPickerView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
@@ -37,12 +45,15 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import cn.bingoogolapple.baseadapter.BGABaseAdapterUtil;
 import cn.bingoogolapple.photopicker.imageloader.BGAImage;
 import cn.bingoogolapple.photopicker.util.BGAPhotoHelper;
 import cn.bingoogolapple.photopicker.util.BGAPhotoPickerUtil;
 import de.hdodenhof.circleimageview.CircleImageView;
+import okhttp3.Call;
+import okhttp3.Callback;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 import okhttp3.FormBody;
@@ -201,6 +212,13 @@ public class ReviseActivity extends AppCompatActivity implements View.OnClickLis
                     }
                     tv_gender.setText(sex);
                     //调用接口
+                    String gender = tv_gender.getText().toString();
+                    if(gender.equals("男"))
+                        gender = "M";
+                    else if(gender.equals("女"))
+                        gender = "F";
+                    else if(gender.equals("保密"))
+                        gender = "S";
                 }
             });
             builder.show();
@@ -261,7 +279,99 @@ public class ReviseActivity extends AppCompatActivity implements View.OnClickLis
             finish();
         }
         else if(view.getId() == R.id.ib_revise_finish) {
+
             //调用接口
+            final String nickname = et_nickname.getText().toString();
+            final String username = et_username.getText().toString();
+            final String introduction = et_bio.getText().toString();
+            final String birthday = tv_birth.getText().toString();
+            final String location = tv_location.getText().toString();
+            String gender = tv_gender.getText().toString();
+            int sex = 3;
+            if(gender.equals("男")) {
+                sex = 1;
+            }
+            else if(gender.equals("女")) {
+                sex = 2;
+            }
+            else {
+                sex = 3;
+            }
+            /*new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    //try {
+                    SharedPreferences mShared;
+                    mShared = MainApplication.getContext().getSharedPreferences("share", MODE_PRIVATE);
+                    String Authorization = null;
+                    Map<String, Object> mapParam = (Map<String, Object>) mShared.getAll();
+                    for (Map.Entry<String, Object> item_map : mapParam.entrySet()) {
+                        String key = item_map.getKey();
+                        Object value = item_map.getValue();
+                        if(key.equals("Authorization")) {
+                            Authorization = value.toString();
+                        }
+                    }
+                    MultipartBody.Builder multipartBodyBuilder = new MultipartBody.Builder();
+                    multipartBodyBuilder.setType(MultipartBody.FORM);
+                    multipartBodyBuilder.addFormDataPart("username", username);
+                    multipartBodyBuilder.addFormDataPart("nickname", nickname);
+                    multipartBodyBuilder.addFormDataPart("photo_num", Integer.toString(mPhotosSnpl.getItemCount()));
+                    multipartBodyBuilder.addFormDataPart("introduction", content);
+                    List<String> list = mPhotosSnpl.getData();
+                    for(int i = 0 ; i < list.size() ; i++) {
+                        String filename = list.get(i);
+                        File file = new File(filename);
+                        multipartBodyBuilder.addFormDataPart("photo_"+Integer.toString(i), filename, RequestBody.create(MediaType.parse("image/jpg"), file));
+                    }
+                    RequestBody requestBody = multipartBodyBuilder.build();
+                    String url = HelloHttp.dealAddress("api/dynamic");
+                    Request request = new Request.Builder()
+                            .url(url)
+                            .header("Authorization", Authorization)
+                            .post(requestBody)
+                            .build();
+                    Response response;
+                    OkHttpClient okHttpClient = new OkHttpClient();
+                    OkHttpClient clientWith300sTimeout = okHttpClient.newBuilder().readTimeout(300, TimeUnit.SECONDS).build();
+                    clientWith300sTimeout.newCall(request).enqueue(new Callback() {
+                        @Override
+                        public void onFailure(Call call, IOException e) {
+                            Log.e("AddFragment", "上传图片失败");
+                        }
+                        @Override
+                        public void onResponse(Call call, final Response response) throws IOException {
+                            String responseData = response.body().string();
+                            Log.d("AddFragment", responseData);
+                            String result = null;
+                            try {
+                                result = new JSONObject(responseData).getString("status");
+                                Looper.prepare();
+                                if(result.equals("Success")) {
+                                    Toast.makeText(getActivity(), "发表成功", Toast.LENGTH_SHORT).show();
+                                    getActivity().runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            et_add.setText("");
+                                        }
+                                    });
+                                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                                    startActivity(intent);
+                                }
+                                else if(result.equals("UnknownError")) {
+                                    Toast.makeText(getActivity(), "发布失败", Toast.LENGTH_SHORT).show();
+                                }
+                                Looper.loop();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+                }
+            }).start();*/
         }
     }
 
