@@ -186,4 +186,24 @@ public class HelloHttp {
                 .build();
         client.newCall(request).enqueue(callback);
     }
+
+    public static void sendFirstLongGetRequest(String adress, Map<String, Object> map, okhttp3.Callback callback) {
+        //按照开拓的方式处理url
+        String url = dealAddress(adress);
+        //将map中的数据拼接到url后面
+        Set<String> sets = map.keySet();
+        for (String set : sets) {
+            url = url + "&" + set + "=" + String.valueOf(map.get(set));
+        }
+        Log.d("HelloHttp", "getFinalUrl = " + url);
+        //访问url
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+        OkHttpClient clientWith20sTimeout = client.newBuilder().
+                readTimeout(20, TimeUnit.SECONDS).
+                build();
+        clientWith20sTimeout.newCall(request).enqueue(callback);
+    }
 }

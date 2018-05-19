@@ -28,7 +28,10 @@ import android.widget.TextView;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
+<<<<<<< HEAD
 import com.bumptech.glide.Glide;
+=======
+>>>>>>> fa067221271a2e7bd9c5660966f791062a1d72b7
 import com.example.yang.ins.Utils.HelloHttp;
 import com.lljjcoder.style.citypickerview.CityPickerView;
 
