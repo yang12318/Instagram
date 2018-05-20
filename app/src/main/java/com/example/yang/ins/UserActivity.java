@@ -99,7 +99,7 @@ public class UserActivity extends AppCompatActivity {
                             else if(result.equals("Failure")) {
                                 //???
                                 Looper.prepare();
-                                Toast.makeText(UserActivity.this,"记录已存在", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(UserActivity.this,"记录已存在，已取消关注", Toast.LENGTH_SHORT).show();
                                 Looper.loop();
                             }
                             else if(result.equals("UnknownError")){
@@ -116,8 +116,48 @@ public class UserActivity extends AppCompatActivity {
                     });
                 }
                 else {
-                    //false
+                    //现在是关注状态
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("pk", userId);
+                    HelloHttp.sendDeleteRequest("api/user/followyou", map, new okhttp3.Callback() {
 
+                        @Override
+                        public void onFailure(Call call, IOException e) {
+                            Log.e("UserActivity", "FAILURE");
+                            Looper.prepare();
+                            Toast.makeText(UserActivity.this, "服务器未响应", Toast.LENGTH_SHORT).show();
+                            Looper.loop();
+                        }
+
+                        @Override
+                        public void onResponse(Call call, Response response) throws IOException {
+                            String responseData = response.body().string();
+                            Log.d("UserActivity", responseData);
+                            String result = null;
+                            try {
+                                result = new JSONObject(responseData).getString("status");
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            if(result.equals("Success")) {
+                                flag = true;
+                                Looper.prepare();
+                                Toast.makeText(UserActivity.this,"取消关注成功", Toast.LENGTH_SHORT).show();
+                                setButtonStyle(false);
+                                Looper.loop();
+                            }
+                            else if(result.equals("UnknownError")){
+                                Looper.prepare();
+                                Toast.makeText(UserActivity.this,"未知错误", Toast.LENGTH_SHORT).show();
+                                Looper.loop();
+                            }
+                            else {
+                                Looper.prepare();
+                                Toast.makeText(UserActivity.this, result, Toast.LENGTH_SHORT).show();
+                                Looper.loop();
+                            }
+                        }
+                    });
                 }
             }
         });
@@ -136,7 +176,9 @@ public class UserActivity extends AppCompatActivity {
                 String responseData = response.body().string();
                 Log.d("UserActivity", responseData);
                 try {
-                    JSONObject jsonObject = new JSONObject(responseData);
+                    JSONObject jsonObject1 = new JSONObject(responseData);
+                    posts = jsonObject1.getInt("post_num");
+                    JSONObject jsonObject = jsonObject1.getJSONObject("result");
                     username = jsonObject.getString("username");
                     nickname = jsonObject.getString("nickname");
                     gender = jsonObject.getInt("gender");
@@ -147,7 +189,6 @@ public class UserActivity extends AppCompatActivity {
                     src = "http://ktchen.cn" + src;
                     address = jsonObject.getString("address");
                     introduction = jsonObject.getString("introduction");
-                    posts = jsonObject.getInt("posts");
                     mHandler.sendEmptyMessageDelayed(1, 0);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -205,6 +246,7 @@ public class UserActivity extends AppCompatActivity {
                 }
             }
         });
+
     }
 
     @SuppressLint("HandlerLeak")

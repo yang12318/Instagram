@@ -194,7 +194,9 @@ public class MeFragment extends Fragment {
                     String responseData = response.body().string();
                     Log.d("MeFragment", responseData);
                     try {
-                        JSONObject jsonObject = new JSONObject(responseData);
+                        JSONObject jsonObject1 = new JSONObject(responseData);
+                        posts = jsonObject1.getInt("post_num");
+                        JSONObject jsonObject = jsonObject1.getJSONObject("result");
                         username = jsonObject.getString("username");
                         nickname = jsonObject.getString("nickname");
                         gender = jsonObject.getInt("gender");
@@ -204,9 +206,9 @@ public class MeFragment extends Fragment {
                         src = jsonObject.getString("profile_picture");
                         src = "http://ktchen.cn" + src;
                         Log.d("MeFragment", src);
-                        //address = jsonObject.getString("address");
-                        //introduction = jsonObject.getString("introduction");
-                        //posts = jsonObject.getInt("posts");
+                        address = jsonObject.getString("address");
+                        introduction = jsonObject.getString("introduction");
+
                         mHandler.sendEmptyMessageDelayed(1, 0);
                     } catch (JSONException e) {
                         e.printStackTrace();

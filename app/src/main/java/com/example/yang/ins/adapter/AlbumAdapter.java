@@ -11,8 +11,8 @@ import com.example.yang.ins.bean.Dynamic;
 
 import java.util.List;
 
-public class LikeAdapter extends BaseQuickAdapter<Dynamic, BaseViewHolder> {
-    public LikeAdapter(int layoutResId, @Nullable List<Dynamic> data) {
+public class AlbumAdapter extends BaseQuickAdapter<Dynamic, BaseViewHolder> {
+    public AlbumAdapter(int layoutResId, @Nullable List<Dynamic> data) {
         super(layoutResId, data);
     }
 

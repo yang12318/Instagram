@@ -4,10 +4,14 @@ public class Dynamic {
     private int id;
     private int userId;
     private String introduction;
+    private String username;
     private String pub_time;
     private int likes_num;
     private int com_num;
     private String photo0;
+    private boolean is_like;
+    private boolean is_collect;
+    private String src;
 
     public Dynamic() {
 
@@ -70,4 +74,35 @@ public class Dynamic {
         this.photo0 = photo0;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public boolean isIs_like() {
+        return is_like;
+    }
+
+    public void setIs_like(boolean is_like) {
+        this.is_like = is_like;
+    }
+
+    public boolean isIs_collect() {
+        return is_collect;
+    }
+
+    public void setIs_collect(boolean is_collect) {
+        this.is_collect = is_collect;
+    }
+
+    public String getSrc() {
+        return src;
+    }
+
+    public void setSrc(String src) {
+        this.src = src;
+    }
 }

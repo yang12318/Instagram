@@ -19,7 +19,7 @@ import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.yang.ins.Utils.HelloHttp;
-import com.example.yang.ins.adapter.LikeAdapter;
+import com.example.yang.ins.adapter.AlbumAdapter;
 import com.example.yang.ins.bean.Dynamic;
 
 import org.json.JSONArray;
@@ -42,7 +42,7 @@ import okhttp3.Response;
 public class AlbumFragment extends Fragment{
     private List<Dynamic> mDynamicList;
     private RecyclerView recyclerView;
-    private LikeAdapter adapter;
+    private AlbumAdapter adapter;
     protected View view;
     private static int Userid = -10;
     public static AlbumFragment newInstance(String param1, int id) {
@@ -83,7 +83,7 @@ public class AlbumFragment extends Fragment{
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_album, container, false);
         Bundle bundle = getArguments();
-        adapter = new LikeAdapter(R.layout.item_album, mDynamicList);
+        adapter = new AlbumAdapter(R.layout.item_album, mDynamicList);
         initView();
         initData();
         adapter.setNewData(mDynamicList);
@@ -102,8 +102,6 @@ public class AlbumFragment extends Fragment{
 
     private void initData() {
         mDynamicList = new ArrayList<>();
-        /*Dynamic dynamic = mDynamicList.get(position);
-        int id = dynamic.getId();*/
         Map<String, Object> map = new HashMap<>();
         mDynamicList = new ArrayList<>();
         //map.put("id", id);

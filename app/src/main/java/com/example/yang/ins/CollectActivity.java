@@ -8,7 +8,6 @@ import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -18,13 +17,10 @@ import android.widget.Toast;
 
 import com.ajguan.library.EasyRefreshLayout;
 import com.ajguan.library.LoadModel;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.yang.ins.Utils.HelloHttp;
-import com.example.yang.ins.adapter.CollectAdapter;
+import com.example.yang.ins.adapter.AlbumAdapter;
 import com.example.yang.ins.bean.Dynamic;
-import com.example.yang.ins.bean.Person;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -48,12 +44,12 @@ public class CollectActivity extends AppCompatActivity {
     private String src, Pub_time, introduction = null;
     private int user , collects_num = 0, com_num = 0;
     private EasyRefreshLayout easyRefreshLayout;
-    private CollectAdapter adapter;
+    private AlbumAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_collect);
-        adapter = new CollectAdapter(R.layout.item_album, mDynamicList);
+        adapter = new AlbumAdapter(R.layout.item_album, mDynamicList);
         iv = (ImageView) findViewById(R.id.iv_picture) ;
         ib_back = (ImageButton) findViewById(R.id.ib_collect_back);
         ib_back.setOnClickListener(new View.OnClickListener() {

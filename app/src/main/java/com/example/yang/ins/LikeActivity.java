@@ -22,7 +22,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.yang.ins.Utils.HelloHttp;
-import com.example.yang.ins.adapter.LikeAdapter;
+import com.example.yang.ins.adapter.AlbumAdapter;
 import com.example.yang.ins.bean.Dynamic;
 import com.example.yang.ins.bean.Person;
 
@@ -45,12 +45,12 @@ public class LikeActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private ImageButton ib_back;
     private EasyRefreshLayout easyRefreshLayout;
-    private LikeAdapter adapter;
+    private AlbumAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_like);
-        adapter = new LikeAdapter(R.layout.item_album, mDynamicList);
+        adapter = new AlbumAdapter(R.layout.item_album, mDynamicList);
         ib_back = (ImageButton) findViewById(R.id.ib_like_back);
         ib_back.setOnClickListener(new View.OnClickListener() {
             @Override
