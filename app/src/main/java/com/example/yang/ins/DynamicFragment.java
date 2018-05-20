@@ -45,30 +45,6 @@ public class DynamicFragment extends Fragment{
     private AlbumAdapter adapter;
     protected View view;
     private static int Userid = -10;
-    public static DynamicFragment newInstance(String param1, int id) {
-        DynamicFragment fragment = new DynamicFragment();
-        Bundle args = new Bundle();
-        args.putString("agrs1", param1);
-        fragment.setArguments(args);
-        Userid = id;
-        return fragment;
-    }
-
-    public static DynamicFragment newInstance(String param1) {
-        DynamicFragment fragment = new DynamicFragment();
-        Bundle args = new Bundle();
-        args.putString("agrs1", param1);
-        fragment.setArguments(args);
-        MainApplication app = MainApplication.getInstance();
-        Map<String, Integer> mapParam = app.mInfoMap;
-        for(Map.Entry<String, Integer> item_map:mapParam.entrySet()) {
-            if(item_map.getKey().equals("id")) {
-                Userid = item_map.getValue();
-            }
-        }
-        return fragment;
-    }
-
     public DynamicFragment() {
 
     }
@@ -83,6 +59,18 @@ public class DynamicFragment extends Fragment{
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_dynamic, container, false);
         Bundle bundle = getArguments();
+        if (bundle != null) {
+            Userid = bundle.getInt("id");
+        }
+        if (Userid == -1) {
+            MainApplication app = MainApplication.getInstance();
+            Map<String, Integer> mapParam = app.mInfoMap;
+            for(Map.Entry<String, Integer> item_map:mapParam.entrySet()) {
+                if(item_map.getKey().equals("id")) {
+                    Userid = item_map.getValue();
+                }
+            }
+        }
         adapter = new AlbumAdapter(R.layout.item_dynamic, mDynamicList);
         initView();
         initData();
@@ -95,7 +83,7 @@ public class DynamicFragment extends Fragment{
     }
 
     private void initView() {
-        recyclerView = (RecyclerView) view.findViewById(R.id.rv_like);
+        recyclerView = (RecyclerView) view.findViewById(R.id.rv_dynamic);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(),3));
         //recyclerView.addItemDecoration();
     }

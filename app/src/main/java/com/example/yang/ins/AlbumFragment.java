@@ -3,10 +3,12 @@ package com.example.yang.ins;
 import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -45,29 +47,6 @@ public class AlbumFragment extends Fragment{
     private AlbumAdapter adapter;
     protected View view;
     private static int Userid = -10;
-    public static AlbumFragment newInstance(String param1, int id) {
-        AlbumFragment fragment = new AlbumFragment();
-        Bundle args = new Bundle();
-        args.putString("agrs1", param1);
-        fragment.setArguments(args);
-        Userid = id;
-        return fragment;
-    }
-
-    public static AlbumFragment newInstance(String param1) {
-        AlbumFragment fragment = new AlbumFragment();
-        Bundle args = new Bundle();
-        args.putString("agrs1", param1);
-        fragment.setArguments(args);
-        MainApplication app = MainApplication.getInstance();
-        Map<String, Integer> mapParam = app.mInfoMap;
-        for(Map.Entry<String, Integer> item_map:mapParam.entrySet()) {
-            if(item_map.getKey().equals("id")) {
-                Userid = item_map.getValue();
-            }
-        }
-        return fragment;
-    }
 
     public AlbumFragment() {
 
@@ -78,11 +57,24 @@ public class AlbumFragment extends Fragment{
         super.onCreate(savedInstanceState);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_album, container, false);
         Bundle bundle = getArguments();
+        if (bundle != null) {
+            Userid = bundle.getInt("id");
+        }
+        if (Userid == -1) {
+            MainApplication app = MainApplication.getInstance();
+            Map<String, Integer> mapParam = app.mInfoMap;
+            for(Map.Entry<String, Integer> item_map:mapParam.entrySet()) {
+                if(item_map.getKey().equals("id")) {
+                    Userid = item_map.getValue();
+                }
+            }
+        }
         adapter = new AlbumAdapter(R.layout.item_album, mDynamicList);
         initView();
         initData();
@@ -94,9 +86,10 @@ public class AlbumFragment extends Fragment{
         return view;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     private void initView() {
-        recyclerView = (RecyclerView) view.findViewById(R.id.rv_like);
-        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(),3));
+        recyclerView = (RecyclerView) view.findViewById(R.id.rv_album);
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(),3));
         //recyclerView.addItemDecoration();
     }
 

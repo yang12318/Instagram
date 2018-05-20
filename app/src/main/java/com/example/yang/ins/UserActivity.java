@@ -41,6 +41,8 @@ public class UserActivity extends AppCompatActivity {
     private String username, nickname, src, birthday, address, introduction = null;
     private int gender = 3, follow_num = 0, concern_num = 0, posts = 0;
     private boolean flag = false;
+    private AlbumFragment mAlbumFragment;
+    private DynamicFragment mDynamicFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +63,10 @@ public class UserActivity extends AppCompatActivity {
         Intent intent = getIntent();
         userId = intent.getIntExtra("userId", 0);
         Log.d("UserActivity", Integer.toString(userId));
+
+        //实例创建按我这个写，tablayout怎么搭晓洋你看着办吧……
+        //mAlbumFragment = AlbumFragment.newInstance("相册", userId);
+        //mDynamicFragment = AlbumFragment.newInstance("详情", userId);
 
         btn_follow.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,9 +103,9 @@ public class UserActivity extends AppCompatActivity {
                                 Looper.loop();
                             }
                             else if(result.equals("Failure")) {
-                                //???
                                 Looper.prepare();
                                 Toast.makeText(UserActivity.this,"记录已存在，已取消关注", Toast.LENGTH_SHORT).show();
+                                setButtonStyle(false);
                                 Looper.loop();
                             }
                             else if(result.equals("UnknownError")){
@@ -247,6 +253,7 @@ public class UserActivity extends AppCompatActivity {
             }
         });
 
+
     }
 
     @SuppressLint("HandlerLeak")
@@ -260,7 +267,7 @@ public class UserActivity extends AppCompatActivity {
                 tv_follow.setText(Integer.toString(follow_num));
                 tv_nickname.setText(nickname);
                 tv_user.setText(username);
-                if(introduction == null) {
+                if(introduction == null || introduction.equals("-")) {
                     introduction = "这个人很懒，还没有填写个人简介";
                 }
                 tv_bio.setText(introduction);

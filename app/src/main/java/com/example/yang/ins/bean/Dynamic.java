@@ -12,6 +12,8 @@ public class Dynamic {
     private boolean is_like;
     private boolean is_collect;
     private String src;
+    private int count;
+    private String[] photo;
 
     public Dynamic() {
 
@@ -104,5 +106,13 @@ public class Dynamic {
 
     public void setSrc(String src) {
         this.src = src;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
     }
 }

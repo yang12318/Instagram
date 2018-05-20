@@ -137,7 +137,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                     Looper.prepare();
                                     showToast("登录成功");
                                     try {
-                                        showToast("12345678");
                                         JSONObject jsonObject = new JSONObject(responseData);
                                         Authorization = jsonObject.getString("Authorization");
                                         JSONArray jsonArray = jsonObject.getJSONArray("result");
@@ -157,7 +156,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                     editor.commit();
                                     MainApplication application = MainApplication.getInstance();
                                     application.mInfoMap.put("id", id);
-                                    showToast("跳转");
                                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                     startActivity(intent);
                                     Looper.loop();

@@ -1,6 +1,7 @@
 package com.example.yang.ins;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -8,7 +9,9 @@ import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Environment;
+import android.os.Handler;
 import android.os.Looper;
+import android.os.Message;
 import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
@@ -29,6 +32,7 @@ import android.widget.DatePicker;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.yang.ins.Utils.HelloHttp;
 import com.lljjcoder.style.citypickerview.CityPickerView;
 
@@ -41,6 +45,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -97,10 +104,14 @@ public class ReviseActivity extends AppCompatActivity implements View.OnClickLis
     private TextView tv_birth, tv_location, tv_gender;
     private ImageButton ib_back, ib_finish;
     private BGAPhotoHelper bgaPhotoHelper;
+    private String username, nickname, src, birthday, address, introduction = null;
+    private int gender = 3, follow_num = 0, concern_num = 0, posts = 0;
+    private int UserId = 0;
+    private String filename = null;
     CityPickerView mPicker = new CityPickerView();
     private static final int REQUEST_CODE_PERMISSION_CHOOSE_PHOTO = 1;
     private static final int REQUEST_CODE_PERMISSION_TAKE_PHOTO = 2;
-
+    private boolean flag = false;
     private static final int REQUEST_CODE_CHOOSE_PHOTO = 1;
     private static final int REQUEST_CODE_TAKE_PHOTO = 2;
     private static final int REQUEST_CODE_CROP = 3;
@@ -154,6 +165,62 @@ public class ReviseActivity extends AppCompatActivity implements View.OnClickLis
         Drawable db_location=getResources().getDrawable(R.drawable.location);
         db_location.setBounds(0,0,75,75);
         tv_location.setCompoundDrawables(db_location,null,null,null);
+        MainApplication app = MainApplication.getInstance();
+        Map<String, Integer> mapParam = app.mInfoMap;
+        for(Map.Entry<String, Integer> item_map:mapParam.entrySet()) {
+            if(item_map.getKey() == "id") {
+                UserId = item_map.getValue();
+            }
+        }
+        if(UserId == 0) {
+            Toast.makeText(ReviseActivity.this, "全局内存中保存的信息为空", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            Map<String, Object> map = new HashMap<>();
+            HelloHttp.sendGetRequest("api/user/detail/"+Integer.toString(UserId), map, new okhttp3.Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    Log.e("UserActivity", "FAILURE");
+                    Looper.prepare();
+                    Toast.makeText(ReviseActivity.this, "服务器未响应", Toast.LENGTH_SHORT).show();
+                    Looper.loop();
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    String responseData = response.body().string();
+                    Log.d("MeFragment", responseData);
+                    try {
+                        JSONObject jsonObject1 = new JSONObject(responseData);
+                        posts = jsonObject1.getInt("post_num");
+                        JSONObject jsonObject = jsonObject1.getJSONObject("result");
+                        username = jsonObject.getString("username");
+                        nickname = jsonObject.getString("nickname");
+                        gender = jsonObject.getInt("gender");
+                        birthday = jsonObject.getString("birthday");
+                        follow_num = jsonObject.getInt("following_num");
+                        concern_num = jsonObject.getInt("followed_num");
+                        src = jsonObject.getString("profile_picture");
+                        src = "http://ktchen.cn" + src;
+                        Log.d("MeFragment", src);
+                        address = jsonObject.getString("address");
+                        introduction = jsonObject.getString("introduction");
+                        mHandler.sendEmptyMessageDelayed(1, 0);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        String result = null;
+                        try {
+                            result = new JSONObject(responseData).getString("status");
+                            Looper.prepare();
+                            Toast.makeText(ReviseActivity.this, result, Toast.LENGTH_SHORT).show();
+                            Looper.loop();
+                        } catch (JSONException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+                }
+            });
+        }
     }
 
     @Override
@@ -280,14 +347,33 @@ public class ReviseActivity extends AppCompatActivity implements View.OnClickLis
             finish();
         }
         else if(view.getId() == R.id.ib_revise_finish) {
-
             //调用接口
             final String nickname = et_nickname.getText().toString();
+            if(nickname.length() <= 0 || nickname == null) {
+                showToast("您的昵称未填写");
+                return;
+            }
+            if(nickname.length() < 3 || nickname.length() > 15) {
+                showToast("昵称长度应为3-15");
+                return;
+            }
             final String username = et_username.getText().toString();
+            if (username.length() <= 0 || username == null) {
+                showToast("未填写全名");
+                return;
+            }
+            if (username.length() < 2 || username.length() > 15) {
+                showToast("全名格式不合法，长度应为2-15");
+                return;
+            }
             final String introduction = et_bio.getText().toString();
+            if (introduction.length() > 100) {
+                showToast("您的个人简介过长，长度限制为0-100");
+                return;
+            }
             final String birthday = tv_birth.getText().toString();
             final String location = tv_location.getText().toString();
-            String gender = tv_gender.getText().toString();
+            final String gender = tv_gender.getText().toString();
             int sex = 3;
             if(gender.equals("男")) {
                 sex = 1;
@@ -298,7 +384,8 @@ public class ReviseActivity extends AppCompatActivity implements View.OnClickLis
             else {
                 sex = 3;
             }
-            /*new Thread(new Runnable() {
+            final int finalSex = sex;
+            new Thread(new Runnable() {
                 @Override
                 public void run() {
                     //try {
@@ -315,22 +402,21 @@ public class ReviseActivity extends AppCompatActivity implements View.OnClickLis
                     }
                     MultipartBody.Builder multipartBodyBuilder = new MultipartBody.Builder();
                     multipartBodyBuilder.setType(MultipartBody.FORM);
-                    multipartBodyBuilder.addFormDataPart("username", username);
                     multipartBodyBuilder.addFormDataPart("nickname", nickname);
-                    multipartBodyBuilder.addFormDataPart("photo_num", Integer.toString(mPhotosSnpl.getItemCount()));
-                    multipartBodyBuilder.addFormDataPart("introduction", content);
-                    List<String> list = mPhotosSnpl.getData();
-                    for(int i = 0 ; i < list.size() ; i++) {
-                        String filename = list.get(i);
+                    multipartBodyBuilder.addFormDataPart("address", location);
+                    multipartBodyBuilder.addFormDataPart("introduction", introduction);
+                    multipartBodyBuilder.addFormDataPart("gender", Integer.toString(finalSex));
+                    multipartBodyBuilder.addFormDataPart("birthday", birthday);
+                    if(flag) {
                         File file = new File(filename);
-                        multipartBodyBuilder.addFormDataPart("photo_"+Integer.toString(i), filename, RequestBody.create(MediaType.parse("image/jpg"), file));
+                        multipartBodyBuilder.addFormDataPart("profile_picture", filename, RequestBody.create(MediaType.parse("image/jpg"), file));
                     }
                     RequestBody requestBody = multipartBodyBuilder.build();
-                    String url = HelloHttp.dealAddress("api/dynamic");
+                    String url = HelloHttp.dealAddress("api/user/detail");
                     Request request = new Request.Builder()
                             .url(url)
                             .header("Authorization", Authorization)
-                            .post(requestBody)
+                            .put(requestBody)
                             .build();
                     Response response;
                     OkHttpClient okHttpClient = new OkHttpClient();
@@ -338,7 +424,10 @@ public class ReviseActivity extends AppCompatActivity implements View.OnClickLis
                     clientWith300sTimeout.newCall(request).enqueue(new Callback() {
                         @Override
                         public void onFailure(Call call, IOException e) {
-                            Log.e("AddFragment", "上传图片失败");
+                            Log.e("ReviseActivity", "FAILURE");
+                            Looper.prepare();
+                            Toast.makeText(ReviseActivity.this, "服务器错误", Toast.LENGTH_SHORT).show();
+                            Looper.loop();
                         }
                         @Override
                         public void onResponse(Call call, final Response response) throws IOException {
@@ -349,18 +438,11 @@ public class ReviseActivity extends AppCompatActivity implements View.OnClickLis
                                 result = new JSONObject(responseData).getString("status");
                                 Looper.prepare();
                                 if(result.equals("Success")) {
-                                    Toast.makeText(getActivity(), "发表成功", Toast.LENGTH_SHORT).show();
-                                    getActivity().runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            et_add.setText("");
-                                        }
-                                    });
-                                    Intent intent = new Intent(getActivity(), MainActivity.class);
-                                    startActivity(intent);
+                                    Toast.makeText(ReviseActivity.this, "修改成功", Toast.LENGTH_SHORT).show();
+                                    finish();
                                 }
                                 else if(result.equals("UnknownError")) {
-                                    Toast.makeText(getActivity(), "发布失败", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(ReviseActivity.this, "修改失败", Toast.LENGTH_SHORT).show();
                                 }
                                 Looper.loop();
                             } catch (JSONException e) {
@@ -368,11 +450,8 @@ public class ReviseActivity extends AppCompatActivity implements View.OnClickLis
                             }
                         }
                     });
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
                 }
-            }).start();*/
+            }).start();
         }
     }
 
@@ -449,6 +528,8 @@ public class ReviseActivity extends AppCompatActivity implements View.OnClickLis
                 }
             } else if (requestCode == REQUEST_CODE_CROP) {
                 BGAImage.display(iv_head, R.mipmap.bga_pp_ic_holder_light, bgaPhotoHelper.getCropFilePath(), BGABaseAdapterUtil.dp2px(200));
+                flag = true;
+                filename = bgaPhotoHelper.getCropFilePath();
             }
         } else {
             if (requestCode == REQUEST_CODE_CROP) {
@@ -461,4 +542,43 @@ public class ReviseActivity extends AppCompatActivity implements View.OnClickLis
     private void showToast(String s) {
         Toast.makeText(ReviseActivity.this, s, Toast.LENGTH_SHORT).show();
     }
+
+
+    @SuppressLint("HandlerLeak")
+    private Handler mHandler = new Handler(){
+        @RequiresApi(api = Build.VERSION_CODES.M)
+        @SuppressLint("CheckResult")
+        @Override
+        public void handleMessage(Message msg)
+        {
+            if(msg.what == 1)
+            {
+                et_nickname.setText(nickname);
+                et_username.setText(username);
+                if(introduction == null || introduction.equals("-")) {
+                    introduction = "这个人很懒，还没有填写个人简介";
+                }
+                et_bio.setText(introduction);
+                tv_birth.setText(birthday);
+                tv_location.setText(address);
+                if(gender == 1) {
+                    tv_gender.setText("男");
+                }
+                else if(gender == 2) {
+                    tv_gender.setText("女");
+                }
+                else{
+                    tv_gender.setText("保密");
+                }
+                filename = src;
+                RequestOptions requestOptions = new RequestOptions();
+                requestOptions.placeholder(R.drawable.n1);
+                requestOptions.error(R.drawable.n1);
+                Glide.with(ReviseActivity.this)
+                        .setDefaultRequestOptions(requestOptions)
+                        .load(src).into(iv_head);
+                ib_finish.setVisibility(View.VISIBLE);
+            }
+        }
+    };
 }

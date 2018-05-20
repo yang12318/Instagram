@@ -7,10 +7,12 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -76,6 +78,67 @@ public class MeFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        MainApplication app = MainApplication.getInstance();
+        Map<String, Integer> mapParam = app.mInfoMap;
+        for(Map.Entry<String, Integer> item_map:mapParam.entrySet()) {
+            if(item_map.getKey() == "id") {
+                UserId = item_map.getValue();
+            }
+        }
+        if(UserId == 0) {
+            Toast.makeText(getActivity(), "全局内存中保存的信息为空", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            Map<String, Object> map = new HashMap<>();
+            HelloHttp.sendGetRequest("api/user/detail/"+Integer.toString(UserId), map, new okhttp3.Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    Log.e("UserActivity", "FAILURE");
+                    Looper.prepare();
+                    Toast.makeText(getActivity(), "服务器未响应", Toast.LENGTH_SHORT).show();
+                    Looper.loop();
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    String responseData = response.body().string();
+                    Log.d("MeFragment", responseData);
+                    try {
+                        JSONObject jsonObject1 = new JSONObject(responseData);
+                        posts = jsonObject1.getInt("post_num");
+                        JSONObject jsonObject = jsonObject1.getJSONObject("result");
+                        username = jsonObject.getString("username");
+                        nickname = jsonObject.getString("nickname");
+                        gender = jsonObject.getInt("gender");
+                        birthday = jsonObject.getString("birthday");
+                        follow_num = jsonObject.getInt("following_num");
+                        concern_num = jsonObject.getInt("followed_num");
+                        src = jsonObject.getString("profile_picture");
+                        src = "http://ktchen.cn" + src;
+                        Log.d("MeFragment", src);
+                        address = jsonObject.getString("address");
+                        introduction = jsonObject.getString("introduction");
+                        mHandler.sendEmptyMessageDelayed(1, 0);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        String result = null;
+                        try {
+                            result = new JSONObject(responseData).getString("status");
+                            Looper.prepare();
+                            Toast.makeText(getActivity(), result, Toast.LENGTH_SHORT).show();
+                            Looper.loop();
+                        } catch (JSONException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+                }
+            });
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         setHasOptionsMenu(true);
@@ -133,16 +196,27 @@ public class MeFragment extends Fragment {
                 switch (tab.getPosition()){
                     case 0:{
                         if (mAlbumFragment == null) {
-                            mAlbumFragment = AlbumFragment.newInstance("相册");
+                            mAlbumFragment = new AlbumFragment();
+                            Bundle bundle = new Bundle();
+                            bundle.putInt("id", -1);
+                            mAlbumFragment.setArguments(bundle);
+                            //mAlbumFragment = AlbumFragment.newInstance("相册");
                         }
-                        transaction.replace(R.id.tb, mAlbumFragment);
+                        transaction = fm.beginTransaction();
+                        transaction.replace(R.id.vp_me, mAlbumFragment);
+                        transaction.commit();
                         break;
                     }
                     case 1:{
                         if (mDynamicFragment == null) {
-                            mDynamicFragment = DynamicFragment.newInstance("详情");
+                            mDynamicFragment = new DynamicFragment();
+                            Bundle bundle = new Bundle();
+                            bundle.putInt("id", -1);
+                            mDynamicFragment.setArguments(bundle);
                         }
-                        transaction.replace(R.id.tb, mDynamicFragment);
+                        transaction = fm.beginTransaction();
+                        transaction.replace(R.id.vp_me, mDynamicFragment);
+                        transaction.commit();
                         break;
                     }
                     case 2:{
@@ -208,7 +282,6 @@ public class MeFragment extends Fragment {
                         Log.d("MeFragment", src);
                         address = jsonObject.getString("address");
                         introduction = jsonObject.getString("introduction");
-
                         mHandler.sendEmptyMessageDelayed(1, 0);
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -256,6 +329,7 @@ public class MeFragment extends Fragment {
 
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler(){
+        @RequiresApi(api = Build.VERSION_CODES.M)
         @SuppressLint("CheckResult")
         @Override
         public void handleMessage(Message msg)
@@ -266,7 +340,7 @@ public class MeFragment extends Fragment {
                 tv_follow.setText(Integer.toString(follow_num));
                 tv_nickname.setText(nickname);
                 tv_username.setText(username);
-                if(introduction == null) {
+                if(introduction == null || introduction.equals("-")) {
                     introduction = "这个人很懒，还没有填写个人简介";
                 }
                 tv_introduction.setText(introduction);
@@ -274,7 +348,7 @@ public class MeFragment extends Fragment {
                 RequestOptions requestOptions = new RequestOptions();
                 requestOptions.placeholder(R.drawable.n1);
                 requestOptions.error(R.drawable.n1);
-                Glide.with(getActivity())
+                Glide.with(getContext())
                         .setDefaultRequestOptions(requestOptions)
                         .load(src).into(civ);
             }
