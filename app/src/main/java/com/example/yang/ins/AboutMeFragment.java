@@ -57,6 +57,4 @@ public class AboutMeFragment extends Fragment{
         Bundle bundle = getArguments();
         return view;
     }
-
-
 }
