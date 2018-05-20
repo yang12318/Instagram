@@ -107,7 +107,7 @@ public class HelloHttp {
         Request request = new Request.Builder()
                 .url(url)
                 .header("Authorization", getAuthorization())
-                .delete()
+                .delete(requestBody)
                 .build();
         client.newCall(request).enqueue(callback);
     }

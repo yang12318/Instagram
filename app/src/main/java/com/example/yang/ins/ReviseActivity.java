@@ -543,7 +543,6 @@ public class ReviseActivity extends AppCompatActivity implements View.OnClickLis
         Toast.makeText(ReviseActivity.this, s, Toast.LENGTH_SHORT).show();
     }
 
-
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler(){
         @RequiresApi(api = Build.VERSION_CODES.M)
