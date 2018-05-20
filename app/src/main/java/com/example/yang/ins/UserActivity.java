@@ -1,6 +1,8 @@
 package com.example.yang.ins;
 
 import android.annotation.SuppressLint;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -64,10 +66,57 @@ public class UserActivity extends AppCompatActivity {
         userId = intent.getIntExtra("userId", 0);
         Log.d("UserActivity", Integer.toString(userId));
 
-        //实例创建按我这个写，tablayout怎么搭晓洋你看着办吧……
         //mAlbumFragment = AlbumFragment.newInstance("相册", userId);
         //mDynamicFragment = AlbumFragment.newInstance("详情", userId);
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener(){
+            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
 
+                Log.e("TAG","tab position:"+tab.getPosition());
+                FragmentManager fm = UserActivity.this.getFragmentManager();
+                //开启事务
+                FragmentTransaction transaction = fm.beginTransaction();
+                Intent intent;
+                switch (tab.getPosition()){
+                    case 0:{
+                        //mAlbumFragment = AlbumFragment.newInstance("相册", userId);
+                        if (mAlbumFragment == null) {
+                            mAlbumFragment = new AlbumFragment();
+                            Bundle bundle = new Bundle();
+                            bundle.putInt("id", -1);
+                            mAlbumFragment.setArguments(bundle);
+                            //mAlbumFragment = AlbumFragment.newInstance("相册");
+                        }
+                        transaction = fm.beginTransaction();
+                        transaction.replace(R.id.ll_tbuser, mAlbumFragment);
+                        transaction.commit();
+                        break;
+                    }
+                    case 1:{
+                        if (mDynamicFragment == null) {
+                            mDynamicFragment = new DynamicFragment();
+                            Bundle bundle = new Bundle();
+                            bundle.putInt("id", -1);
+                            mDynamicFragment.setArguments(bundle);
+                        }
+                        transaction = fm.beginTransaction();
+                        transaction.replace(R.id.ll_tbuser, mDynamicFragment);
+                        transaction.commit();
+                        break;
+                    }
+                    default:
+                        break;
+                }
+            }
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+            }
+        });
         btn_follow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

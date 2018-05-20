@@ -49,8 +49,8 @@ public class MeFragment extends Fragment {
 
    private Button btn_revise;
    private TabLayout tabLayout;
-    private ViewPager mViewPager;
-    private Context context;
+   private ViewPager mViewPager;
+   private Context context;
    protected View view;
    private TextView tv_concern, tv_follow, tv_dynamic, tv_username, tv_nickname, tv_introduction;
    private CircleImageView civ;
@@ -156,7 +156,6 @@ public class MeFragment extends Fragment {
         ll_concern = (LinearLayout) view.findViewById(R.id.ll_concern);
         ll_follow = (LinearLayout) view.findViewById(R.id.ll_follow);
         civ = (CircleImageView) view.findViewById(R.id.me_image);
-        mViewPager = (ViewPager) view.findViewById(R.id.vp_me);
         ll_follow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -180,21 +179,26 @@ public class MeFragment extends Fragment {
             }
         });
         tabLayout = (TabLayout) view.findViewById(R.id.tab_me);
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.album));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.album),true);
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.dynamic));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.like));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.collect));
         tabLayout.setSelectedTabIndicatorColor(Color.BLACK);
-        tabLayout.setSelectedTabIndicatorHeight(1);
+        tabLayout.setSelectedTabIndicatorHeight(0);
+
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener(){
-            @Override public void onTabSelected(TabLayout.Tab tab) {
+            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+
                 Log.e("TAG","tab position:"+tab.getPosition());
-                FragmentManager fm = getActivity().getFragmentManager();
+                FragmentManager fm = MeFragment.this.getChildFragmentManager();
                 //开启事务
                 FragmentTransaction transaction = fm.beginTransaction();
                 Intent intent;
                 switch (tab.getPosition()){
                     case 0:{
+                        //mAlbumFragment = AlbumFragment.newInstance("相册", userId);
                         if (mAlbumFragment == null) {
                             mAlbumFragment = new AlbumFragment();
                             Bundle bundle = new Bundle();
@@ -203,7 +207,7 @@ public class MeFragment extends Fragment {
                             //mAlbumFragment = AlbumFragment.newInstance("相册");
                         }
                         transaction = fm.beginTransaction();
-                        transaction.replace(R.id.vp_me, mAlbumFragment);
+                        transaction.replace(R.id.ll_tbme, mAlbumFragment);
                         transaction.commit();
                         break;
                     }
@@ -215,7 +219,7 @@ public class MeFragment extends Fragment {
                             mDynamicFragment.setArguments(bundle);
                         }
                         transaction = fm.beginTransaction();
-                        transaction.replace(R.id.vp_me, mDynamicFragment);
+                        transaction.replace(R.id.ll_tbme, mDynamicFragment);
                         transaction.commit();
                         break;
                     }
@@ -231,6 +235,7 @@ public class MeFragment extends Fragment {
                     default:
                         break;
                 }
+                tabLayout.getTabAt(0).select();
             }
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
@@ -238,7 +243,6 @@ public class MeFragment extends Fragment {
             }
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-
             }
         });
 
@@ -300,6 +304,7 @@ public class MeFragment extends Fragment {
         }
         return view;
     }
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.user_menu, menu);

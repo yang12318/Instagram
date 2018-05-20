@@ -9,10 +9,10 @@ public class Person {
     private String name;
     private String nickname;
     private String src;
-    private int isFollowed;
+    private boolean isFollowed;
 
     public Person() {
-        isFollowed  = 0;
+        isFollowed  = false;
     }
 
     public int getId() {
@@ -47,11 +47,11 @@ public class Person {
         this.src = src;
     }
 
-    public int getIsFollowed() {
+    public boolean getIsFollowed() {
         return isFollowed;
     }
 
-    public void setIsFollowed(int isFollowed) {
+    public void setIsFollowed(boolean isFollowed) {
         this.isFollowed = isFollowed;
     }
 }

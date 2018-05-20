@@ -1,10 +1,17 @@
 package com.example.yang.ins;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +20,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AboutFragment extends Fragment {
+
+    private List<Fragment> list;
+    private String[] titles = {"已关注", "你", };
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
-
+    private AboutFollowFragment mAboutFllowFragment;
+    private AboutMeFragment mAboutMeFragment;
     List<String> mTitleList;//页卡标题集合
     View view1, view2;//页卡视图
     List<View> mViewList;//页卡视图集合
@@ -46,20 +57,17 @@ public class AboutFragment extends Fragment {
         mTabLayout = (TabLayout) view.findViewById(R.id.tabLayout);
         view1 = inflater.inflate(R.layout.fragment_about_follow, null);
         view2 = inflater.inflate(R.layout.fragment_about_me, null);
-        //if(mViewList.size() <2)
-        //{ //添加页卡视图
+        //添加页卡视图
         mViewList.add(view1);
         mViewList.add(view2);
 
         //添加页卡标题
         mTitleList.add("已关注");
         mTitleList.add("你");
-
+        initFragment();
         mTabLayout.setTabMode(TabLayout.MODE_FIXED);//设置tab模式，当前为系统默认模式
         mTabLayout.addTab(mTabLayout.newTab().setText(mTitleList.get(0)));//添加tab选项卡
         mTabLayout.addTab(mTabLayout.newTab().setText(mTitleList.get(1)));
-        //}
-
         MyPagerAdapter mAdapter = new MyPagerAdapter(mViewList);
         mViewPager.setAdapter(mAdapter);//给ViewPager设置适配器
         mTabLayout.setupWithViewPager(mViewPager);//将TabLayout和ViewPager关联起来。
@@ -67,7 +75,11 @@ public class AboutFragment extends Fragment {
         Bundle bundle = getArguments();
         return view;
     }
-
+    private void initFragment() {
+        list = new ArrayList<>();
+        list.add(new AboutFollowFragment());
+        list.add(new AboutMeFragment());
+    }
     //ViewPager适配器
     class MyPagerAdapter extends PagerAdapter {
         private List<View> mViewList;
@@ -102,4 +114,5 @@ public class AboutFragment extends Fragment {
             return mTitleList.get(position);//页卡标题
         }
     }
+
 }
