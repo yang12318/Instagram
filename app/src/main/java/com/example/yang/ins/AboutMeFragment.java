@@ -1,7 +1,7 @@
 package com.example.yang.ins;
 
 import android.annotation.SuppressLint;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -57,4 +57,6 @@ public class AboutMeFragment extends Fragment{
         Bundle bundle = getArguments();
         return view;
     }
+
+
 }

@@ -1,9 +1,10 @@
 package com.example.yang.ins;
 
 import android.annotation.SuppressLint;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -38,7 +39,9 @@ import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -49,7 +52,9 @@ public class MeFragment extends Fragment {
 
    private Button btn_revise;
    private TabLayout tabLayout;
-   private ViewPager mViewPager;
+   //private ViewPager viewPager;
+   /*FragmentPagerAdapter mAdapter;
+   ArrayList<Fragment> flist;*/
    private Context context;
    protected View view;
    private TextView tv_concern, tv_follow, tv_dynamic, tv_username, tv_nickname, tv_introduction;
@@ -179,13 +184,24 @@ public class MeFragment extends Fragment {
             }
         });
         tabLayout = (TabLayout) view.findViewById(R.id.tab_me);
+        //viewPager = (ViewPager) view.findViewById(R.id.viewpager);
+        /*FragmentManager man = MeFragment.this.getFragmentManager();
+        initFragment();
+        flist=new ArrayList<Fragment>();
+        flist.add(mAboutFollowFragment);
+        flist.add(mAboutMeFragment);*/
+        tabLayout.setTabMode(TabLayout.MODE_FIXED);//设置tab模式，当前为系统默认模式
+        /*mAdapter= new MeFragment.FragmentAdapter(man,flist);
+        viewPager.setAdapter(mAdapter);//给ViewPager设置适配器
+        tabLayout.setupWithViewPager(viewPager);//将TabLayout和ViewPager关联起来。
+        tabLayout.setTabsFromPagerAdapter(mAdapter);//给Tabs设置适配器*/
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.album),true);
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.dynamic));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.like));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.collect));
         tabLayout.setSelectedTabIndicatorColor(Color.BLACK);
         tabLayout.setSelectedTabIndicatorHeight(0);
-
+        //setDefaultFragment();//设置默认导航栏
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener(){
             @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
             @Override
@@ -304,7 +320,27 @@ public class MeFragment extends Fragment {
         }
         return view;
     }
+    /*private void initFragment() {
+        mAboutFollowFragment=new AboutFollowFragment();
+        mAboutMeFragment=new AboutMeFragment();
+    }
+    public class FragmentAdapter extends FragmentPagerAdapter {
 
+        private List<Fragment> fragmentList;
+
+        public FragmentAdapter(FragmentManager fm, List<Fragment> fragmentList) {
+            super(fm);
+            this.fragmentList = fragmentList;
+        }
+        @Override
+        public Fragment getItem(int position) {
+            return fragmentList.get(position);
+        }
+        @Override
+        public int getCount() {
+            return fragmentList.size();
+        }
+    }*/
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.user_menu, menu);
@@ -351,11 +387,16 @@ public class MeFragment extends Fragment {
                 tv_introduction.setText(introduction);
                 tv_dynamic.setText(Integer.toString(posts));
                 RequestOptions requestOptions = new RequestOptions();
-                requestOptions.placeholder(R.drawable.n1);
-                requestOptions.error(R.drawable.n1);
-                Glide.with(getContext())
-                        .setDefaultRequestOptions(requestOptions)
-                        .load(src).into(civ);
+                requestOptions.placeholder(R.drawable.empty_like);
+                requestOptions.error(R.drawable.empty_like);
+                if (getContext() == null) {
+                    return;
+                }
+                else {
+                    Glide.with(getContext())
+                            .setDefaultRequestOptions(requestOptions)
+                            .load(src).into(civ);
+                }
             }
         }
     };

@@ -1,8 +1,10 @@
 package com.example.yang.ins;
 
 import android.annotation.SuppressLint;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -11,6 +13,8 @@ import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.yang.ins.Utils.HelloHttp;
 
 import org.json.JSONException;
@@ -27,6 +32,7 @@ import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,6 +43,9 @@ import okhttp3.Response;
 public class UserActivity extends AppCompatActivity {
     private int userId;
     private TabLayout tabLayout;
+    private ViewPager viewPager;
+    private MyAdapter adapter;
+    ArrayList<android.support.v4.app.Fragment> flist;
     private TextView tv_dynamic, tv_concern, tv_follow, tv_user, tv_nickname, tv_bio;
     private Button btn_follow;
     private CircleImageView civ;
@@ -65,10 +74,22 @@ public class UserActivity extends AppCompatActivity {
         Intent intent = getIntent();
         userId = intent.getIntExtra("userId", 0);
         Log.d("UserActivity", Integer.toString(userId));
-
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
+        tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+        adapter = new MyAdapter(getSupportFragmentManager(),this);
+        //android.support.v4.app.FragmentManager man =UserActivity.this.getFragmentManager();
+        //initFragment();
+        flist=new ArrayList<android.support.v4.app.Fragment>();
+        flist.add(mAlbumFragment);
+        flist.add(mDynamicFragment);
+        tabLayout.setTabMode(TabLayout.MODE_FIXED);//设置tab模式，当前为系统默认模式
+        //mAdapter= new UserActivity.FragmentAdapter(man,flist);
+        viewPager.setAdapter(adapter);//给ViewPager设置适配器
+        tabLayout.setupWithViewPager(viewPager);//将TabLayout和ViewPager关联起来。
+        tabLayout.setTabsFromPagerAdapter(adapter);//给Tabs设置适配器
         //mAlbumFragment = AlbumFragment.newInstance("相册", userId);
         //mDynamicFragment = AlbumFragment.newInstance("详情", userId);
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener(){
+        /*tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener(){
             @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -116,7 +137,7 @@ public class UserActivity extends AppCompatActivity {
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
             }
-        });
+        });*/
         btn_follow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -304,8 +325,26 @@ public class UserActivity extends AppCompatActivity {
 
 
     }
+    class MyAdapter extends FragmentPagerAdapter {
 
-    @SuppressLint("HandlerLeak")
+        private Context context;
+
+        public MyAdapter(FragmentManager supportFragmentManager, Context context) {
+            super(supportFragmentManager);
+            this.context = context;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return flist.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return flist.size();
+        }
+    }
+        @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler(){
         @Override
         public void handleMessage(Message msg)
@@ -321,7 +360,17 @@ public class UserActivity extends AppCompatActivity {
                 }
                 tv_bio.setText(introduction);
                 tv_dynamic.setText(Integer.toString(posts));
-                Glide.with(UserActivity.this).load(src).into(civ);
+                RequestOptions requestOptions = new RequestOptions();
+                requestOptions.placeholder(R.drawable.empty_like);
+                requestOptions.error(R.drawable.empty_like);
+                if (UserActivity.this == null) {
+                    return;
+                }
+                else {
+                    Glide.with(UserActivity.this)
+                            .setDefaultRequestOptions(requestOptions)
+                            .load(src).into(civ);
+                }
             }
         }
     };

@@ -1,7 +1,7 @@
-﻿package com.example.yang.ins;
+package com.example.yang.ins;
 
 import android.annotation.SuppressLint;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -35,6 +35,7 @@ import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.Response;
+
 
 public class AboutFollowFragment extends Fragment{
     private List<Info1> mInfoList;

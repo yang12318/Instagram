@@ -9,16 +9,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="2dp"
-        android:layout_marginTop="5dp"
-        app:cardCornerRadius="4dp">
+        android:layout_marginBottom="5dp">
         <ImageView
             android:layout_width="125dp"
             android:layout_height="120dp"
             android:id="@+id/iv_picture"/>
         <ImageView
-            android:layout_width="38dp"
-            android:layout_height="38dp"
+            android:layout_width="33dp"
+            android:layout_height="33dp"
             android:tint="#fff"
+            android:scaleType="centerInside"
             android:id="@+id/iv_multi"
             android:layout_gravity="end"
             android:src="@drawable/multi"
