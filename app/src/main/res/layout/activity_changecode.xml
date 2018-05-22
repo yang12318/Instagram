@@ -8,8 +8,7 @@
         android:id="@+id/tb_change"
         android:layout_height="50dp"
         android:layout_width="match_parent"
-        android:background="@null"
-        android:elevation="6dp">
+        android:background="@null">
 
         <TextView
             android:layout_width="wrap_content"
@@ -50,15 +49,6 @@
             android:paddingTop="13dp"
             android:textSize="15sp"
             android:textColor="#000"/>
-        <!--ImageView
-            android:id="@+id/iv_delOld"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginRight="24dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:visibility="invisible"
-            android:src="@drawable/delete" /-->
     </RelativeLayout>
     <RelativeLayout
         android:id="@+id/rl_New"
@@ -85,15 +75,6 @@
             android:singleLine="true"
             android:textSize="15sp"
             android:textColor="#000"/>
-        <!--ImageView
-            android:id="@+id/iv_delNewPassword"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="24dp"
-            android:visibility="invisible"
-            android:src="@drawable/delete" /-->
     </RelativeLayout>
     <RelativeLayout
         android:id="@+id/rl_codeconfirm"
@@ -120,15 +101,6 @@
             android:singleLine="true"
             android:textSize="15sp"
             android:textColor="#000"/>
-        <!--ImageView
-            android:id="@+id/iv_delNewPassword"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="24dp"
-            android:visibility="invisible"
-            android:src="@drawable/delete" /-->
     </RelativeLayout>
 
     <ImageButton
@@ -139,7 +111,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="13dp"
-        android:background="#00000000"
+        android:background="@null"
         android:src="@drawable/cancel" />
     <ImageButton
         android:id="@+id/ib_change_go"
@@ -150,6 +122,6 @@
         android:layout_alignParentRight="true"
         android:layout_marginRight="5dp"
         android:layout_marginTop="11dp"
-        android:background="#00000000"
+        android:background="@null"
         android:src="@drawable/finish1" />
 </RelativeLayout>
