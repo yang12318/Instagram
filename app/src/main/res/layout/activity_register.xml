@@ -46,7 +46,7 @@
                 android:layout_centerVertical="true"
                 android:background="@drawable/editshape"
                 android:ems="19"
-                android:maxLines="1"
+                android:singleLine="true"
                 android:textCursorDrawable="@drawable/edit_cursor"
                 android:textColor="#ffffff"
                 android:textColorHint="#80ffffff"
@@ -56,15 +56,6 @@
 
             </EditText>
 
-            <!--ImageView
-                android:id="@+id/iv_delUser"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="3dp"
-                android:visibility="invisible"
-                android:src="@drawable/delete" /-->
         </RelativeLayout>
 
         <RelativeLayout
@@ -84,7 +75,6 @@
                 android:layout_centerVertical="true"
                 android:background="@drawable/editshape"
                 android:ems="19"
-                android:maxLines="1"
                 android:textCursorDrawable="@drawable/edit_cursor"
                 android:textColor="#ffffff"
                 android:singleLine="true"
@@ -94,15 +84,6 @@
                 android:textSize="15sp" >
 
             </EditText>
-            <!--ImageView
-                android:id="@+id/iv_delName"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="3dp"
-                android:visibility="invisible"
-                android:src="@drawable/delete" /-->
         </RelativeLayout>
         <Button
             android:id="@+id/btn_next"

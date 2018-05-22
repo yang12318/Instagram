@@ -91,7 +91,7 @@
                 android:maxLength="15"
                 android:editable="false"
                 android:hint="全名"
-                android:maxLines="1"
+                android:singleLine="true"
                 android:gravity="center_vertical"
                 android:textColor="#000"
                 android:textColorHint="#939292"

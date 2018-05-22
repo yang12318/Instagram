@@ -67,6 +67,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="0"
+                            android:singleLine="true"
                             android:layout_gravity="center"
                             android:textColor="#000"
                             android:textSize="16sp"
@@ -78,6 +79,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
                             android:text="帖子"
+                            android:singleLine="true"
                             android:layout_gravity="center"
                             android:textSize="16sp" />
                     </LinearLayout>
@@ -94,6 +96,7 @@
                             android:id="@+id/me_concern"
                             android:textSize="16sp"
                             android:text="0"
+                            android:singleLine="true"
                             android:layout_gravity="center"
                             android:textColor="#000"
                             android:textStyle="bold"/>
@@ -103,6 +106,7 @@
                             android:id="@+id/tv_concern"
                             android:textSize="16sp"
                             android:text="关注者"
+                            android:singleLine="true"
                             android:layout_gravity="center"
                             android:layout_marginTop="5dp"/>
                     </LinearLayout>
@@ -119,6 +123,7 @@
                             android:id="@+id/me_follow"
                             android:textSize="16sp"
                             android:text="0"
+                            android:singleLine="true"
                             android:layout_gravity="center"
                             android:textColor="#000"
                             android:textStyle="bold"/>
@@ -129,6 +134,7 @@
                             android:textSize="16sp"
                             android:layout_gravity="center"
                             android:text="关注"
+                            android:singleLine="true"
                             android:layout_marginTop="5dp"/>
                     </LinearLayout>
                 </LinearLayout>
@@ -160,6 +166,7 @@
                 android:layout_alignStart="@+id/ll_me"
                 android:layout_below="@+id/rl_me"
                 android:text="null"
+                android:singleLine="true"
                 android:textColor="#000"
                 android:textSize="16sp"
                 android:textStyle="bold" />

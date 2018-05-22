@@ -1,23 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:gravity="center">
     <ImageView
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:layout_marginTop="160dp"
-        android:layout_gravity="center_horizontal"
+        android:layout_gravity="center"
+        android:layout_centerInParent="true"
         android:id="@+id/like_picture"
         android:tint="#515151"
         android:src="@drawable/empty_collect"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dp"
         android:textSize="22sp"
+        android:layout_centerInParent="true"
+        android:id="@+id/tv_empty"
+        android:layout_below="@+id/like_picture"
         android:textColor="#515151"
         android:text="收藏"/>
     <TextView
@@ -29,7 +31,8 @@
         android:gravity="center"
         android:layout_marginLeft="40dp"
         android:layout_marginRight="40dp"
-        android:layout_marginBottom="40dp"
+        android:layout_centerInParent="true"
+        android:layout_below="@+id/tv_empty"
         android:textColor="#515151"
         android:text="收藏感兴趣的照片，方便再次查看。收藏的内容只对你可见。"/>
-</LinearLayout>
+</RelativeLayout>
