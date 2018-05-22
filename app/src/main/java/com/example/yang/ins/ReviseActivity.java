@@ -189,7 +189,7 @@ public class ReviseActivity extends AppCompatActivity implements View.OnClickLis
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
                     String responseData = response.body().string();
-                    Log.d("MeFragment", responseData);
+                    Log.d("ReviseActivity", responseData);
                     try {
                         JSONObject jsonObject1 = new JSONObject(responseData);
                         posts = jsonObject1.getInt("post_num");

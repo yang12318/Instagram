@@ -52,8 +52,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         et_password = (EditText) findViewById(R.id.et_passwordInput);
         et_user = (EditText) findViewById(R.id.et_usernameInput);
         //checkBox = (CheckBox) findViewById(R.id.checkbox);
-        et_user.setText("instagram@mail.com");
-        et_password.setText("instagram123");
+//        et_user.setText("instagram@mail.com");
+//        et_password.setText("instagram123");
+        et_user.setText("750440234@qq.com");
+        et_password.setText("password");
         et_user.addTextChangedListener(new JumpTextWatcher(et_user, et_password));
         btn_login.setOnClickListener(this);
         tv_forget.setOnClickListener(this);

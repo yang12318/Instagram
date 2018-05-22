@@ -63,8 +63,12 @@ public class AboutFragment extends Fragment{
         return view;
     }
     private void initFragment() {
-        mAboutFollowFragment=new AboutFollowFragment();
-        mAboutMeFragment=new AboutMeFragment();
+        if(mAboutFollowFragment == null) {
+            mAboutFollowFragment=new AboutFollowFragment();
+        }
+        if(mAboutMeFragment == null) {
+            mAboutMeFragment=new AboutMeFragment();
+        }
     }
     public class FragmentAdapter extends FragmentPagerAdapter {
 

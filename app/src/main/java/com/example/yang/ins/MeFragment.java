@@ -62,6 +62,7 @@ public class MeFragment extends Fragment {
    private String username, nickname, src, birthday, address, introduction = null;
    private int gender = 3, follow_num = 0, concern_num = 0, posts = 0;
    private LinearLayout ll_concern, ll_follow;
+   private boolean flag = false;
    private int UserId = 0;
    private AlbumFragment mAlbumFragment;
    private DynamicFragment mDynamicFragment;
@@ -80,11 +81,13 @@ public class MeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.e("Me", "OnCreate");
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        Log.e("Me", "OnResume");
         MainApplication app = MainApplication.getInstance();
         Map<String, Integer> mapParam = app.mInfoMap;
         for(Map.Entry<String, Integer> item_map:mapParam.entrySet()) {
@@ -95,7 +98,11 @@ public class MeFragment extends Fragment {
         if(UserId == 0) {
             Toast.makeText(getActivity(), "全局内存中保存的信息为空", Toast.LENGTH_SHORT).show();
         }
-        else {
+//        else if(flag) {
+//            Log.e("vfghjkl", "dfghjkl;");
+//            mHandler.sendEmptyMessageDelayed(1, 0);
+//        }
+        else{
             Map<String, Object> map = new HashMap<>();
             HelloHttp.sendGetRequest("api/user/detail/"+Integer.toString(UserId), map, new okhttp3.Callback() {
                 @Override
@@ -125,6 +132,7 @@ public class MeFragment extends Fragment {
                         Log.d("MeFragment", src);
                         address = jsonObject.getString("address");
                         introduction = jsonObject.getString("introduction");
+                        flag = true;
                         mHandler.sendEmptyMessageDelayed(1, 0);
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -147,6 +155,7 @@ public class MeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         setHasOptionsMenu(true);
+        Log.e("Me", "OnCreateView");
         view = inflater.inflate(R.layout.fragment_me, container, false);
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.tb_me);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
@@ -201,7 +210,7 @@ public class MeFragment extends Fragment {
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.collect));
         tabLayout.setSelectedTabIndicatorColor(Color.BLACK);
         tabLayout.setSelectedTabIndicatorHeight(0);
-        //setDefaultFragment();//设置默认导航栏
+       /// setDefaultFragment();//设置默认导航栏
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener(){
             @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
             @Override
@@ -262,62 +271,66 @@ public class MeFragment extends Fragment {
             }
         });
 
-        MainApplication app = MainApplication.getInstance();
-        Map<String, Integer> mapParam = app.mInfoMap;
-        for(Map.Entry<String, Integer> item_map:mapParam.entrySet()) {
-            if(item_map.getKey() == "id") {
-                UserId = item_map.getValue();
-            }
-        }
-        if(UserId == 0) {
-            Toast.makeText(getActivity(), "全局内存中保存的信息为空", Toast.LENGTH_SHORT).show();
-        }
-        else {
-            Map<String, Object> map = new HashMap<>();
-            HelloHttp.sendGetRequest("api/user/detail/"+Integer.toString(UserId), map, new okhttp3.Callback() {
-                @Override
-                public void onFailure(Call call, IOException e) {
-                    Log.e("UserActivity", "FAILURE");
-                    Looper.prepare();
-                    Toast.makeText(getActivity(), "服务器未响应", Toast.LENGTH_SHORT).show();
-                    Looper.loop();
-                }
-
-                @Override
-                public void onResponse(Call call, Response response) throws IOException {
-                    String responseData = response.body().string();
-                    Log.d("MeFragment", responseData);
-                    try {
-                        JSONObject jsonObject1 = new JSONObject(responseData);
-                        posts = jsonObject1.getInt("post_num");
-                        JSONObject jsonObject = jsonObject1.getJSONObject("result");
-                        username = jsonObject.getString("username");
-                        nickname = jsonObject.getString("nickname");
-                        gender = jsonObject.getInt("gender");
-                        birthday = jsonObject.getString("birthday");
-                        follow_num = jsonObject.getInt("following_num");
-                        concern_num = jsonObject.getInt("followed_num");
-                        src = jsonObject.getString("profile_picture");
-                        src = "http://ktchen.cn" + src;
-                        Log.d("MeFragment", src);
-                        address = jsonObject.getString("address");
-                        introduction = jsonObject.getString("introduction");
-                        mHandler.sendEmptyMessageDelayed(1, 0);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        String result = null;
-                        try {
-                            result = new JSONObject(responseData).getString("status");
-                            Looper.prepare();
-                            Toast.makeText(getActivity(), result, Toast.LENGTH_SHORT).show();
-                            Looper.loop();
-                        } catch (JSONException e1) {
-                            e1.printStackTrace();
-                        }
-                    }
-                }
-            });
-        }
+//        MainApplication app = MainApplication.getInstance();
+//        Map<String, Integer> mapParam = app.mInfoMap;
+//        for(Map.Entry<String, Integer> item_map:mapParam.entrySet()) {
+//            if(item_map.getKey() == "id") {
+//                UserId = item_map.getValue();
+//            }
+//        }
+//        if(UserId == 0) {
+//            Toast.makeText(getActivity(), "全局内存中保存的信息为空", Toast.LENGTH_SHORT).show();
+//        }
+////        else if(flag) {
+////            Log.e("vfghjkl", "dfghjkl;");
+////            mHandler.sendEmptyMessageDelayed(1, 0);
+////        }
+//        else{
+//            Map<String, Object> map = new HashMap<>();
+//            HelloHttp.sendGetRequest("api/user/detail/"+Integer.toString(UserId), map, new okhttp3.Callback() {
+//                @Override
+//                public void onFailure(Call call, IOException e) {
+//                    Log.e("UserActivity", "FAILURE");
+//                    Looper.prepare();
+//                    Toast.makeText(getActivity(), "服务器未响应", Toast.LENGTH_SHORT).show();
+//                    Looper.loop();
+//                }
+//
+//                @Override
+//                public void onResponse(Call call, Response response) throws IOException {
+//                    String responseData = response.body().string();
+//                    Log.d("MeFragment", responseData);
+//                    try {
+//                        JSONObject jsonObject1 = new JSONObject(responseData);
+//                        posts = jsonObject1.getInt("post_num");
+//                        JSONObject jsonObject = jsonObject1.getJSONObject("result");
+//                        username = jsonObject.getString("username");
+//                        nickname = jsonObject.getString("nickname");
+//                        gender = jsonObject.getInt("gender");
+//                        birthday = jsonObject.getString("birthday");
+//                        follow_num = jsonObject.getInt("following_num");
+//                        concern_num = jsonObject.getInt("followed_num");
+//                        src = jsonObject.getString("profile_picture");
+//                        src = "http://ktchen.cn" + src;
+//                        Log.d("MeFragment", src);
+//                        address = jsonObject.getString("address");
+//                        introduction = jsonObject.getString("introduction");
+//                        mHandler.sendEmptyMessageDelayed(1, 0);
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                        String result = null;
+//                        try {
+//                            result = new JSONObject(responseData).getString("status");
+//                            Looper.prepare();
+//                            Toast.makeText(getActivity(), result, Toast.LENGTH_SHORT).show();
+//                            Looper.loop();
+//                        } catch (JSONException e1) {
+//                            e1.printStackTrace();
+//                        }
+//                    }
+//                }
+//            });
+//        }
         return view;
     }
     /*private void initFragment() {

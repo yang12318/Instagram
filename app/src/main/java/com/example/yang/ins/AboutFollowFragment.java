@@ -56,6 +56,7 @@ public class AboutFollowFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_about_follow, container, false);
+        Log.e("AboutFollow", "onCreateView");
         Bundle bundle = getArguments();
         adapter = new Info1Adapter(R.layout.item_album, mInfoList);
         initView();
@@ -66,6 +67,12 @@ public class AboutFollowFragment extends Fragment{
         adapter.setEmptyView(R.layout.empty_about_follow);
         adapter.setHeaderFooterEmpty(true, true);
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.e("AboutFollowFragment", "onResume");
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
