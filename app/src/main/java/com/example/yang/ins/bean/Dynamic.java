@@ -11,6 +11,7 @@ public class Dynamic {
     private String photo0;
     private boolean is_like;
     private boolean is_collect;
+    private boolean is_multi;
     private String src;
     private int count;
     private String[] photo;
@@ -94,6 +95,14 @@ public class Dynamic {
 
     public boolean isIs_collect() {
         return is_collect;
+    }
+
+    public boolean isIs_multi(){
+        return is_multi;
+    }
+
+    public void setIs_multi(boolean is_multi){
+        this.is_multi = is_multi;
     }
 
     public void setIs_collect(boolean is_collect) {

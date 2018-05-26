@@ -2,9 +2,11 @@ package com.example.yang.ins;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Build;
 import android.os.Looper;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -35,7 +37,7 @@ import java.util.regex.Pattern;
 import okhttp3.Call;
 import okhttp3.Response;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener,TextWatcher{
 
     private Button btn_login;
     private EditText et_user, et_password;
@@ -44,6 +46,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private AnimationDrawable anim;
     //private CheckBox checkBox;
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -57,15 +60,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         tv_register = (TextView) findViewById(R.id.tv_register);
         et_password = (EditText) findViewById(R.id.et_passwordInput);
         et_user = (EditText) findViewById(R.id.et_usernameInput);
-        //checkBox = (CheckBox) findViewById(R.id.checkbox);
-//        et_user.setText("instagram@mail.com");
-//        et_password.setText("instagram123");
         et_user.setText("750440234@qq.com");
         et_password.setText("password");
+        et_user.addTextChangedListener(this);
+        et_password.addTextChangedListener(this);
         et_user.addTextChangedListener(new JumpTextWatcher(et_user, et_password));
         btn_login.setOnClickListener(this);
         tv_forget.setOnClickListener(this);
         tv_register.setOnClickListener(this);
+        setButtonStyle(false);
         RelativeLayout container = (RelativeLayout) findViewById(R.id.container);
         container.setBackgroundResource(R.drawable.animation_list);
         anim = (AnimationDrawable) container.getBackground();
@@ -82,7 +85,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 showToast("您还未填写邮箱或您的全名");
                 return;
             }
-            if(password.length() <= 0 || password == null) {
+            else if(password.length() <= 0 || password == null) {
                 showToast("您还未填写密码");
                 return;
             }
@@ -211,17 +214,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 mNextView = vNext;
             }
         }
-
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
         }
-
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-
         }
-
         @Override
         public void afterTextChanged(Editable s) {
             String str= s.toString();
@@ -235,6 +233,22 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     }
                 }
             }
+        }
+    }
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        setButtonStyle(false);//在这里重复设置，以保证清除任意EditText中的内容，按钮重新变回不可点击状态
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+        if (!(et_user.getText().toString().equals("") || et_password.getText().toString().equals(""))){
+            setButtonStyle(true);
         }
     }
 
@@ -253,5 +267,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             flag = false;
         }
         return flag;
+    }
+    private void setButtonStyle(final boolean flag1) {
+        runOnUiThread(new Runnable() {
+            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+            @Override
+            public void run() {
+                if(flag1) {
+                    btn_login.setTextColor(Color.BLACK);
+                    btn_login.setBackground(getResources().getDrawable(R.drawable.buttonshape1));
+                }
+                else {
+                    btn_login.setTextColor(Color.parseColor("#50000000"));
+                    btn_login.setBackground(getResources().getDrawable(R.drawable.buttonshape));
+                }
+            }
+        });
     }
 }

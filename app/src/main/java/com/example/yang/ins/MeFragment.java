@@ -53,9 +53,6 @@ public class MeFragment extends Fragment {
 
    private Button btn_revise;
    private TabLayout tabLayout;
-   //private ViewPager viewPager;
-   /*FragmentPagerAdapter mAdapter;
-   ArrayList<Fragment> flist;*/
    private Context context;
    protected View view;
    private TextView tv_concern, tv_follow, tv_dynamic, tv_username, tv_nickname, tv_introduction;
@@ -196,50 +193,38 @@ public class MeFragment extends Fragment {
             }
         });
         tabLayout = (TabLayout) view.findViewById(R.id.tab_me);
-        //viewPager = (ViewPager) view.findViewById(R.id.viewpager);
-        /*FragmentManager man = MeFragment.this.getFragmentManager();
-        initFragment();
-        flist=new ArrayList<Fragment>();
-        flist.add(mAboutFollowFragment);
-        flist.add(mAboutMeFragment);*/
         tabLayout.setTabMode(TabLayout.MODE_FIXED);//设置tab模式，当前为系统默认模式
-        /*mAdapter= new MeFragment.FragmentAdapter(man,flist);
-        viewPager.setAdapter(mAdapter);//给ViewPager设置适配器
-        tabLayout.setupWithViewPager(viewPager);//将TabLayout和ViewPager关联起来。
-        tabLayout.setTabsFromPagerAdapter(mAdapter);//给Tabs设置适配器*/
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.album),true);
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.album), true);
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.dynamic));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.like));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.collect));
         tabLayout.setSelectedTabIndicatorColor(Color.BLACK);
         tabLayout.setSelectedTabIndicatorHeight(0);
-       /// setDefaultFragment();//设置默认导航栏
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener(){
+        setDefaultFragment();//设置默认加载项
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
 
-                Log.e("TAG","tab position:"+tab.getPosition());
+                Log.e("TAG", "tab position:" + tab.getPosition());
                 FragmentManager fm = MeFragment.this.getChildFragmentManager();
                 //开启事务
                 FragmentTransaction transaction = fm.beginTransaction();
                 Intent intent;
-                switch (tab.getPosition()){
-                    case 0:{
-                        //mAlbumFragment = AlbumFragment.newInstance("相册", userId);
+                switch (tab.getPosition()) {
+                    case 0: {
                         if (mAlbumFragment == null) {
                             mAlbumFragment = new AlbumFragment();
                             Bundle bundle = new Bundle();
                             bundle.putInt("id", -1);
                             mAlbumFragment.setArguments(bundle);
-                            //mAlbumFragment = AlbumFragment.newInstance("相册");
                         }
                         transaction = fm.beginTransaction();
                         transaction.replace(R.id.ll_tbme, mAlbumFragment);
                         transaction.commit();
                         break;
                     }
-                    case 1:{
+                    case 1: {
                         if (mDynamicFragment == null) {
                             mDynamicFragment = new DynamicFragment();
                             Bundle bundle = new Bundle();
@@ -251,11 +236,12 @@ public class MeFragment extends Fragment {
                         transaction.commit();
                         break;
                     }
-                    case 2:{
+                    case 2: {
                         intent = new Intent(getActivity(), LikeActivity.class);
                         startActivity(intent);
                         break;
-                    }case 3:{
+                    }
+                    case 3: {
                         intent = new Intent(getActivity(), CollectActivity.class);
                         startActivity(intent);
                         break;
@@ -265,12 +251,15 @@ public class MeFragment extends Fragment {
                 }
                 tabLayout.getTabAt(0).select();
             }
+
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
 
             }
+
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
+                setDefaultFragment();
             }
         });
 
@@ -336,27 +325,6 @@ public class MeFragment extends Fragment {
 //        }
         return view;
     }
-    /*private void initFragment() {
-        mAboutFollowFragment=new AboutFollowFragment();
-        mAboutMeFragment=new AboutMeFragment();
-    }
-    public class FragmentAdapter extends FragmentPagerAdapter {
-
-        private List<Fragment> fragmentList;
-
-        public FragmentAdapter(FragmentManager fm, List<Fragment> fragmentList) {
-            super(fm);
-            this.fragmentList = fragmentList;
-        }
-        @Override
-        public Fragment getItem(int position) {
-            return fragmentList.get(position);
-        }
-        @Override
-        public int getCount() {
-            return fragmentList.size();
-        }
-    }*/
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.user_menu, menu);
@@ -383,7 +351,16 @@ public class MeFragment extends Fragment {
         }
         return true;
     }
-
+    private void setDefaultFragment() {
+        FragmentManager fm = getChildFragmentManager();
+        FragmentTransaction transaction = fm.beginTransaction();
+        mAlbumFragment = new AlbumFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt("id", -1);
+        mAlbumFragment.setArguments(bundle);
+        transaction.replace(R.id.ll_tbme, mAlbumFragment);
+        transaction.commit();
+    }
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler(){
         @RequiresApi(api = Build.VERSION_CODES.M)

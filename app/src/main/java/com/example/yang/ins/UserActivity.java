@@ -17,10 +17,12 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,12 +53,14 @@ public class UserActivity extends AppCompatActivity {
     private TextView tv_dynamic, tv_concern, tv_follow, tv_user, tv_nickname, tv_bio;
     private Button btn_follow;
     private ImageButton ib_back;
+    private LinearLayout ll_follow,ll_concern;
     private CircleImageView civ;
     private String username, nickname, src, birthday, address, introduction = null;
     private int gender = 3, follow_num = 0, concern_num = 0, posts = 0;
     private boolean flag = false;
     private AlbumFragment mAlbumFragment;
     private DynamicFragment mDynamicFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,6 +80,8 @@ public class UserActivity extends AppCompatActivity {
                 finish();
             }
         });
+        ll_concern = (LinearLayout)  findViewById(R.id.ll_concern);
+        ll_follow = (LinearLayout) findViewById(R.id.ll_follow);
         tabLayout= (TabLayout)findViewById(R.id.tab_user);
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.album));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.dynamic));
@@ -84,6 +90,20 @@ public class UserActivity extends AppCompatActivity {
         Intent intent = getIntent();
         userId = intent.getIntExtra("userId", 0);
         Log.d("UserActivity", Integer.toString(userId));
+//        ll_follow.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(UserActivity.this, FollowActivity.class);
+//                startActivity(intent);
+//            }
+//        });
+//        ll_concern.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(UserActivity.this, ConcernActivity.class);
+//                startActivity(intent);
+//            }
+//        });
         //viewPager = (ViewPager) findViewById(R.id.viewpager);
         //adapter = new MyAdapter(getSupportFragmentManager(),this);
 //        FragmentManager man =UserActivity.this.getSupportFragmentManager();
@@ -109,6 +129,10 @@ public class UserActivity extends AppCompatActivity {
                 Intent intent;
                 switch (tab.getPosition()){
                     case 0:{
+//                        mAlbumFragment = AlbumFragment.newInstance("userId");
+//                        transaction.add(R.id.ll_tbuser, mAlbumFragment);
+//                        transaction.addToBackStack(null);
+//                        transaction.commit();
                         //mAlbumFragment = AlbumFragment.newInstance("相册", userId);
                         if (mAlbumFragment == null) {
                             mAlbumFragment = new AlbumFragment();
@@ -144,105 +168,7 @@ public class UserActivity extends AppCompatActivity {
             }
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-            }
-        });
-        btn_follow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!flag) {
-                    //现在是没关注状态
-                    Map<String, Object> map = new HashMap<>();
-                    map.put("pk", userId);
-                    HelloHttp.sendPostRequest("api/user/followyou", map, new okhttp3.Callback() {
-
-                        @Override
-                        public void onFailure(Call call, IOException e) {
-                            Log.e("UserActivity", "FAILURE");
-                            Looper.prepare();
-                            Toast.makeText(UserActivity.this, "服务器未响应", Toast.LENGTH_SHORT).show();
-                            Looper.loop();
-                        }
-
-                        @Override
-                        public void onResponse(Call call, Response response) throws IOException {
-                            String responseData = response.body().string();
-                            Log.d("UserActivity", responseData);
-                            String result = null;
-                            try {
-                                result = new JSONObject(responseData).getString("status");
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                            if(result.equals("Success")) {
-                                flag = true;
-                                Looper.prepare();
-                                Toast.makeText(UserActivity.this,"关注成功", Toast.LENGTH_SHORT).show();
-                                setButtonStyle(true);
-                                Looper.loop();
-                            }
-                            else if(result.equals("Failure")) {
-                                Looper.prepare();
-                                Toast.makeText(UserActivity.this,"记录已存在，已取消关注", Toast.LENGTH_SHORT).show();
-                                setButtonStyle(false);
-                                Looper.loop();
-                            }
-                            else if(result.equals("UnknownError")){
-                                Looper.prepare();
-                                Toast.makeText(UserActivity.this,"未知错误", Toast.LENGTH_SHORT).show();
-                                Looper.loop();
-                            }
-                            else {
-                                Looper.prepare();
-                                Toast.makeText(UserActivity.this, result, Toast.LENGTH_SHORT).show();
-                                Looper.loop();
-                            }
-                        }
-                    });
-                }
-                else {
-                    //现在是关注状态
-                    Map<String, Object> map = new HashMap<>();
-                    map.put("pk", userId);
-                    HelloHttp.sendDeleteRequest("api/user/followyou", map, new okhttp3.Callback() {
-
-                        @Override
-                        public void onFailure(Call call, IOException e) {
-                            Log.e("UserActivity", "FAILURE");
-                            Looper.prepare();
-                            Toast.makeText(UserActivity.this, "服务器未响应", Toast.LENGTH_SHORT).show();
-                            Looper.loop();
-                        }
-
-                        @Override
-                        public void onResponse(Call call, Response response) throws IOException {
-                            String responseData = response.body().string();
-                            Log.d("UserActivity", responseData);
-                            String result = null;
-                            try {
-                                result = new JSONObject(responseData).getString("status");
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                            if(result.equals("Success")) {
-                                flag = true;
-                                Looper.prepare();
-                                Toast.makeText(UserActivity.this,"取消关注成功", Toast.LENGTH_SHORT).show();
-                                setButtonStyle(false);
-                                Looper.loop();
-                            }
-                            else if(result.equals("UnknownError")){
-                                Looper.prepare();
-                                Toast.makeText(UserActivity.this,"未知错误", Toast.LENGTH_SHORT).show();
-                                Looper.loop();
-                            }
-                            else {
-                                Looper.prepare();
-                                Toast.makeText(UserActivity.this, result, Toast.LENGTH_SHORT).show();
-                                Looper.loop();
-                            }
-                        }
-                    });
-                }
+                setDefaultFragment();
             }
         });
         Map<String, Object> map = new HashMap<>();
@@ -308,17 +234,17 @@ public class UserActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                if(result.equals("Yes")) {
+                if(result != null && result.equals("Yes")) {
                     //这个人你关注了
                     flag = true;
                     setButtonStyle(true);
                 }
-                else if(result.equals("No")) {
+                else if(result != null && result.equals("No")) {
                     //这个人你没关注
                     flag = false;
                     setButtonStyle(false);
                 }
-                else if(result.equals("UnknownError")) {
+                else if(result != null && result.equals("UnknownError")) {
                     Looper.prepare();
                     Toast.makeText(UserActivity.this, result, Toast.LENGTH_SHORT).show();
                     Looper.loop();
@@ -330,15 +256,135 @@ public class UserActivity extends AppCompatActivity {
                 }
             }
         });
+        btn_follow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!flag) {
+                    //现在是没关注状态
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("pk", userId);
+                    //setButtonStyle(false);
+                    HelloHttp.sendPostRequest("api/user/followyou", map, new okhttp3.Callback() {
+                        @Override
+                        public void onFailure(Call call, IOException e) {
+                            Log.e("UserActivity", "FAILURE");
+                            setButtonStyle(false);
+                            Looper.prepare();
+                            Toast.makeText(UserActivity.this, "服务器错误", Toast.LENGTH_SHORT).show();
+                            Looper.loop();
+                        }
+
+                        @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+                        @Override
+                        public void onResponse(Call call, Response response) throws IOException {
+                            String responseData = response.body().string();
+                            Log.d("UserActivity", responseData);
+                            String result = null;
+                            try {
+                                result = new JSONObject(responseData).getString("status");
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                //setButtonStyle(true);
+                            }
+                            if(result != null && result.equals("Success")) {
+                                Looper.prepare();
+                                setButtonStyle(true);
+                                flag = true;
+                                Toast.makeText(UserActivity.this, "关注成功", Toast.LENGTH_SHORT).show();
+                                Looper.loop();
+                            }
+                            else {
+                                setButtonStyle(false);
+                                if(result != null && result.equals("UnknownError")) {
+                                    Looper.prepare();
+                                    Toast.makeText(UserActivity.this, "未知错误", Toast.LENGTH_SHORT).show();
+                                    Looper.loop();
+                                }
+                                else if(result != null && result.equals("Failure")) {
+                                    Looper.prepare();
+                                    Toast.makeText(UserActivity.this, "错误：重复的关注请求，已取消关注", Toast.LENGTH_SHORT).show();
+                                    Looper.loop();
+                                }
+                                else {
+                                    Looper.prepare();
+                                    Toast.makeText(UserActivity.this, result, Toast.LENGTH_SHORT ).show();
+                                    Looper.loop();
+                                }
+                            }
+                        }
+                    });
+                }
+                else {
+                    //现在是关注状态
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("pk", userId);
+                    setButtonStyle(true);
+                    HelloHttp.sendDeleteRequest("api/user/followyou", map, new okhttp3.Callback() {
+                        @Override
+                        public void onFailure(Call call, IOException e) {
+                            Log.e("UserActivity", "FAILURE");
+                            setButtonStyle(false);
+                            Looper.prepare();
+                            Toast.makeText(UserActivity.this, "服务器错误", Toast.LENGTH_SHORT).show();
+                            Looper.loop();
+                        }
+
+                        @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+                        @Override
+                        public void onResponse(Call call, Response response) throws IOException {
+                            String responseData = response.body().string();
+                            Log.d("UserActivity", responseData);
+                            String result = null;
+                            try {
+                                result = new JSONObject(responseData).getString("status");
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                //setButtonStyle(false);
+                            }
+                            if(result != null && result.equals("Success")) {
+                                Looper.prepare();
+                                setButtonStyle(false);
+                                flag = false;
+                                Toast.makeText(UserActivity.this, "已取消关注", Toast.LENGTH_SHORT).show();
+                                Looper.loop();
+                            }
+                            else {
+                                setButtonStyle(false);
+                                if(result != null && result.equals("UnknownError")) {
+                                    Looper.prepare();
+                                    Toast.makeText(UserActivity.this, "未知错误", Toast.LENGTH_SHORT).show();
+                                    Looper.loop();
+                                }
+                                else {
+                                    Looper.prepare();
+                                    Toast.makeText(UserActivity.this, result, Toast.LENGTH_SHORT ).show();
+                                    Looper.loop();
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+        });
     }
-    private void initFragment() {
-        if(mAlbumFragment == null) {
-            mAlbumFragment=new AlbumFragment();
-        }
-        if(mDynamicFragment == null) {
-            mDynamicFragment=new DynamicFragment();
-        }
+    private void setDefaultFragment() {
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction transaction = fm.beginTransaction();
+        mAlbumFragment = new AlbumFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt("id", 0);
+        mAlbumFragment.setArguments(bundle);
+        transaction.replace(R.id.ll_tbuser, mAlbumFragment);
+        transaction.commit();
     }
+//    private void initFragment() {
+//        if(mAlbumFragment == null) {
+//            mAlbumFragment=new AlbumFragment();
+//        }
+//        if(mDynamicFragment == null) {
+//            mDynamicFragment=new DynamicFragment();
+//        }
+//    }
 //    public class MyAdapter extends FragmentPagerAdapter {
 //
 //        private List<Fragment> fragmentList;
@@ -415,13 +461,13 @@ public class UserActivity extends AppCompatActivity {
                     //这个人你关注了
                     btn_follow.setText("关注中");
                     btn_follow.setTextColor(Color.BLACK);
-                    btn_follow.setBackground(getResources().getDrawable(R.drawable.buttonshape2));
+                    //btn_follow.setBackground(getResources().getDrawable(R.drawable.buttonshape2));
                 }
                 else {
                     //这个人你没关注
                     btn_follow.setText("关注");
-                    btn_follow.setTextColor(Color.WHITE);
-                    btn_follow.setBackground(getResources().getDrawable(R.drawable.buttonshape3));
+                    btn_follow.setTextColor(Color.BLACK);
+                    //btn_follow.setBackground(getResources().getDrawable(R.drawable.buttonshape3));
                 }
             }
         });

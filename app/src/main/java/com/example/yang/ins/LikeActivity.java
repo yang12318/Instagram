@@ -2,9 +2,12 @@ package com.example.yang.ins;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -12,6 +15,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -93,7 +97,7 @@ public class LikeActivity extends AppCompatActivity {
         });
     }
     private void initData() {
-        mDynamicList = new ArrayList<>();
+        //mDynamicList = new ArrayList<>();
         /*Dynamic dynamic = mDynamicList.get(position);
         int id = dynamic.getId();*/
         Map<String, Object> map = new HashMap<>();
@@ -119,6 +123,7 @@ public class LikeActivity extends AppCompatActivity {
                         Dynamic dynamic = new Dynamic();
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         dynamic.setId(jsonObject.getInt("post_id"));
+                        dynamic.setCount(jsonObject.getInt("photo_num"));
                         dynamic.setPhoto0("http://ktchen.cn"+jsonObject.getString("photo_0"));
                         mDynamicList.add(dynamic);
                     }
@@ -153,12 +158,30 @@ public class LikeActivity extends AppCompatActivity {
         adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-
             }
         });
         recyclerView.setAdapter(adapter);
     }
-
+    private void setiv(final boolean flag, final int position) {
+        runOnUiThread(new Runnable() {
+            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+            @Override
+            public void run() {
+                if(flag) {
+                    ImageView multi = (ImageView) adapter.getViewByPosition(recyclerView, position, R.id.iv_multi);
+                    if (multi != null) {
+                        multi.setVisibility(View.VISIBLE);
+                    }
+                }
+                else {
+                    ImageView multi = (ImageView) adapter.getViewByPosition(recyclerView, position, R.id.iv_multi);
+                    if (multi != null) {
+                        multi.setVisibility(View.INVISIBLE);
+                    }
+                }
+            }
+        });
+    }
 
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler(){

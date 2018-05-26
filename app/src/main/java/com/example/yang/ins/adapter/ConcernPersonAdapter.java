@@ -1,5 +1,7 @@
 package com.example.yang.ins.adapter;
 
+import android.graphics.Color;
+
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -9,10 +11,6 @@ import com.example.yang.ins.bean.Person;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-
-/**
- * Created by youxihouzainali on 2018/5/18.
- */
 
 public class ConcernPersonAdapter extends BaseQuickAdapter<Person, BaseViewHolder> {
     public ConcernPersonAdapter(int layoutResId, List<Person> list) {
@@ -28,5 +26,15 @@ public class ConcernPersonAdapter extends BaseQuickAdapter<Person, BaseViewHolde
         helper.addOnClickListener(R.id.concern_head);
         helper.addOnClickListener(R.id.concern_nickname);
         helper.addOnClickListener(R.id.concern_username);
+        if(item.getIsFollowed()) {
+            helper.setText(R.id.follow_cancel, "关注中");
+            helper.setTextColor(R.id.follow_cancel, Color.BLACK);
+            helper.setBackgroundRes(R.id.follow_cancel, R.drawable.buttonshape2);
+        }
+        else {
+            helper.setText(R.id.follow_cancel, "关注");
+            helper.setBackgroundRes(R.id.follow_cancel, R.drawable.buttonshape3);
+            helper.setTextColor(R.id.follow_cancel, Color.WHITE);
+        }
     }
 }

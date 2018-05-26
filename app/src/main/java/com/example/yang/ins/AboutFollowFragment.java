@@ -43,13 +43,30 @@ public class AboutFollowFragment extends Fragment{
     private EasyRefreshLayout easyRefreshLayout;
     private View view;
     private Info1Adapter adapter;
-    public static AboutFollowFragment newInstance(String param1) {
-        AboutFollowFragment fragment = new AboutFollowFragment();
-        Bundle args = new Bundle();
-        args.putString("0", param1);
-        fragment.setArguments(args);
-        return fragment;
+    private String mtd_id;
+//    public static AboutFollowFragment newInstance(int number) {
+//        Bundle args = new Bundle();
+//        args.putInt("123",number);
+//        AboutFollowFragment fragment = new AboutFollowFragment();
+//        fragment.setArguments(args);
+//        return fragment;
+//    }
+public static AboutFollowFragment newInstance(String mtd_id) {
+    AboutFollowFragment f = new AboutFollowFragment();
+    Bundle b = new Bundle();
+    b.putString("id", mtd_id);
+    f.setArguments(b);
+    return f;
+}
+
+    public void updateArguments(String mtd_id) {
+        this.mtd_id = mtd_id;
+        Bundle args = getArguments();
+        if (args != null) {
+            args.putString("id", mtd_id);
+        }
     }
+
     public AboutFollowFragment() {
 
     }
@@ -57,6 +74,11 @@ public class AboutFollowFragment extends Fragment{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            mtd_id = arguments.getString("id");
+        }
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)

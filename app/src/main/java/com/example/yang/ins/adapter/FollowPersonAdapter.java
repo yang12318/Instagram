@@ -12,10 +12,6 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-/**
- * Created by youxihouzainali on 2018/5/18.
- */
-
 public class FollowPersonAdapter extends BaseQuickAdapter<Person, BaseViewHolder> {
     public FollowPersonAdapter(int layoutResId, List<Person> list) {
         super(layoutResId, list);

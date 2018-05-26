@@ -95,6 +95,7 @@
             android:layout_marginRight="20dp"
             android:background="@drawable/buttonshape"
             android:text="登录"
+            android:textSize="15sp"
             android:textColor="#50000000" />
 
         <TextView

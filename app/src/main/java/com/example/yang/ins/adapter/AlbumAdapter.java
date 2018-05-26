@@ -20,5 +20,6 @@ public class AlbumAdapter extends BaseQuickAdapter<Dynamic, BaseViewHolder> {
     protected void convert(BaseViewHolder helper, Dynamic item) {
         Glide.with(mContext).load(item.getPhoto0()).into((ImageView) helper.getView(R.id.iv_picture));
         helper.addOnClickListener(R.id.iv_picture);
+        helper.setVisible(R.id.iv_multi,item.isIs_multi());
     }
 }

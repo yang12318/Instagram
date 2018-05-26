@@ -54,7 +54,7 @@ public class CommentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comment);
         Intent intent  = getIntent();
-        postid = intent.getIntExtra("postid", 0);
+        postid = intent.getIntExtra("post_id", 0);
         ib_back = (ImageButton) findViewById(R.id.ib_comment_back);
         et_send = (EditText) findViewById(R.id.et_send);
         ib_send = (ImageButton) findViewById(R.id.ib_send);

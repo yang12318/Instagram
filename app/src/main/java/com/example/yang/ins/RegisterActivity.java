@@ -1,10 +1,12 @@
 package com.example.yang.ins;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.media.Image;
 import android.os.Build;
 import android.os.Looper;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -33,7 +35,7 @@ import java.util.regex.Pattern;
 import okhttp3.Call;
 import okhttp3.Response;
 
-public class RegisterActivity extends AppCompatActivity implements View.OnClickListener{
+public class RegisterActivity extends AppCompatActivity implements View.OnClickListener,TextWatcher{
 
     private Button btn_next;
     private EditText et_email, et_name;
@@ -54,6 +56,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         btn_next.setOnClickListener(this);
         et_email = (EditText) findViewById(R.id.et_emailInput);
         et_name = (EditText) findViewById(R.id.et_nameInput);
+        et_email.addTextChangedListener(this);
+        et_name.addTextChangedListener(this);
         et_email.addTextChangedListener(new JumpTextWatcher(et_email, et_name));
         RelativeLayout container = (RelativeLayout) findViewById(R.id.register_container);
         container.setBackgroundResource(R.drawable.animation_list);
@@ -61,73 +65,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         anim.setEnterFadeDuration(6000);
         anim.setExitFadeDuration(2000);
         anim.start();
-        /*et_username.setOnFocusChangeListener(new userOnFocusChanageListener());
-        et_password.setOnFocusChangeListener(new userOnFocusChanageListener());
-        et_nickname.setOnFocusChangeListener(new userOnFocusChanageListener());
-        iv_username = (ImageView) findViewById(R.id.iv_delUser) ;
-        iv_nickname = (ImageView) findViewById(R.id.iv_delName);
-        iv_password = (ImageView) findViewById(R.id.iv_delPass);*/
-        //btn_next.setOnClickListener(this);
-        /*iv_password.setOnClickListener(this);
-        iv_nickname.setOnClickListener(this);
-        iv_username.setOnClickListener(this);
-        et_username.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                String str1 =  et_username.getText().toString();
-                if(str1.length()>0){
-                    iv_username.setVisibility(View.VISIBLE);
-                } else {
-                    iv_username.setVisibility(View.INVISIBLE);
-                }
-            }
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-        et_password.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                String str1 =  et_password.getText().toString();
-                if(str1.length()>0){
-                    iv_password.setVisibility(View.VISIBLE);
-                } else {
-                    iv_password.setVisibility(View.INVISIBLE);
-                }
-            }
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-        et_nickname.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                String str1 =  et_nickname.getText().toString();
-                if(str1.length()>0){
-                    iv_nickname.setVisibility(View.VISIBLE);
-                } else {
-                    iv_nickname.setVisibility(View.INVISIBLE);
-                }
-            }
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });*/
     }
 
     private void showToast(String text) {
@@ -202,22 +139,22 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             startActivity(intent);
         }
     }
-    /*
-    private class userOnFocusChanageListener implements View.OnFocusChangeListener {
-        @Override
-        public void onFocusChange(View v, boolean hasFocus) {
-            if ((v.getId() == et_username.getId()) & (et_username.getText().length() > 0)) {
-                iv_username.setVisibility(View.VISIBLE);
-            } else iv_username.setVisibility(View.INVISIBLE);
-            if ((v.getId() == et_password.getId()) & (et_password.getText().length() > 0)) {
-                iv_password.setVisibility(View.VISIBLE);
-            } else iv_password.setVisibility(View.INVISIBLE);
-            if ((v.getId() == et_nickname.getId()) & (et_nickname.getText().length() > 0)) {
-                iv_nickname.setVisibility(View.VISIBLE);
-            } else iv_nickname.setVisibility(View.INVISIBLE);
-        }
-    }*/
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        setButtonStyle(false);//在这里重复设置，以保证清除任意EditText中的内容，按钮重新变回不可点击状态
+    }
 
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+        if (!(et_email.getText().toString().equals("") || et_name.getText().toString().equals(""))){
+            setButtonStyle(true);
+        }
+    }
     private class JumpTextWatcher implements TextWatcher {
         private EditText mThisView = null;
         private View mNextView = null;
@@ -267,5 +204,21 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             flag = false;
         }
         return flag;
+    }
+    private void setButtonStyle(final boolean flag1) {
+        runOnUiThread(new Runnable() {
+            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+            @Override
+            public void run() {
+                if(flag1) {
+                    btn_next.setTextColor(Color.BLACK);
+                    btn_next.setBackground(getResources().getDrawable(R.drawable.buttonshape1));
+                }
+                else {
+                    btn_next.setTextColor(Color.parseColor("#50000000"));
+                    btn_next.setBackground(getResources().getDrawable(R.drawable.buttonshape));
+                }
+            }
+        });
     }
 }

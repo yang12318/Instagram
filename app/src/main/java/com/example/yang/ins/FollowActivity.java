@@ -43,7 +43,7 @@ import okhttp3.Call;
 import okhttp3.Response;
 
 public class FollowActivity extends AppCompatActivity {
-
+    private int userid;
     private ImageButton btn_back;
     private List<Person> list;
     private RecyclerView recyclerView;
@@ -53,6 +53,8 @@ public class FollowActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_follow);
+        Intent intent = getIntent();
+        userid = intent.getIntExtra("user_id", 0);
         btn_back = (ImageButton) findViewById(R.id.ib_follow_back);
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,6 +100,7 @@ public class FollowActivity extends AppCompatActivity {
 
     private void initData() {
         Map<String, Object> map = new HashMap<>();
+        map.put("user_id", userid);
         list = new ArrayList<>();
         HelloHttp.sendGetRequest("api/user/friends", map, new okhttp3.Callback() {
             @Override
@@ -122,7 +125,7 @@ public class FollowActivity extends AppCompatActivity {
                         person.setName(jsonObject.getString("username"));
                         person.setNickname(jsonObject.getString("nickname"));
                         person.setSrc(jsonObject.getString("profile_picture"));
-                        person.setIsFollowed(true);
+                        person.setIsFollowed(jsonObject.getBoolean("is_guanzhu"));
 //                        Map<String, Object> map2 = new HashMap<>();
 //                        HelloHttp.sendGetRequest("api/user/checkfollow/"+Integer.toString(person.getId()), map2, new okhttp3.Callback() {
 //                            @Override

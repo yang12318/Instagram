@@ -39,7 +39,7 @@ import okhttp3.Call;
 import okhttp3.Response;
 
 public class ConcernActivity extends AppCompatActivity {
-
+    private int userid;
     private ImageButton ib_back;
     private List<Person> list;
     private RecyclerView recyclerView;
@@ -50,6 +50,8 @@ public class ConcernActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_concern);
+        Intent intent = getIntent();
+        userid = intent.getIntExtra("user_id", 0);
         ib_back = (ImageButton) findViewById(R.id.ib_concern_back);
         ib_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,6 +97,7 @@ public class ConcernActivity extends AppCompatActivity {
 
     private void initData() {
         Map<String, Object> map = new HashMap<>();
+        map.put("user_id", userid);
         list = new ArrayList<>();
         HelloHttp.sendGetRequest("api/user/lookme", map, new okhttp3.Callback() {
             @Override
@@ -136,9 +139,56 @@ public class ConcernActivity extends AppCompatActivity {
                 }
             }
         });
-    }
+        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, final int position) {
+                int id = list.get(position).getId();
+                Intent intent2 = getIntent();
+                intent2.putExtra("userId", id);
+                Map<String, Object> map2 = new HashMap<>();
+                HelloHttp.sendGetRequest("api/user/checkfollow/"+Integer.toString(id), map2, new okhttp3.Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        Log.e("ConcernActivity", "FAILURE");
+                        Looper.prepare();
+                        Toast.makeText(ConcernActivity.this, "服务器错误", Toast.LENGTH_SHORT).show();
+                        Looper.loop();
+                    }
 
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                        String responseData = response.body().string();
+                        Log.d("ConcernActivity", responseData);
+                        String result = null;
+                        try {
+                            result = new JSONObject(responseData).getString("status");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        if (result.equals("Yes")) {
+                            //这个人你关注了
+                            flag = true;
+                            setButtonStyle(true, position);
+                        } else if (result.equals("No")) {
+                            //这个人你没关注
+                            flag = false;
+                            setButtonStyle(false, position);
+                        } else if (result.equals("UnknownError")) {
+                            Looper.prepare();
+                            Toast.makeText(ConcernActivity.this, result, Toast.LENGTH_SHORT).show();
+                            Looper.loop();
+                        } else {
+                            Looper.prepare();
+                            Toast.makeText(ConcernActivity.this, result, Toast.LENGTH_SHORT).show();
+                            Looper.loop();
+                        }
+                    }
+                });
+            }
+        });
+    }
     private void initAdapter() {
+
         adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, final int position) {
@@ -245,48 +295,6 @@ public class ConcernActivity extends AppCompatActivity {
                     intent.putExtra("userId", userId);
                     startActivity(intent);
                 }
-//                int userId = list.get(position).getId();
-//                Intent intent = getIntent();
-//                intent.putExtra("userId", userId);
-//                Map<String, Object> map2 = new HashMap<>();
-//                HelloHttp.sendGetRequest("api/user/checkfollow/"+Integer.toString(userId), map2, new okhttp3.Callback() {
-//                    @Override
-//                    public void onFailure(Call call, IOException e) {
-//                        Log.e("UserActivity", "FAILURE");
-//                        Looper.prepare();
-//                        Toast.makeText(ConcernActivity.this, "服务器错误", Toast.LENGTH_SHORT).show();
-//                        Looper.loop();
-//                    }
-//
-//                    @Override
-//                    public void onResponse(Call call, Response response) throws IOException {
-//                        String responseData = response.body().string();
-//                        Log.d("UserActivity", responseData);
-//                        String result = null;
-//                        try {
-//                            result = new JSONObject(responseData).getString("status");
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }
-//                        if (result.equals("Yes")) {
-//                            //这个人你关注了
-//                            flag = true;
-//                            setButtonStyle(true, position);
-//                        } else if (result.equals("No")) {
-//                            //这个人你没关注
-//                            flag = false;
-//                            setButtonStyle(false, position);
-//                        } else if (result.equals("UnknownError")) {
-//                            Looper.prepare();
-//                            Toast.makeText(ConcernActivity.this, result, Toast.LENGTH_SHORT).show();
-//                            Looper.loop();
-//                        } else {
-//                            Looper.prepare();
-//                            Toast.makeText(ConcernActivity.this, result, Toast.LENGTH_SHORT).show();
-//                            Looper.loop();
-//                        }
-//                    }
-//                });
             }
         });
         recyclerView.setAdapter(adapter);

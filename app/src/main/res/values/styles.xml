@@ -3,7 +3,7 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">#ffffff</item>
-        <item name="colorPrimaryDark">#f2f2f2</item>
+        <item name="colorPrimaryDark">#bfbfbf</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -13,7 +13,7 @@
     </style>
     <style name="MyEditText" parent="Theme.AppCompat.Light">
         <item name="colorControlNormal">@android:color/darker_gray</item>
-        <item name="colorControlActivated">#1296db</item>
+        <item name="colorControlActivated">#1bb5ed</item>
     </style>
     <!--style name="MatchWrapTv" parent="MatchWrap">
         <item name="android:textSize">12sp</item>
