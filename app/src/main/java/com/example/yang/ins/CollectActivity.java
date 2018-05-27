@@ -40,9 +40,6 @@ public class CollectActivity extends AppCompatActivity {
     private List<Dynamic> mDynamicList;
     private RecyclerView recyclerView;
     private ImageButton ib_back;
-    private ImageView iv;
-    private String src, Pub_time, introduction = null;
-    private int user , collects_num = 0, com_num = 0;
     private EasyRefreshLayout easyRefreshLayout;
     private AlbumAdapter adapter;
     @Override
@@ -50,7 +47,6 @@ public class CollectActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_collect);
         adapter = new AlbumAdapter(R.layout.item_album, mDynamicList);
-        iv = (ImageView) findViewById(R.id.iv_picture) ;
         ib_back = (ImageButton) findViewById(R.id.ib_collect_back);
         ib_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,9 +89,6 @@ public class CollectActivity extends AppCompatActivity {
         });
     }
     private void initData() {
-        mDynamicList = new ArrayList<>();
-        /*Dynamic dynamic = mDynamicList.get(position);
-        int id = dynamic.getId();*/
         Map<String, Object> map = new HashMap<>();
         mDynamicList = new ArrayList<>();
         //map.put("id", id);
@@ -113,11 +106,14 @@ public class CollectActivity extends AppCompatActivity {
                 String responseData = response.body().string();
                 Log.d("CollectActivity", responseData);
                 try {
-                    JSONArray jsonArray = new JSONArray(responseData);
+                    //JSONArray jsonArray = new JSONArray(responseData);
+                    JSONObject jsonObject1 = new JSONObject(responseData);
+                    JSONArray jsonArray = jsonObject1.getJSONArray("result");
                     for (int i = 0; i < jsonArray.length(); i++) {
                         Dynamic dynamic = new Dynamic();
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        dynamic.setId(jsonObject.getInt("id"));
+                        dynamic.setId(jsonObject.getInt("post_id"));
+                        dynamic.setIs_multi(jsonObject.getBoolean("is_many"));
                         dynamic.setPhoto0("http://ktchen.cn"+jsonObject.getString("photo_0"));
                         mDynamicList.add(dynamic);
                     }

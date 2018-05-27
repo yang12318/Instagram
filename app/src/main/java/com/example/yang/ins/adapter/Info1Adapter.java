@@ -13,10 +13,6 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-/**
- * Created by yang on 2018/5/20.
- */
-
 public class Info1Adapter extends BaseQuickAdapter<Info1, BaseViewHolder> {
     public Info1Adapter(int layoutResId, @Nullable List<Info1> data) {
         super(layoutResId, data);

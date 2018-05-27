@@ -13,10 +13,6 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-/**
- * Created by youxihouzainali on 2018/5/20.
- */
-
 public class DynamicAdapter extends BaseQuickAdapter<Dynamic, BaseViewHolder> {
 
     public DynamicAdapter(int layoutResId, @Nullable List<Dynamic> data) {

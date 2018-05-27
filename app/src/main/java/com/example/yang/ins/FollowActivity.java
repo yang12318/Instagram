@@ -99,33 +99,43 @@ public class FollowActivity extends AppCompatActivity {
     }
 
     private void initData() {
-        Map<String, Object> map = new HashMap<>();
-        map.put("user_id", userid);
-        list = new ArrayList<>();
-        HelloHttp.sendGetRequest("api/user/friends", map, new okhttp3.Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                Log.e("FollowActivity", "FAILURE");
-                Looper.prepare();
-                Toast.makeText(FollowActivity.this, "服务器错误", Toast.LENGTH_SHORT).show();
-                Looper.loop();
+        MainApplication app = MainApplication.getInstance();
+        Map<String, Integer> mapParam = app.mInfoMap;
+        for(Map.Entry<String, Integer> item_map:mapParam.entrySet()) {
+            if(item_map.getKey() == "id") {
+                userid = item_map.getValue();
             }
+        }
+        if(userid == 0) {
+            Toast.makeText(FollowActivity.this, "全局内存中保存的信息为空", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            Map<String, Object> map = new HashMap<>();
+            list = new ArrayList<>();
+            HelloHttp.sendGetRequest("api/user/friends", map, new okhttp3.Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    Log.e("FollowActivity", "FAILURE");
+                    Looper.prepare();
+                    Toast.makeText(FollowActivity.this, "服务器错误", Toast.LENGTH_SHORT).show();
+                    Looper.loop();
+                }
 
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                String responseData = response.body().string();
-                Log.d("FollowActivity", responseData);
-                JSONArray jsonArray = null;
-                try {
-                    jsonArray = new JSONArray(responseData);
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        final Person person = new Person();
-                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        person.setId(jsonObject.getInt("id"));
-                        person.setName(jsonObject.getString("username"));
-                        person.setNickname(jsonObject.getString("nickname"));
-                        person.setSrc(jsonObject.getString("profile_picture"));
-                        person.setIsFollowed(jsonObject.getBoolean("is_guanzhu"));
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    String responseData = response.body().string();
+                    Log.d("FollowActivity", responseData);
+                    JSONArray jsonArray = null;
+                    try {
+                        jsonArray = new JSONArray(responseData);
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            final Person person = new Person();
+                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+                            person.setId(jsonObject.getInt("id"));
+                            person.setName(jsonObject.getString("username"));
+                            person.setNickname(jsonObject.getString("nickname"));
+                            person.setSrc(jsonObject.getString("profile_picture"));
+                            person.setIsFollowed(jsonObject.getBoolean("is_guanzhu"));
 //                        Map<String, Object> map2 = new HashMap<>();
 //                        HelloHttp.sendGetRequest("api/user/checkfollow/"+Integer.toString(person.getId()), map2, new okhttp3.Callback() {
 //                            @Override
@@ -168,23 +178,110 @@ public class FollowActivity extends AppCompatActivity {
 //                                }
 //                            }
 //                        });
-                        list.add(person);
-                    }
-                    mHandler.sendEmptyMessageDelayed(1, 0);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    try {
-                        String result = null;
-                        result = new JSONObject(responseData).getString("status");
-                        Looper.prepare();
-                        Toast.makeText(FollowActivity.this, result, Toast.LENGTH_SHORT).show();
-                        Looper.loop();
-                    } catch (JSONException e1) {
-                        e1.printStackTrace();
+                            list.add(person);
+                        }
+                        mHandler.sendEmptyMessageDelayed(1, 0);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        try {
+                            String result = null;
+                            result = new JSONObject(responseData).getString("status");
+                            Looper.prepare();
+                            Toast.makeText(FollowActivity.this, result, Toast.LENGTH_SHORT).show();
+                            Looper.loop();
+                        } catch (JSONException e1) {
+                            e1.printStackTrace();
+                        }
                     }
                 }
-            }
-        });
+            });
+        }
+//        Map<String, Object> map = new HashMap<>();
+//        map.put("user_id", userid);
+//        list = new ArrayList<>();
+//        HelloHttp.sendGetRequest("api/user/friends", map, new okhttp3.Callback() {
+//            @Override
+//            public void onFailure(Call call, IOException e) {
+//                Log.e("FollowActivity", "FAILURE");
+//                Looper.prepare();
+//                Toast.makeText(FollowActivity.this, "服务器错误", Toast.LENGTH_SHORT).show();
+//                Looper.loop();
+//            }
+//
+//            @Override
+//            public void onResponse(Call call, Response response) throws IOException {
+//                String responseData = response.body().string();
+//                Log.d("FollowActivity", responseData);
+//                JSONArray jsonArray = null;
+//                try {
+//                    jsonArray = new JSONArray(responseData);
+//                    for (int i = 0; i < jsonArray.length(); i++) {
+//                        final Person person = new Person();
+//                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+//                        person.setId(jsonObject.getInt("id"));
+//                        person.setName(jsonObject.getString("username"));
+//                        person.setNickname(jsonObject.getString("nickname"));
+//                        person.setSrc(jsonObject.getString("profile_picture"));
+//                        person.setIsFollowed(jsonObject.getBoolean("is_guanzhu"));
+////                        Map<String, Object> map2 = new HashMap<>();
+////                        HelloHttp.sendGetRequest("api/user/checkfollow/"+Integer.toString(person.getId()), map2, new okhttp3.Callback() {
+////                            @Override
+////                            public void onFailure(Call call, IOException e) {
+////                                Log.e("FollowActivity", "FAILURE");
+////                                Looper.prepare();
+////                                Toast.makeText(FollowActivity.this, "服务器错误", Toast.LENGTH_SHORT).show();
+////                                Looper.loop();
+////                            }
+////
+////                            @Override
+////                            public void onResponse(Call call, Response response) throws IOException {
+////                                String responseData = response.body().string();
+////                                Log.d("FollowActivity", responseData);
+////                                String result = null;
+////                                try {
+////                                    result = new JSONObject(responseData).getString("status");
+////                                } catch (JSONException e) {
+////                                    e.printStackTrace();
+////                                }
+////                                if(result.equals("Yes")) {
+////                                    //这个人你关注了
+////                                    person.setIsFollowed(true);
+////                                }
+////                                else if(result.equals("No")) {
+////                                    //这个人你没关注
+////                                    person.setIsFollowed(false);
+////                                }
+////                                else if(result.equals("UnknownError")) {
+////                                    person.setIsFollowed(false);
+////                                    Looper.prepare();
+////                                    Toast.makeText(FollowActivity.this, result, Toast.LENGTH_SHORT).show();
+////                                    Looper.loop();
+////                                }
+////                                else {
+////                                    person.setIsFollowed(false);
+////                                    Looper.prepare();
+////                                    Toast.makeText(FollowActivity.this, result, Toast.LENGTH_SHORT).show();
+////                                    Looper.loop();
+////                                }
+////                            }
+////                        });
+//                        list.add(person);
+//                    }
+//                    mHandler.sendEmptyMessageDelayed(1, 0);
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                    try {
+//                        String result = null;
+//                        result = new JSONObject(responseData).getString("status");
+//                        Looper.prepare();
+//                        Toast.makeText(FollowActivity.this, result, Toast.LENGTH_SHORT).show();
+//                        Looper.loop();
+//                    } catch (JSONException e1) {
+//                        e1.printStackTrace();
+//                    }
+//                }
+//            }
+//        });
     }
 
     private void initAdapter() {

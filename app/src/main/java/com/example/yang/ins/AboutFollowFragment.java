@@ -29,6 +29,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,13 +45,6 @@ public class AboutFollowFragment extends Fragment{
     private View view;
     private Info1Adapter adapter;
     private String mtd_id;
-//    public static AboutFollowFragment newInstance(int number) {
-//        Bundle args = new Bundle();
-//        args.putInt("123",number);
-//        AboutFollowFragment fragment = new AboutFollowFragment();
-//        fragment.setArguments(args);
-//        return fragment;
-//    }
 public static AboutFollowFragment newInstance(String mtd_id) {
     AboutFollowFragment f = new AboutFollowFragment();
     Bundle b = new Bundle();
@@ -58,14 +52,6 @@ public static AboutFollowFragment newInstance(String mtd_id) {
     f.setArguments(b);
     return f;
 }
-
-    public void updateArguments(String mtd_id) {
-        this.mtd_id = mtd_id;
-        Bundle args = getArguments();
-        if (args != null) {
-            args.putString("id", mtd_id);
-        }
-    }
 
     public AboutFollowFragment() {
 
@@ -75,9 +61,9 @@ public static AboutFollowFragment newInstance(String mtd_id) {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle arguments = getArguments();
-        if (arguments != null) {
-            mtd_id = arguments.getString("id");
-        }
+//        if (arguments != null) {
+//            mtd_id = arguments.getString("id");
+//        }
 
     }
 
@@ -87,7 +73,7 @@ public static AboutFollowFragment newInstance(String mtd_id) {
         view = inflater.inflate(R.layout.fragment_about_follow, container, false);
         Log.e("AboutFollow", "onCreateView");
         Bundle bundle = getArguments();
-        adapter = new Info1Adapter(R.layout.item_album, mInfoList);
+        adapter = new Info1Adapter(R.layout.item_about_follow, mInfoList);
         initView();
         initData();
         adapter.setNewData(mInfoList);
@@ -133,6 +119,7 @@ public static AboutFollowFragment newInstance(String mtd_id) {
 
     private void initData() {
         Map<String, Object> map = new HashMap<>();
+        mInfoList = new ArrayList<>();
         HelloHttp.sendGetRequest("api/user/friendmessage", map, new okhttp3.Callback() {
             @Override
             public void onFailure(Call call, IOException e) {

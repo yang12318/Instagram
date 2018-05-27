@@ -1,9 +1,5 @@
 package com.example.yang.ins.bean;
 
-/**
- * Created by yang on 2018/5/20.
- */
-
 public class Info1 {
     private int postId;
     private int userId;

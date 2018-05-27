@@ -122,7 +122,7 @@ public class AlbumFragment extends Fragment{
                         Dynamic dynamic = new Dynamic();
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         dynamic.setId(jsonObject.getInt("post_id"));
-                        dynamic.setCount(jsonObject.getInt("photo_num"));
+                        dynamic.setIs_multi(jsonObject.getBoolean("is_many"));
                         dynamic.setPhoto0("http://ktchen.cn"+jsonObject.getString("photo_0"));
                         mDynamicList.add(dynamic);
                     }
@@ -141,11 +141,6 @@ public class AlbumFragment extends Fragment{
                 }
             }
         });
-       // ImageView multi = (ImageView) getChildAt(0).findViewById(R.id.iv_multi);
-//        ImageView multi = (ImageView) adapter.getViewByPosition(recyclerView, position, R.id.iv_multi);
-//        int num = mDynamicList.get(position).getCount();
-//        if(num > 1)multi.setVisibility(View.VISIBLE);
-//        else multi.setVisibility(View.INVISIBLE);
     }
 
     @SuppressWarnings("unchecked")
@@ -167,21 +162,6 @@ public class AlbumFragment extends Fragment{
         });
         recyclerView.setAdapter(adapter);
     }
-    private void setiv(final boolean flag, final int position) {
-        if(flag) {
-            ImageView multi = (ImageView) adapter.getViewByPosition(recyclerView, position, R.id.iv_multi);
-            if (multi != null) {
-                multi.setVisibility(View.VISIBLE);
-            }
-        }
-        else {
-            ImageView multi = (ImageView) adapter.getViewByPosition(recyclerView, position, R.id.iv_multi);
-            if (multi != null) {
-                multi.setVisibility(View.INVISIBLE);
-            }
-        }
-    }
-
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler(){
         @SuppressLint("CheckResult")

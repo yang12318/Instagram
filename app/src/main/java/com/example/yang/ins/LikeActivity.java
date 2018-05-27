@@ -97,12 +97,8 @@ public class LikeActivity extends AppCompatActivity {
         });
     }
     private void initData() {
-        //mDynamicList = new ArrayList<>();
-        /*Dynamic dynamic = mDynamicList.get(position);
-        int id = dynamic.getId();*/
         Map<String, Object> map = new HashMap<>();
         mDynamicList = new ArrayList<>();
-        //map.put("id", id);
         HelloHttp.sendGetRequest("api/post/dianzan",map,new okhttp3.Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -123,7 +119,7 @@ public class LikeActivity extends AppCompatActivity {
                         Dynamic dynamic = new Dynamic();
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         dynamic.setId(jsonObject.getInt("post_id"));
-                        dynamic.setCount(jsonObject.getInt("photo_num"));
+                        dynamic.setIs_multi(jsonObject.getBoolean("is_many"));
                         dynamic.setPhoto0("http://ktchen.cn"+jsonObject.getString("photo_0"));
                         mDynamicList.add(dynamic);
                     }
@@ -161,26 +157,6 @@ public class LikeActivity extends AppCompatActivity {
             }
         });
         recyclerView.setAdapter(adapter);
-    }
-    private void setiv(final boolean flag, final int position) {
-        runOnUiThread(new Runnable() {
-            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
-            @Override
-            public void run() {
-                if(flag) {
-                    ImageView multi = (ImageView) adapter.getViewByPosition(recyclerView, position, R.id.iv_multi);
-                    if (multi != null) {
-                        multi.setVisibility(View.VISIBLE);
-                    }
-                }
-                else {
-                    ImageView multi = (ImageView) adapter.getViewByPosition(recyclerView, position, R.id.iv_multi);
-                    if (multi != null) {
-                        multi.setVisibility(View.INVISIBLE);
-                    }
-                }
-            }
-        });
     }
 
     @SuppressLint("HandlerLeak")

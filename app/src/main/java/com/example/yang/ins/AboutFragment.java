@@ -1,5 +1,9 @@
 package com.example.yang.ins;
 
+import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
@@ -8,6 +12,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +26,7 @@ public class AboutFragment extends Fragment{
     private AboutFollowFragment mAboutFollowFragment;
     private AboutMeFragment mAboutMeFragment;
     private List<String> Title;
-    FragmentStatePagerAdapter mAdapter;
+    private FragmentStatePagerAdapter mAdapter;
     private List<Fragment> flist;
     public static AboutFragment newInstance(String param1) {
         AboutFragment fragment = new AboutFragment();
@@ -54,8 +59,6 @@ public class AboutFragment extends Fragment{
         mViewPager = (ViewPager) view.findViewById(R.id.viewpager);
         mTabLayout = (TabLayout) view.findViewById(R.id.tabLayout);
         mTabLayout.setTabMode(TabLayout.MODE_FIXED);//设置tab模式，当前为系统默认模式
-        //FragmentManager man = AboutFragment.this.getChildFragmentManager();
-        //init();
         flist=new ArrayList<Fragment>();
         flist.add(mAboutFollowFragment);
         flist.add(mAboutMeFragment);
@@ -65,74 +68,11 @@ public class AboutFragment extends Fragment{
         mTabLayout.addTab(mTabLayout.newTab().setText(Title.get(0)));
         mTabLayout.addTab(mTabLayout.newTab().setText(Title.get(1)));
         mAdapter = new FragmentAdapter(getChildFragmentManager(),Title,flist);
-        //mAdapter= new FragmentAdapter(man,flist);
         mViewPager.setAdapter(mAdapter);//给ViewPager设置适配器
         mTabLayout.setupWithViewPager(mViewPager);//将TabLayout和ViewPager关联起来。
         mTabLayout.setTabsFromPagerAdapter(mAdapter);//给Tabs设置适配器
-//        mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-//            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
-//            @Override
-//            public void onTabSelected(TabLayout.Tab tab) {
-//                mViewPager.setCurrentItem(tab.getPosition());
-//                Log.e("TAG", "tab position:" + tab.getPosition());
-//                FragmentManager fm = AboutFragment.this.getChildFragmentManager();
-//                //开启事务
-//                android.support.v4.app.FragmentTransaction transaction = fm.beginTransaction();
-//                Intent intent;
-//                switch (tab.getPosition()) {
-//                    case 0: {
-//                        //mAlbumFragment = AlbumFragment.newInstance("相册", userId);
-//                        if (mAboutFollowFragment == null) {
-//                            mAboutFollowFragment = new AboutFollowFragment();
-//                            Bundle bundle = new Bundle();
-//                            bundle.putInt("id", -1);
-//                            mAboutFollowFragment.setArguments(bundle);
-//                        }
-//                        transaction = fm.beginTransaction();
-//                        transaction.replace(R.id.viewpager, mAboutFollowFragment);
-//                        transaction.commit();
-//                        break;
-//                    }
-//                    case 1: {
-//                        if (mAboutMeFragment == null) {
-//                            mAboutMeFragment = new AboutMeFragment();
-//                            Bundle bundle = new Bundle();
-//                            bundle.putInt("id", -1);
-//                            mAboutMeFragment.setArguments(bundle);
-//                        }
-//                        transaction = fm.beginTransaction();
-//                        transaction.replace(R.id.viewpager, mAboutMeFragment);
-//                        transaction.commit();
-//                        break;
-//                    }
-//                    default:
-//                        break;
-//                }
-//                //mTabLayout.getTabAt(0).select();
-//            }
-//
-//            @Override
-//            public void onTabUnselected(TabLayout.Tab tab) {
-//
-//            }
-//
-//            @Override
-//            public void onTabReselected(TabLayout.Tab tab) {
-//                setDefaultFragment();
-//            }
-//        });
         Bundle bundle = getArguments();
         return view;
-    }
-    private void setDefaultFragment() {
-        FragmentManager fm = getChildFragmentManager();
-        android.support.v4.app.FragmentTransaction transaction = fm.beginTransaction();
-        mAboutFollowFragment = new AboutFollowFragment();
-        Bundle bundle = new Bundle();
-        bundle.putInt("id", -1);
-        mAboutFollowFragment.setArguments(bundle);
-        transaction.replace(R.id.viewpager, mAboutFollowFragment);
-        transaction.commit();
     }
     private void init() {
         if(mAboutFollowFragment == null) {
@@ -158,14 +98,8 @@ public class AboutFragment extends Fragment{
         @Override
         public Fragment getItem(int position) {
             AboutFollowFragment fragment = AboutFollowFragment.newInstance(list_Title.get(position));
-            return fragment;
-        }
-
-        @Override
-        public Object instantiateItem(ViewGroup container, int position) {
-            AboutFollowFragment fragment = (AboutFollowFragment) super.instantiateItem(container, position);
-            fragment.updateArguments(list_Title.get(position));
-            return fragment;
+            AboutMeFragment fragment2 = AboutMeFragment.newInstance(list_Title.get(position));
+            return list.get(position);
         }
 
         @Override
@@ -183,28 +117,4 @@ public class AboutFragment extends Fragment{
             return list_Title.get(position);
         }
     }
-        //private List<Fragment> fragmentList;
-
-//        public FragmentAdapter(FragmentManager fm, List<Fragment> fragmentList) {
-//            super(fm);
-//            this.fragmentList = fragmentList;
-//        }
-//
-//        @Override
-//        public Fragment getItem(int position) {
-//            return fragmentList.get(position);
-//        }
-//        @Override
-//        public int getCount() {
-//            return fragmentList.size();
-//        }
-//        @Override
-//        public void destroyItem(ViewGroup container, int position, Object object) {
-//            //super.destroyItem(container, position, object);
-//        }
-//        @Override
-//        public CharSequence getPageTitle(int position) {
-//            return title[position];
-//        }
-//    }
 }

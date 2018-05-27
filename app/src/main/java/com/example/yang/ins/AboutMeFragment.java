@@ -42,14 +42,7 @@ public class AboutMeFragment extends Fragment{
     private EasyRefreshLayout easyRefreshLayout;
     private View view;
     private String mtd_id;
-    //private Info1Adapter adapter;
-//    public static AboutMeFragment newInstance(int number) {
-//        Bundle args = new Bundle();
-//        args.putInt("123",number);
-//        AboutMeFragment fragment = new AboutMeFragment();
-//        fragment.setArguments(args);
-//        return fragment;
-//    }
+    private Info1Adapter adapter;
     public static AboutMeFragment newInstance(String mtd_id) {
         AboutMeFragment f = new AboutMeFragment();
         Bundle b = new Bundle();
@@ -65,24 +58,12 @@ public class AboutMeFragment extends Fragment{
             args.putString("id", mtd_id);
         }
     }
-    public AboutMeFragment() {
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Bundle arguments = getArguments();
-        if (arguments != null) {
-            mtd_id = arguments.getString("id");
-        }
-
-    }
-
     @RequiresApi(api = Build.VERSION_CODES.M)
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_about_me, container, false);
+        view = inflater.inflate(R.layout.empty_about_me, container, false);
         Bundle bundle = getArguments();
+        Bundle bundle2 = getArguments();
         return view;
     }
 
