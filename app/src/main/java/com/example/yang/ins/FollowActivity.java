@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -43,7 +44,7 @@ import okhttp3.Call;
 import okhttp3.Response;
 
 public class FollowActivity extends AppCompatActivity {
-    private int userid;
+    private static int Userid = -10;
     private ImageButton btn_back;
     private List<Person> list;
     private RecyclerView recyclerView;
@@ -53,8 +54,6 @@ public class FollowActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_follow);
-        Intent intent = getIntent();
-        userid = intent.getIntExtra("user_id", 0);
         btn_back = (ImageButton) findViewById(R.id.ib_follow_back);
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,19 +98,25 @@ public class FollowActivity extends AppCompatActivity {
     }
 
     private void initData() {
-        MainApplication app = MainApplication.getInstance();
-        Map<String, Integer> mapParam = app.mInfoMap;
-        for(Map.Entry<String, Integer> item_map:mapParam.entrySet()) {
-            if(item_map.getKey() == "id") {
-                userid = item_map.getValue();
+        Intent intent = getIntent();
+        if (intent != null) {
+            Userid = intent.getIntExtra("user_id", -1);
+        }
+        if(Userid == -1){
+            MainApplication app = MainApplication.getInstance();
+            Map<String, Integer> mapParam = app.mInfoMap;
+            for(Map.Entry<String, Integer> item_map:mapParam.entrySet()) {
+                if(item_map.getKey().equals("id")) {
+                    Userid = item_map.getValue();
+                }
             }
         }
-        if(userid == 0) {
+        if(Userid == 0) {
             Toast.makeText(FollowActivity.this, "全局内存中保存的信息为空", Toast.LENGTH_SHORT).show();
-        }
-        else {
+        }else {
             Map<String, Object> map = new HashMap<>();
             list = new ArrayList<>();
+            map.put("user_id", Userid);
             HelloHttp.sendGetRequest("api/user/friends", map, new okhttp3.Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
@@ -125,59 +130,17 @@ public class FollowActivity extends AppCompatActivity {
                 public void onResponse(Call call, Response response) throws IOException {
                     String responseData = response.body().string();
                     Log.d("FollowActivity", responseData);
-                    JSONArray jsonArray = null;
                     try {
-                        jsonArray = new JSONArray(responseData);
-                        for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jsonObject1 = new JSONObject(responseData);
+                        JSONArray jsonArray1 = jsonObject1.getJSONArray("result");
+                        for (int i = 0; i < jsonArray1.length(); i++) {
                             final Person person = new Person();
-                            JSONObject jsonObject = jsonArray.getJSONObject(i);
-                            person.setId(jsonObject.getInt("id"));
+                            JSONObject jsonObject = jsonArray1.getJSONObject(i);
+                            person.setId(jsonObject.getInt("user_id"));
                             person.setName(jsonObject.getString("username"));
                             person.setNickname(jsonObject.getString("nickname"));
                             person.setSrc(jsonObject.getString("profile_picture"));
                             person.setIsFollowed(jsonObject.getBoolean("is_guanzhu"));
-//                        Map<String, Object> map2 = new HashMap<>();
-//                        HelloHttp.sendGetRequest("api/user/checkfollow/"+Integer.toString(person.getId()), map2, new okhttp3.Callback() {
-//                            @Override
-//                            public void onFailure(Call call, IOException e) {
-//                                Log.e("FollowActivity", "FAILURE");
-//                                Looper.prepare();
-//                                Toast.makeText(FollowActivity.this, "服务器错误", Toast.LENGTH_SHORT).show();
-//                                Looper.loop();
-//                            }
-//
-//                            @Override
-//                            public void onResponse(Call call, Response response) throws IOException {
-//                                String responseData = response.body().string();
-//                                Log.d("FollowActivity", responseData);
-//                                String result = null;
-//                                try {
-//                                    result = new JSONObject(responseData).getString("status");
-//                                } catch (JSONException e) {
-//                                    e.printStackTrace();
-//                                }
-//                                if(result.equals("Yes")) {
-//                                    //这个人你关注了
-//                                    person.setIsFollowed(true);
-//                                }
-//                                else if(result.equals("No")) {
-//                                    //这个人你没关注
-//                                    person.setIsFollowed(false);
-//                                }
-//                                else if(result.equals("UnknownError")) {
-//                                    person.setIsFollowed(false);
-//                                    Looper.prepare();
-//                                    Toast.makeText(FollowActivity.this, result, Toast.LENGTH_SHORT).show();
-//                                    Looper.loop();
-//                                }
-//                                else {
-//                                    person.setIsFollowed(false);
-//                                    Looper.prepare();
-//                                    Toast.makeText(FollowActivity.this, result, Toast.LENGTH_SHORT).show();
-//                                    Looper.loop();
-//                                }
-//                            }
-//                        });
                             list.add(person);
                         }
                         mHandler.sendEmptyMessageDelayed(1, 0);
@@ -196,94 +159,7 @@ public class FollowActivity extends AppCompatActivity {
                 }
             });
         }
-//        Map<String, Object> map = new HashMap<>();
-//        map.put("user_id", userid);
-//        list = new ArrayList<>();
-//        HelloHttp.sendGetRequest("api/user/friends", map, new okhttp3.Callback() {
-//            @Override
-//            public void onFailure(Call call, IOException e) {
-//                Log.e("FollowActivity", "FAILURE");
-//                Looper.prepare();
-//                Toast.makeText(FollowActivity.this, "服务器错误", Toast.LENGTH_SHORT).show();
-//                Looper.loop();
-//            }
-//
-//            @Override
-//            public void onResponse(Call call, Response response) throws IOException {
-//                String responseData = response.body().string();
-//                Log.d("FollowActivity", responseData);
-//                JSONArray jsonArray = null;
-//                try {
-//                    jsonArray = new JSONArray(responseData);
-//                    for (int i = 0; i < jsonArray.length(); i++) {
-//                        final Person person = new Person();
-//                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-//                        person.setId(jsonObject.getInt("id"));
-//                        person.setName(jsonObject.getString("username"));
-//                        person.setNickname(jsonObject.getString("nickname"));
-//                        person.setSrc(jsonObject.getString("profile_picture"));
-//                        person.setIsFollowed(jsonObject.getBoolean("is_guanzhu"));
-////                        Map<String, Object> map2 = new HashMap<>();
-////                        HelloHttp.sendGetRequest("api/user/checkfollow/"+Integer.toString(person.getId()), map2, new okhttp3.Callback() {
-////                            @Override
-////                            public void onFailure(Call call, IOException e) {
-////                                Log.e("FollowActivity", "FAILURE");
-////                                Looper.prepare();
-////                                Toast.makeText(FollowActivity.this, "服务器错误", Toast.LENGTH_SHORT).show();
-////                                Looper.loop();
-////                            }
-////
-////                            @Override
-////                            public void onResponse(Call call, Response response) throws IOException {
-////                                String responseData = response.body().string();
-////                                Log.d("FollowActivity", responseData);
-////                                String result = null;
-////                                try {
-////                                    result = new JSONObject(responseData).getString("status");
-////                                } catch (JSONException e) {
-////                                    e.printStackTrace();
-////                                }
-////                                if(result.equals("Yes")) {
-////                                    //这个人你关注了
-////                                    person.setIsFollowed(true);
-////                                }
-////                                else if(result.equals("No")) {
-////                                    //这个人你没关注
-////                                    person.setIsFollowed(false);
-////                                }
-////                                else if(result.equals("UnknownError")) {
-////                                    person.setIsFollowed(false);
-////                                    Looper.prepare();
-////                                    Toast.makeText(FollowActivity.this, result, Toast.LENGTH_SHORT).show();
-////                                    Looper.loop();
-////                                }
-////                                else {
-////                                    person.setIsFollowed(false);
-////                                    Looper.prepare();
-////                                    Toast.makeText(FollowActivity.this, result, Toast.LENGTH_SHORT).show();
-////                                    Looper.loop();
-////                                }
-////                            }
-////                        });
-//                        list.add(person);
-//                    }
-//                    mHandler.sendEmptyMessageDelayed(1, 0);
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                    try {
-//                        String result = null;
-//                        result = new JSONObject(responseData).getString("status");
-//                        Looper.prepare();
-//                        Toast.makeText(FollowActivity.this, result, Toast.LENGTH_SHORT).show();
-//                        Looper.loop();
-//                    } catch (JSONException e1) {
-//                        e1.printStackTrace();
-//                    }
-//                }
-//            }
-//        });
     }
-
     private void initAdapter() {
         adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
@@ -295,18 +171,6 @@ public class FollowActivity extends AppCompatActivity {
                     Map<String, Object> map = new HashMap<>();
                     map.put("pk", id);
                     if(flag) {
-                        //已经关注了
-//                        AlertDialog.Builder builder = new AlertDialog.Builder(FollowActivity.this);
-//                        builder.setTitle("确认");
-//                        builder.setMessage("确认要取消关注吗？");
-//                        builder.setPositiveButton("是的", new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialogInterface, int i) {
-//
-//                            }
-//                        });
-//                        AlertDialog alertDialog = builder.create();
-//                        alertDialog.show();
                         changeStyle(false, position);
                         HelloHttp.sendDeleteRequest("api/user/followyou", map, new okhttp3.Callback() {
                             @Override

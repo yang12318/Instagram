@@ -27,14 +27,14 @@ public class ConcernPersonAdapter extends BaseQuickAdapter<Person, BaseViewHolde
         helper.addOnClickListener(R.id.concern_nickname);
         helper.addOnClickListener(R.id.concern_username);
         if(item.getIsFollowed()) {
-            helper.setText(R.id.follow_cancel, "关注中");
-            helper.setTextColor(R.id.follow_cancel, Color.BLACK);
-            helper.setBackgroundRes(R.id.follow_cancel, R.drawable.buttonshape2);
+            helper.setText(R.id.concern_follow, "关注中");
+            helper.setTextColor(R.id.concern_follow, Color.BLACK);
+            helper.setBackgroundRes(R.id.concern_follow, R.drawable.buttonshape2);
         }
         else {
-            helper.setText(R.id.follow_cancel, "关注");
-            helper.setBackgroundRes(R.id.follow_cancel, R.drawable.buttonshape3);
-            helper.setTextColor(R.id.follow_cancel, Color.WHITE);
+            helper.setText(R.id.concern_follow, "关注");
+            helper.setBackgroundRes(R.id.concern_follow, R.drawable.buttonshape3);
+            helper.setTextColor(R.id.concern_follow, Color.WHITE);
         }
     }
 }

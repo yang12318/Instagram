@@ -16,10 +16,6 @@ import java.util.Map;
 import okhttp3.Call;
 import okhttp3.Response;
 
-/**
- * Created by youxihouzainali on 2018/5/18.
- */
-
 public class jiejiekouahahahhahaha {
     private String TAG;
     private void like() {

@@ -26,7 +26,7 @@ public class AboutFragment extends Fragment{
     private AboutFollowFragment mAboutFollowFragment;
     private AboutMeFragment mAboutMeFragment;
     private List<String> Title;
-    private FragmentStatePagerAdapter mAdapter;
+    private FragmentPagerAdapter mAdapter;
     private List<Fragment> flist;
     public static AboutFragment newInstance(String param1) {
         AboutFragment fragment = new AboutFragment();
@@ -51,7 +51,7 @@ public class AboutFragment extends Fragment{
         View view = inflater.inflate(R.layout.fragment_about, container, false);
         if(container.getTag()==null){
             view = inflater.inflate(R.layout.fragment_about, container, false);
-            init();
+            //init();
             container.setTag(view);
         }else{
             view = (View) container.getTag();
@@ -67,10 +67,14 @@ public class AboutFragment extends Fragment{
         Title.add("你");
         mTabLayout.addTab(mTabLayout.newTab().setText(Title.get(0)));
         mTabLayout.addTab(mTabLayout.newTab().setText(Title.get(1)));
-        mAdapter = new FragmentAdapter(getChildFragmentManager(),Title,flist);
-        mViewPager.setAdapter(mAdapter);//给ViewPager设置适配器
-        mTabLayout.setupWithViewPager(mViewPager);//将TabLayout和ViewPager关联起来。
+        mAdapter = new FragmentAdapter(getChildFragmentManager(),Title);
+        if(mViewPager.getAdapter() == null)
+            mViewPager.setAdapter(mAdapter);
+       // mViewPager.setAdapter(mAdapter);//给ViewPager设置适配器
+//        mTabLayout.setupWithViewPager(mViewPager);//将TabLayout和ViewPager关联起来。
         mTabLayout.setTabsFromPagerAdapter(mAdapter);//给Tabs设置适配器
+//        mTabLayout.getTabAt(0).setText("已关注");
+//        mTabLayout.getTabAt(1).setText("你");
         Bundle bundle = getArguments();
         return view;
     }
@@ -82,36 +86,26 @@ public class AboutFragment extends Fragment{
             mAboutMeFragment=new AboutMeFragment();
         }
     }
-    public class FragmentAdapter extends FragmentStatePagerAdapter {
-
-        //fragment列表
-        private List<Fragment> list;
-        //tab名的列表
-        private List<String> list_Title;
-
-        public FragmentAdapter(FragmentManager fm, List<String> list_Title, List<Fragment> list) {
-            super(fm);
-            this.list_Title = list_Title;
-            this.list = list;
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            AboutFollowFragment fragment = AboutFollowFragment.newInstance(list_Title.get(position));
-            AboutMeFragment fragment2 = AboutMeFragment.newInstance(list_Title.get(position));
-            return list.get(position);
-        }
-
-        @Override
-        public int getItemPosition(Object object) {
-            return PagerAdapter.POSITION_NONE;
-        }
-
-        @Override
-        public int getCount() {
-            return list_Title.size();
-        }
-
+    public class FragmentAdapter extends FragmentPagerAdapter{
+        private List<Fragment> fragmentList = new ArrayList<>();
+        private List<String> list_Title = new ArrayList<>();
+         public  FragmentAdapter(FragmentManager fm, List<String> list_Title) {
+         super(fm);
+         this.fragmentList.add(new AboutFollowFragment());
+         this.fragmentList.add(new AboutMeFragment());
+         this.list_Title = list_Title;
+         //this.fragmentList = list;
+         }
+         @Override
+         public Fragment getItem(int position) {
+             AboutFollowFragment fragment = AboutFollowFragment.newInstance(list_Title.get(position));
+             AboutMeFragment fragment2 = AboutMeFragment.newInstance(list_Title.get(position));
+             return fragmentList.get(position);
+         }
+         @Override
+         public int getCount() {
+         return fragmentList.size();
+         }
         @Override
         public CharSequence getPageTitle(int position) {
             return list_Title.get(position);

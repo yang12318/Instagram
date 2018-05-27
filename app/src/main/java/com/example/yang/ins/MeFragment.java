@@ -262,67 +262,6 @@ public class MeFragment extends Fragment {
                 setDefaultFragment();
             }
         });
-
-//        MainApplication app = MainApplication.getInstance();
-//        Map<String, Integer> mapParam = app.mInfoMap;
-//        for(Map.Entry<String, Integer> item_map:mapParam.entrySet()) {
-//            if(item_map.getKey() == "id") {
-//                UserId = item_map.getValue();
-//            }
-//        }
-//        if(UserId == 0) {
-//            Toast.makeText(getActivity(), "全局内存中保存的信息为空", Toast.LENGTH_SHORT).show();
-//        }
-////        else if(flag) {
-////            Log.e("vfghjkl", "dfghjkl;");
-////            mHandler.sendEmptyMessageDelayed(1, 0);
-////        }
-//        else{
-//            Map<String, Object> map = new HashMap<>();
-//            HelloHttp.sendGetRequest("api/user/detail/"+Integer.toString(UserId), map, new okhttp3.Callback() {
-//                @Override
-//                public void onFailure(Call call, IOException e) {
-//                    Log.e("UserActivity", "FAILURE");
-//                    Looper.prepare();
-//                    Toast.makeText(getActivity(), "服务器未响应", Toast.LENGTH_SHORT).show();
-//                    Looper.loop();
-//                }
-//
-//                @Override
-//                public void onResponse(Call call, Response response) throws IOException {
-//                    String responseData = response.body().string();
-//                    Log.d("MeFragment", responseData);
-//                    try {
-//                        JSONObject jsonObject1 = new JSONObject(responseData);
-//                        posts = jsonObject1.getInt("post_num");
-//                        JSONObject jsonObject = jsonObject1.getJSONObject("result");
-//                        username = jsonObject.getString("username");
-//                        nickname = jsonObject.getString("nickname");
-//                        gender = jsonObject.getInt("gender");
-//                        birthday = jsonObject.getString("birthday");
-//                        follow_num = jsonObject.getInt("following_num");
-//                        concern_num = jsonObject.getInt("followed_num");
-//                        src = jsonObject.getString("profile_picture");
-//                        src = "http://ktchen.cn" + src;
-//                        Log.d("MeFragment", src);
-//                        address = jsonObject.getString("address");
-//                        introduction = jsonObject.getString("introduction");
-//                        mHandler.sendEmptyMessageDelayed(1, 0);
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                        String result = null;
-//                        try {
-//                            result = new JSONObject(responseData).getString("status");
-//                            Looper.prepare();
-//                            Toast.makeText(getActivity(), result, Toast.LENGTH_SHORT).show();
-//                            Looper.loop();
-//                        } catch (JSONException e1) {
-//                            e1.printStackTrace();
-//                        }
-//                    }
-//                }
-//            });
-//        }
         return view;
     }
     @Override

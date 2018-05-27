@@ -47,9 +47,6 @@ import okhttp3.Response;
 public class UserActivity extends AppCompatActivity {
     private int userId;
     private TabLayout tabLayout;
-    //private ViewPager viewPager;
-    //private MyAdapter adapter;
-    //ArrayList<android.support.v4.app.Fragment> flist;
     private TextView tv_dynamic, tv_concern, tv_follow, tv_user, tv_nickname, tv_bio;
     private Button btn_follow;
     private ImageButton ib_back;
@@ -80,8 +77,8 @@ public class UserActivity extends AppCompatActivity {
                 finish();
             }
         });
-        ll_concern = (LinearLayout)  findViewById(R.id.ll_concern);
-        ll_follow = (LinearLayout) findViewById(R.id.ll_follow);
+        ll_concern = (LinearLayout)  findViewById(R.id.ll_user_concern);
+        ll_follow = (LinearLayout) findViewById(R.id.ll_user_follow);
         tabLayout= (TabLayout)findViewById(R.id.tab_user);
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.album));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.dynamic));
@@ -90,34 +87,24 @@ public class UserActivity extends AppCompatActivity {
         Intent intent = getIntent();
         userId = intent.getIntExtra("userId", 0);
         Log.d("UserActivity", Integer.toString(userId));
-//        ll_follow.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(UserActivity.this, FollowActivity.class);
-//                startActivity(intent);
-//            }
-//        });
-//        ll_concern.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(UserActivity.this, ConcernActivity.class);
-//                startActivity(intent);
-//            }
-//        });
-        //viewPager = (ViewPager) findViewById(R.id.viewpager);
-        //adapter = new MyAdapter(getSupportFragmentManager(),this);
-//        FragmentManager man =UserActivity.this.getSupportFragmentManager();
-//        initFragment();
-//        List<Fragment> fragments=new ArrayList<Fragment>();
-//        fragments.add(new AlbumFragment());
-//        fragments.add(new DynamicFragment());
+        ll_follow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(UserActivity.this, FollowActivity.class);
+                intent.putExtra("user_id", userId);
+                startActivity(intent);
+            }
+        });
+        ll_concern.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(UserActivity.this, ConcernActivity.class);
+                intent.putExtra("user_id", userId);
+                startActivity(intent);
+            }
+        });
         tabLayout.setTabMode(TabLayout.MODE_FIXED);//设置tab模式，当前为系统默认模式
-//        adapter= new UserActivity.MyAdapter(man,fragments);
-//        viewPager.setAdapter(adapter);//给ViewPager设置适配器
-//        tabLayout.setupWithViewPager(viewPager);//将TabLayout和ViewPager关联起来。
-//        tabLayout.setTabsFromPagerAdapter(adapter);//给Tabs设置适配器
-        //mAlbumFragment = AlbumFragment.newInstance("相册", userId);
-        //mDynamicFragment = AlbumFragment.newInstance("详情", userId);
+        setDefaultFragment();//设置默认加载项
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener(){
             @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
             @Override
@@ -126,20 +113,13 @@ public class UserActivity extends AppCompatActivity {
                 FragmentManager fm = UserActivity.this.getSupportFragmentManager();
                 //开启事务
                 FragmentTransaction transaction = fm.beginTransaction();
-                Intent intent;
                 switch (tab.getPosition()){
                     case 0:{
-//                        mAlbumFragment = AlbumFragment.newInstance("userId");
-//                        transaction.add(R.id.ll_tbuser, mAlbumFragment);
-//                        transaction.addToBackStack(null);
-//                        transaction.commit();
-                        //mAlbumFragment = AlbumFragment.newInstance("相册", userId);
                         if (mAlbumFragment == null) {
                             mAlbumFragment = new AlbumFragment();
                             Bundle bundle = new Bundle();
-                            bundle.putInt("userId", 0);
+                            bundle.putInt("id", userId);
                             mAlbumFragment.setArguments(bundle);
-                            //mAlbumFragment = AlbumFragment.newInstance("相册");
                         }
                         transaction = fm.beginTransaction();
                         transaction.replace(R.id.ll_tbuser, mAlbumFragment);
@@ -150,7 +130,7 @@ public class UserActivity extends AppCompatActivity {
                         if (mDynamicFragment == null) {
                             mDynamicFragment = new DynamicFragment();
                             Bundle bundle = new Bundle();
-                            bundle.putInt("userId", 0);
+                            bundle.putInt("id", userId);
                             mDynamicFragment.setArguments(bundle);
                         }
                         transaction = fm.beginTransaction();
@@ -263,7 +243,6 @@ public class UserActivity extends AppCompatActivity {
                     //现在是没关注状态
                     Map<String, Object> map = new HashMap<>();
                     map.put("pk", userId);
-                    //setButtonStyle(false);
                     HelloHttp.sendPostRequest("api/user/followyou", map, new okhttp3.Callback() {
                         @Override
                         public void onFailure(Call call, IOException e) {
@@ -339,7 +318,6 @@ public class UserActivity extends AppCompatActivity {
                                 result = new JSONObject(responseData).getString("status");
                             } catch (JSONException e) {
                                 e.printStackTrace();
-                                //setButtonStyle(false);
                             }
                             if(result != null && result.equals("Success")) {
                                 Looper.prepare();
@@ -372,7 +350,7 @@ public class UserActivity extends AppCompatActivity {
         FragmentTransaction transaction = fm.beginTransaction();
         mAlbumFragment = new AlbumFragment();
         Bundle bundle = new Bundle();
-        bundle.putInt("id", 0);
+        bundle.putInt("id",userId);
         mAlbumFragment.setArguments(bundle);
         transaction.replace(R.id.ll_tbuser, mAlbumFragment);
         transaction.commit();
