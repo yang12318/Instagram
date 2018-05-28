@@ -21,6 +21,7 @@ import com.ajguan.library.EasyRefreshLayout;
 import com.ajguan.library.LoadModel;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.yang.ins.Utils.HelloHttp;
+import com.example.yang.ins.adapter.AboutMeAdapter;
 import com.example.yang.ins.adapter.Info1Adapter;
 import com.example.yang.ins.bean.Info1;
 
@@ -29,6 +30,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,7 +44,8 @@ public class AboutMeFragment extends Fragment{
     private EasyRefreshLayout easyRefreshLayout;
     private View view;
     private String mtd_id;
-    private Info1Adapter adapter;
+    private AboutMeAdapter madapter;
+
     public static AboutMeFragment newInstance(String mtd_id) {
         AboutMeFragment f = new AboutMeFragment();
         Bundle b = new Bundle();
@@ -51,21 +54,239 @@ public class AboutMeFragment extends Fragment{
         return f;
     }
 
-    public void updateArguments(String mtd_id) {
-        this.mtd_id = mtd_id;
-        Bundle args = getArguments();
-        if (args != null) {
-            args.putString("id", mtd_id);
-        }
+    public AboutMeFragment() {
+
+    }
+//    @Override
+//    protected int getLayoutResId() {
+//        return super.getLayoutResId();
+//    }
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Bundle arguments = getArguments();
+//        if (arguments != null) {
+//            mtd_id = arguments.getString("id");
+//        }
+
     }
     @RequiresApi(api = Build.VERSION_CODES.M)
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.empty_about_me, container, false);
+        view = inflater.inflate(R.layout.fragment_about_me, container, false);
+        Log.e("AboutMe", "onCreateView");
+        madapter = new AboutMeAdapter(mInfoList);
+        madapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_RIGHT);
+//        recyclerView.setAdapter(madapter);
+        //adapter = new Info1Adapter(R.layout.item_about_follow, mInfoList);
+        initView();
+        initData();
+//        madapter.setNewData(mInfoList);
+        initAdapter();
+        madapter.bindToRecyclerView(recyclerView);
+        madapter.setEmptyView(R.layout.empty_about_me);
+        madapter.setHeaderFooterEmpty(true, true);
         Bundle bundle = getArguments();
-        Bundle bundle2 = getArguments();
         return view;
     }
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.e("AboutMeFragment", "onResume");
+    }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void initView() {
+        recyclerView = (RecyclerView) view.findViewById(R.id.rv_about_me);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        easyRefreshLayout = (EasyRefreshLayout) view.findViewById(R.id.el_me);
+        easyRefreshLayout.setLoadMoreModel(LoadModel.NONE);
+        easyRefreshLayout.addEasyEvent(new EasyRefreshLayout.EasyEvent() {
+            @Override
+            public void onLoadMore() {
+                //不具备上拉加载功能
+            }
+
+            @Override
+            public void onRefreshing() {
+                initData();
+                initAdapter();
+                easyRefreshLayout.loadMoreComplete(new EasyRefreshLayout.Event() {
+                    @Override
+                    public void complete() {
+//                        madapter.setNewData(mInfoList);
+                        easyRefreshLayout.refreshComplete();
+                    }
+                }, 500);
+            }
+        });
+    }
+
+    private void initData() {
+//        Map<String, Object> map = new HashMap<>();
+//        mInfoList = new ArrayList<>();
+//        HelloHttp.sendGetRequest("api/user/messages", map, new okhttp3.Callback() {
+//            @Override
+//            public void onFailure(Call call, IOException e) {
+//                Log.e("AboutMeFragment", "FAILURE");
+//                Looper.prepare();
+//                Toast.makeText(getActivity(), "服务器错误", Toast.LENGTH_SHORT).show();
+//                Looper.loop();
+//            }
+//
+//            @Override
+//            public void onResponse(Call call, Response response) throws IOException {
+//                String responseData = response.body().string();
+//                Log.d("AboutMeFragment", responseData);
+//                try {
+//                    JSONObject jsonObject1 = new JSONObject(responseData);
+//                    JSONArray jsonArray = null;
+//                    jsonArray = jsonObject1.getJSONArray("result");
+//                    for (int i = 0; i < jsonArray.length(); i++) {
+//                        Info1 info1 = new Info1();
+//                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+//                        info1.setUserId(jsonObject.getInt("user_id"));
+//                        info1.setPostId(jsonObject.getInt("post_id"));
+//                        info1.setMs_type(jsonObject.getInt("messageType"));
+//                        info1.setSrc(jsonObject.getString("profile_picture"));
+//                        info1.setIsFollowed(jsonObject.getBoolean("is_guanzhu"));
+//                        info1.setContent(jsonObject.getString("content"));
+//                        info1.setPhoto_0(jsonObject.getString("photo_0"));
+//                        info1.setUserName(jsonObject.getString("username"));
+//                        mInfoList.add(info1);
+//                        switch (info1.getMs_type()){
+//                            case 1:{
+//                                madapter.addData(1,mInfoList);
+//                                break;
+//                            }
+//                            case 2:{
+//                                madapter.addData(0,mInfoList);
+//                                break;
+//                            }
+//                            case 3:{
+//                                madapter.addData(2,mInfoList);
+//                                break;
+//                            }
+//                        }
+//                    }
+//                    mHandler.sendEmptyMessageDelayed(1, 0);
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                    try {
+//                        String result = null;
+//                        result = new JSONObject(responseData).getString("status");
+//                        Looper.prepare();
+//                        Toast.makeText(getActivity(), result, Toast.LENGTH_SHORT).show();
+//                        Looper.loop();
+//                    } catch (JSONException e1) {
+//                        e1.printStackTrace();
+//                    }
+//                }
+//            }
+//        });
+        Map<String, Object> map = new HashMap<>();
+        mInfoList = new ArrayList<>();
+        HelloHttp.sendGetRequest("api/user/messages", map, new okhttp3.Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.e("AboutMeFragment", "FAILURE");
+                Looper.prepare();
+                Toast.makeText(getActivity(), "服务器错误", Toast.LENGTH_SHORT).show();
+                Looper.loop();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String responseData = response.body().string();
+                Log.d("AboutMeFragment", responseData);
+                try {
+                    JSONObject jsonObject1 = new JSONObject(responseData);
+                    JSONArray jsonArray = null;
+                    jsonArray = jsonObject1.getJSONArray("result");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        Info1 info1 = new Info1();
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        info1.setMs_type(jsonObject.getInt("messageType"));
+                        switch (info1.getMs_type()){
+                            case 1:{
+                                info1.setUserId(jsonObject.getInt("user_id"));
+                                info1.setSrc(jsonObject.getString("profile_picture"));
+                                info1.setUserName(jsonObject.getString("username"));
+                                info1.setIsFollowed(jsonObject.getBoolean("is_guanzhu"));
+                                mInfoList.add(info1);
+                                madapter.addData(1,mInfoList);
+                                break;
+                            }
+                            case 2:{
+                                info1.setUserId(jsonObject.getInt("user_id"));
+                                info1.setPostId(jsonObject.getInt("post_id"));
+                                info1.setPhoto_0(jsonObject.getString("photo_0"));
+                                info1.setSrc(jsonObject.getString("profile_picture"));
+                                info1.setUserName(jsonObject.getString("username"));
+                                mInfoList.add(info1);
+                                madapter.addData(0,mInfoList);
+                                break;
+                            }
+                            case 3:{
+                                info1.setUserId(jsonObject.getInt("user_id"));
+                                info1.setPostId(jsonObject.getInt("post_id"));
+                                info1.setSrc(jsonObject.getString("profile_picture"));
+                                info1.setContent(jsonObject.getString("content"));
+                                info1.setPhoto_0(jsonObject.getString("photo_0"));
+                                info1.setUserName(jsonObject.getString("username"));
+                                mInfoList.add(info1);
+                                madapter.addData(2,mInfoList);
+                                break;
+                            }
+                        }
+                    }
+                    mHandler.sendEmptyMessageDelayed(1, 0);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    try {
+                        String result = null;
+                        result = new JSONObject(responseData).getString("status");
+                        Looper.prepare();
+                        Toast.makeText(getActivity(), result, Toast.LENGTH_SHORT).show();
+                        Looper.loop();
+                    } catch (JSONException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+            }
+        });
+    }
+
+    private void initAdapter() {
+        madapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+//                if (view.getId() == R.id.about_follow_username || view.getId() == R.id.about_follow_head) {
+//                    Intent intent = new Intent(getActivity(), UserActivity.class);
+//                    intent.putExtra("id", mInfoList.get(position).getUserId());
+//                    startActivity(intent);
+//                }
+//                else if(view.getId() == R.id.about_follow_picture) {
+//                    Intent intent = new Intent(getActivity(), DetailActivity.class);
+//                    intent.putExtra("id", mInfoList.get(position).getPostId());
+//                    startActivity(intent);
+//                }
+            }
+        });
+        recyclerView.setAdapter(madapter);
+    }
+
+    @SuppressLint("HandlerLeak")
+    private Handler mHandler = new Handler(){
+        @SuppressLint("CheckResult")
+        @Override
+        public void handleMessage(Message msg)
+        {
+            if(msg.what == 1)
+            {
+                madapter.setNewData(mInfoList);
+            }
+        }
+    };
 
 }

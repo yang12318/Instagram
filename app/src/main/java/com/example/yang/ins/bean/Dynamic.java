@@ -77,6 +77,14 @@ public class Dynamic {
         this.photo0 = photo0;
     }
 
+    public String[] getPhoto(){
+        return photo;
+    }
+
+    public void setPhoto(String[] photo){
+        this.photo = photo;
+    }
+
     public String getUsername() {
         return username;
     }

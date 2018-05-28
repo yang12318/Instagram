@@ -1,13 +1,18 @@
 package com.example.yang.ins.bean;
 
-public class Info1 {
+import com.chad.library.adapter.base.entity.MultiItemEntity;
+
+public class Info1 implements MultiItemEntity {
     private int postId;
     private int userId;
+    private int ms_type;
+    private int item_type;
+    private String content;
     private String userName;
     private String src;
     private String photo_0;
     private String time;
-
+    private boolean isFollowed;
     public Info1() {
 
     }
@@ -18,6 +23,14 @@ public class Info1 {
 
     public void setPostId(int postId) {
         this.postId = postId;
+    }
+
+    public int getMs_type() {
+        return ms_type;
+    }
+
+    public void setMs_type(int ms_type) {
+        this.ms_type = ms_type;
     }
 
     public int getUserId() {
@@ -59,4 +72,49 @@ public class Info1 {
     public void setUserName(String userName) {
         this.userName = userName;
     }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public boolean getIsFollowed() {
+        return isFollowed;
+    }
+
+    public void setIsFollowed(boolean isFollowed) {
+        this.isFollowed = isFollowed;
+    }
+//
+//    public RecyclerItem(int item_type){
+//        this.item_type = item_type;
+//    }
+//
+//    public RecyclerItem(String title, String content){
+//        this.title = title;
+//        this.content = content;
+//    }
+//
+//    public RecyclerItem(String title, String content, int item_type){
+//        this.title = title;
+//        this.content = content;
+//        this.item_type = item_type;
+//    }
+
+//    public int getItem_type() {
+//        return item_type;
+//    }
+//
+//    public void setItem_type(int item_type) {
+//        this.item_type = item_type;
+//    }
+
+    @Override
+    public int getItemType() {
+        return item_type;
+    }
+
 }

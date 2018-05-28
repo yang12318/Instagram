@@ -2,7 +2,6 @@ package com.example.yang.ins;
 
 import android.Manifest;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -18,7 +17,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.yang.ins.Utils.HelloHttp;
-import com.example.yang.ins.bean.Moment;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -36,7 +34,6 @@ import cn.bingoogolapple.photopicker.widget.BGANinePhotoLayout;
 import cn.bingoogolapple.photopicker.widget.BGASortableNinePhotoLayout;
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.Headers;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;

@@ -12,10 +12,6 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-/**
- * Created by youxihouzainali on 2018/5/14.
- */
-
 public class ReviewAdapter extends BaseQuickAdapter<Review, BaseViewHolder> {
 
     public ReviewAdapter(int layoutResId, List<Review> list) {

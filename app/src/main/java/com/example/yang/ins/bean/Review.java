@@ -1,9 +1,5 @@
 package com.example.yang.ins.bean;
 
-/**
- * Created by youxihouzainali on 2018/5/13.
- */
-
 public class Review {
     private int id;
     private String content;
