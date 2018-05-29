@@ -269,7 +269,7 @@ public class ConcernActivity extends AppCompatActivity {
                             @Override
                             public void onFailure(Call call, IOException e) {
                                 Log.e("ConcernActivity", "FAILURE");
-                                setButtonStyle(false,position);
+                                setButtonStyle(true,position);
                                 Looper.prepare();
                                 Toast.makeText(ConcernActivity.this, "服务器错误", Toast.LENGTH_SHORT).show();
                                 Looper.loop();
@@ -293,7 +293,7 @@ public class ConcernActivity extends AppCompatActivity {
                                     Toast.makeText(ConcernActivity.this, "已取消关注", Toast.LENGTH_SHORT).show();
                                     Looper.loop();
                                 } else {
-                                    setButtonStyle(false,position);
+                                    setButtonStyle(true,position);
                                     if (result != null && result.equals("UnknownError")) {
                                         Looper.prepare();
                                         Toast.makeText(ConcernActivity.this, "未知错误", Toast.LENGTH_SHORT).show();
