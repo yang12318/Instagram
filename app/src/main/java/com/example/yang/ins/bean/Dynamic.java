@@ -1,5 +1,7 @@
 package com.example.yang.ins.bean;
 
+import java.util.ArrayList;
+
 public class Dynamic {
     private int id;
     private int userId;
@@ -14,7 +16,7 @@ public class Dynamic {
     private boolean is_multi;
     private String src;
     private int count;
-    private String[] photo;
+    private ArrayList<String> photos;
 
     public Dynamic() {
 
@@ -77,12 +79,12 @@ public class Dynamic {
         this.photo0 = photo0;
     }
 
-    public String[] getPhoto(){
-        return photo;
+    public ArrayList<String> getPhotos(){
+        return photos;
     }
 
-    public void setPhoto(String[] photo){
-        this.photo = photo;
+    public void setPhotos(ArrayList<String> photos){
+        this.photos = photos;
     }
 
     public String getUsername() {
