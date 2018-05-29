@@ -1,6 +1,5 @@
 package com.example.yang.ins.adapter;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.support.annotation.Nullable;
 import android.widget.ImageView;
@@ -16,27 +15,16 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AboutMeAdapter extends BaseMultiItemQuickAdapter<Info1, BaseViewHolder> {
-//    public static final int TYPE_LEVEL_0 = 0;
-//    public static final int TYPE_LEVEL_1 = 1;
-//    public static final int TYPE_LEVEL_2 = 2;
     public AboutMeAdapter(@Nullable List<Info1> data) {
         super(data);
-        addItemType(0, R.layout.item_about_me_like);
         addItemType(1, R.layout.item_about_me_concern);
-        addItemType(2, R.layout.item_about_me_comment);
+        addItemType(2, R.layout.item_about_me_like);
+        addItemType(3, R.layout.item_about_me_comment);
 
     }
     @Override
     protected void convert(BaseViewHolder helper, Info1 item) {
         switch (helper.getItemViewType()){
-            case 0:
-                helper.setText(R.id.about_me_username, item.getUserName());
-                Glide.with(mContext).load(item.getPhoto_0()).into((ImageView) helper.getView(R.id.about_me_picture));
-                Glide.with(mContext).load("http://ktchen.cn"+item.getSrc()).into((CircleImageView) helper.getView(R.id.about_me_head));
-                helper.addOnClickListener(R.id.about_me_username);
-                helper.addOnClickListener(R.id.about_me_head);
-                helper.addOnClickListener(R.id.about_me_picture);
-                break;
             case 1:
                 helper.setText(R.id.me_username, item.getUserName());
                 Glide.with(mContext).load("http://ktchen.cn"+item.getSrc()).into((CircleImageView) helper.getView(R.id.me_head));
@@ -55,8 +43,16 @@ public class AboutMeAdapter extends BaseMultiItemQuickAdapter<Info1, BaseViewHol
                 }
                 break;
             case 2:
+                helper.setText(R.id.about_me_username, item.getUserName());
+                Glide.with(mContext).load("http://ktchen.cn"+item.getPhoto_0()).into((ImageView) helper.getView(R.id.about_me_picture));
+                Glide.with(mContext).load("http://ktchen.cn"+item.getSrc()).into((CircleImageView) helper.getView(R.id.about_me_head));
+                helper.addOnClickListener(R.id.about_me_username);
+                helper.addOnClickListener(R.id.about_me_head);
+                helper.addOnClickListener(R.id.about_me_picture);
+                break;
+            case 3:
                 helper.setText(R.id.tv_me_username, item.getUserName());
-                Glide.with(mContext).load(item.getPhoto_0()).into((ImageView) helper.getView(R.id.iv_me_picture));
+                Glide.with(mContext).load("http://ktchen.cn"+item.getPhoto_0()).into((ImageView) helper.getView(R.id.iv_me_picture));
                 Glide.with(mContext).load("http://ktchen.cn"+item.getSrc()).into((CircleImageView) helper.getView(R.id.ci_me_head));
                 helper.setText(R.id.tv_me_comment, "评论了："+item.getContent());
                 helper.addOnClickListener(R.id.tv_me_username);
