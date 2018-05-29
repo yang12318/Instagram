@@ -95,6 +95,7 @@
             android:layout_marginRight="20dp"
             android:layout_marginLeft="20dp"
             android:gravity="center"
+            style="?android:attr/borderlessButtonStyle"
             android:background="@drawable/buttonshape"
             android:text="完成"
             android:textColor="#50000000" />

@@ -6,7 +6,6 @@ public class Info1 implements MultiItemEntity {
     private int postId;
     private int userId;
     private int ms_type;
-    private int item_type;
     private String content;
     private String userName;
     private String src;
@@ -88,33 +87,10 @@ public class Info1 implements MultiItemEntity {
     public void setIsFollowed(boolean isFollowed) {
         this.isFollowed = isFollowed;
     }
-//
-//    public RecyclerItem(int item_type){
-//        this.item_type = item_type;
-//    }
-//
-//    public RecyclerItem(String title, String content){
-//        this.title = title;
-//        this.content = content;
-//    }
-//
-//    public RecyclerItem(String title, String content, int item_type){
-//        this.title = title;
-//        this.content = content;
-//        this.item_type = item_type;
-//    }
-
-//    public int getItem_type() {
-//        return item_type;
-//    }
-//
-//    public void setItem_type(int item_type) {
-//        this.item_type = item_type;
-//    }
 
     @Override
     public int getItemType() {
-        return item_type;
+        return ms_type;
     }
 
 }
