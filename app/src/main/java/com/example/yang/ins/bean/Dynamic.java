@@ -1,5 +1,6 @@
 package com.example.yang.ins.bean;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Dynamic {
@@ -17,11 +18,11 @@ public class Dynamic {
     private String src;
     private int count;
     private ArrayList<String> photos;
+    private ArrayList<String> thumbnails;
 
     public Dynamic() {
 
     }
-
 
     public int getId() {
         return id;
@@ -85,6 +86,14 @@ public class Dynamic {
 
     public void setPhotos(ArrayList<String> photos){
         this.photos = photos;
+    }
+
+    public ArrayList<String> getThumbnails() {
+        return thumbnails;
+    }
+
+    public void setThumbnails(ArrayList<String> thumbnails) {
+        this.thumbnails = thumbnails;
     }
 
     public String getUsername() {
