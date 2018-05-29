@@ -302,7 +302,7 @@ public class UserActivity extends AppCompatActivity {
                         @Override
                         public void onFailure(Call call, IOException e) {
                             Log.e("UserActivity", "FAILURE");
-                            setButtonStyle(false);
+                            setButtonStyle(true);
                             Looper.prepare();
                             Toast.makeText(UserActivity.this, "服务器错误", Toast.LENGTH_SHORT).show();
                             Looper.loop();
@@ -318,6 +318,7 @@ public class UserActivity extends AppCompatActivity {
                                 result = new JSONObject(responseData).getString("status");
                             } catch (JSONException e) {
                                 e.printStackTrace();
+                                setButtonStyle(true);
                             }
                             if(result != null && result.equals("Success")) {
                                 Looper.prepare();

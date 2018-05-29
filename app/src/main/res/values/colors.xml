@@ -5,4 +5,5 @@
     <color name="colorAccent">#FF4081</color>
     <color name="colorPrimaryDarkTrans">#CC4CAF50</color>
     <color name="gray">#bfbfbf</color>
+    <color name="color_moment_like">#2b5a83</color>
 </resources>

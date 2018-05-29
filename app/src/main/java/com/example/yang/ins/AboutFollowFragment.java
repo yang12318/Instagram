@@ -170,8 +170,9 @@ public static AboutFollowFragment newInstance(String mtd_id) {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 if (view.getId() == R.id.about_follow_username || view.getId() == R.id.about_follow_head) {
+                    Log.e("AboutFollowFragment", Integer.toString(mInfoList.get(position).getUserId()));
                     Intent intent = new Intent(getActivity(), UserActivity.class);
-                    intent.putExtra("id", mInfoList.get(position).getUserId());
+                    intent.putExtra("userId", mInfoList.get(position).getUserId());
                     startActivity(intent);
                 }
                 else if(view.getId() == R.id.about_follow_picture) {

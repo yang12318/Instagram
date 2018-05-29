@@ -1,170 +1,211 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<android.support.v7.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical" >
+    xmlns:cardview="http://schemas.android.com/tools"
+    android:id="@+id/cardview"
+    android:background="#fff"
+    android:layout_gravity="center"
+    android:layout_margin="8dp"
+    cardview:cardCornerRadius="4dp">
 
-    <android.support.v7.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#fff">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:id="@+id/rl_dynamic"
+            android:orientation="horizontal">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/ci_head"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_weight="0" />
+
+            <TextView
+                android:id="@+id/tv_username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="13dp"
+                android:singleLine="true"
+                android:text="全名"
+                android:layout_toRightOf="@id/ci_head"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <ImageButton
+                android:id="@+id/ib_menu"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="10dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="10dp"
+                android:background="@null"
+                android:scaleType="centerInside"
+                android:src="@drawable/set"
+                android:tint="#696969" />
+        </RelativeLayout>
+
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="250dp"
+            android:scaleType="centerCrop" />
+        <!--com.fuyin.views.NineGridTestLayout
+            android:id="@+id/nineTestlayout"
+            android:layout_below="@+id/rl_dynamic"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_marginRight="10dp"
+            android:layout_height="wrap_content">
+        </com.fuyin.views.NineGridTestLayout-->
+        <cn.bingoogolapple.photopicker.widget.BGANinePhotoLayout
+            android:id="@+id/npl_item_moment_photos"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            style="@style/MatchWrap"
+            android:layout_marginTop="8dp"
+            app:bga_npl_itemCornerRadius="0dp"
+            app:bga_npl_itemSpanCount="3"
+            app:bga_npl_itemWhiteSpacing="4dp"
+            app:bga_npl_itemWidth="0dp"
+            app:bga_npl_otherWhiteSpacing="64dp"
+            app:bga_npl_placeholderDrawable="@mipmap/bga_pp_ic_holder_light"
+            app:bga_npl_showAsLargeWhenOnlyOne="true"
+            />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/ib_like"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="8dp"
+                android:background="@null"
+                android:scaleType="centerCrop"
+                android:src="@drawable/like1"
+                android:tint="#696969" />
+
+            <ImageButton
+                android:id="@+id/ib_comment"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="8dp"
+                android:layout_toRightOf="@+id/ib_like"
+                android:background="@null"
+                android:scaleType="centerCrop"
+                android:src="@drawable/comment"
+                android:tint="#696969" />
+
+            <ImageButton
+                android:id="@+id/ib_collect"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="8dp"
+                android:background="@null"
+                android:scaleType="centerInside"
+                android:src="@drawable/collect1"
+                android:tint="#696969" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="#bfbfbf" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:id="@+id/rl_dynamic"
-                android:orientation="horizontal">
-
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/ci_head"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="0" />
-
-                <TextView
-                    android:id="@+id/tv_username"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="13dp"
-                    android:singleLine="true"
-                    android:text="全名"
-                    android:layout_toRightOf="@id/ci_head"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-
-                <ImageButton
-                    android:id="@+id/ib_menu"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@null"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/set"
-                    android:tint="#696969" />
-            </RelativeLayout>
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="4dp"
+            android:gravity="center_vertical|start">
 
             <ImageView
-                android:layout_width="fill_parent"
-                android:layout_height="250dp"
-                android:scaleType="centerCrop" />
-            <!--com.fuyin.views.NineGridTestLayout
-                android:id="@+id/nineTestlayout"
-                android:layout_below="@+id/rl_dynamic"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_width="match_parent"
-                android:layout_marginRight="10dp"
-                android:layout_height="wrap_content">
-            </com.fuyin.views.NineGridTestLayout-->
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/like_blue" />
+            <!--android:tint="#515151"-->
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <ImageButton
-                    android:id="@+id/ib_like"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_weight="0"
-                    android:background="@null"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/like1"
-                    android:tint="#696969" />
-
-                <ImageButton
-                    android:id="@+id/ib_comment"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_toRightOf="@+id/ib_like"
-                    android:background="@null"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/comment"
-                    android:tint="#696969" />
-
-                <ImageButton
-                    android:id="@+id/ib_collect"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="8dp"
-                    android:background="@null"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/collect1"
-                    android:tint="#696969" />
-            </RelativeLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:background="#bfbfbf" />
-
-            <TextView
+            <TextSwitcher
                 android:id="@+id/tv_like"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="4dp"
-                android:text="点赞数"
-                android:textSize="12sp" />
-
-            <TextView
-                android:id="@+id/tv_detail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="4dp"
-                android:text="内容"
+                android:layout_marginLeft="5dp"
                 android:textSize="12sp"
-                />
+                >
+                <!--android:inAnimation="@anim/slide_in_likes_counter"
+                android:outAnimation="@anim/slide_out_likes_counter"-->
 
-            <TextView
-                android:id="@+id/tv_comment"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="4dp"
-                android:text="评论数"
-                android:textColor="#696969"
-                android:textSize="12sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0 likes"
+                    android:textSize="12sp"
+                    android:textColor="@color/color_moment_like" />
 
-            <TextView
-                android:id="@+id/tv_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="5dp"
-                android:text="时间"
-                android:textSize="10sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color_moment_like" />
+            </TextSwitcher>
         </LinearLayout>
-    </android.support.v7.widget.CardView>
-</LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_detail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="4dp"
+            android:text="内容"
+            android:textSize="12sp"
+            />
+
+        <TextView
+            android:id="@+id/tv_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="4dp"
+            android:text="评论数"
+            android:textColor="#696969"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:text="时间"
+            android:textSize="10sp" />
+    </LinearLayout>
+</android.support.v7.widget.CardView>

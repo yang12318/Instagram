@@ -84,9 +84,9 @@ public class AlbumFragment extends Fragment{
         initData();
         adapter.setNewData(mDynamicList);
         initAdapter();
-        adapter.bindToRecyclerView(recyclerView);
-        adapter.setEmptyView(R.layout.empty_like);
-        adapter.setHeaderFooterEmpty(true, true);
+        //adapter.bindToRecyclerView(recyclerView);
+        //adapter.setEmptyView(R.layout.empty_like);
+        //adapter.setHeaderFooterEmpty(true, true);
         return view;
     }
 
