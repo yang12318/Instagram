@@ -145,21 +145,16 @@ public class AlbumFragment extends Fragment{
 
     @SuppressWarnings("unchecked")
     private void initAdapter() {
-        //firstAdapter.openLoadAnimation();
-        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                Intent intent = new Intent(getActivity(), DetailActivity.class);
-                int id = mDynamicList.get(position).getId();
-                intent.putExtra("id", id);
-                startActivity(intent);
-            }
-        });
-        adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
-            @Override
-            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-            }
-        });
+     adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+        @Override
+        public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+            Intent intent = new Intent(getActivity(), DetailActivity.class);
+            int id = mDynamicList.get(position).getId();
+            intent.putExtra("id", id);
+            Log.e("AlbumFragment", "ItemChildClick");
+            startActivity(intent);
+        }
+    });
         recyclerView.setAdapter(adapter);
     }
     @SuppressLint("HandlerLeak")

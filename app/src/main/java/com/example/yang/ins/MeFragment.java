@@ -97,10 +97,6 @@ public class MeFragment extends Fragment {
         if(UserId == 0) {
             Toast.makeText(getActivity(), "全局内存中保存的信息为空", Toast.LENGTH_SHORT).show();
         }
-//        else if(flag) {
-//            Log.e("vfghjkl", "dfghjkl;");
-//            mHandler.sendEmptyMessageDelayed(1, 0);
-//        }
         else{
             Map<String, Object> map = new HashMap<>();
             HelloHttp.sendGetRequest("api/user/detail/"+Integer.toString(UserId), map, new okhttp3.Callback() {
@@ -194,10 +190,10 @@ public class MeFragment extends Fragment {
         });
         tabLayout = (TabLayout) view.findViewById(R.id.tab_me);
         tabLayout.setTabMode(TabLayout.MODE_FIXED);//设置tab模式，当前为系统默认模式
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.album), true);
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.dynamic));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.like));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.collect));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.selector_album), true);
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.selector_dynamic));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.selector_like));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.selector_collect));
         tabLayout.setSelectedTabIndicatorColor(Color.BLACK);
         tabLayout.setSelectedTabIndicatorHeight(0);
         setDefaultFragment();//设置默认加载项
@@ -334,6 +330,3 @@ public class MeFragment extends Fragment {
     };
 
 }
-
-
-

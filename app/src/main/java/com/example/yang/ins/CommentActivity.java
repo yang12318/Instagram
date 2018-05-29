@@ -61,9 +61,9 @@ public class CommentActivity extends AppCompatActivity {
         ib_send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String s = et_send.getText().toString();
+                String s = et_send.getText().toString().trim();
                 if(s.length() <= 0 || s == null) {
-                    Toast.makeText(CommentActivity.this, "您还没有填写评论", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CommentActivity.this, "您还没有填写有效评论", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if(s.length() <= 4) {

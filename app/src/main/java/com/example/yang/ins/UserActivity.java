@@ -80,8 +80,8 @@ public class UserActivity extends AppCompatActivity {
         ll_concern = (LinearLayout)  findViewById(R.id.ll_user_concern);
         ll_follow = (LinearLayout) findViewById(R.id.ll_user_follow);
         tabLayout= (TabLayout)findViewById(R.id.tab_user);
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.album));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.dynamic));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.selector_album));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.selector_dynamic));
         tabLayout.setSelectedTabIndicatorColor(Color.BLACK);
         tabLayout.setSelectedTabIndicatorHeight(1);
         Intent intent = getIntent();

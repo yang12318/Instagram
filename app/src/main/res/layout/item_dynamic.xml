@@ -150,7 +150,7 @@
                 android:layout_width="10dp"
                 android:layout_height="10dp"
                 android:scaleType="centerInside"
-                android:src="@drawable/like_blue" />
+                android:src="@drawable/ic_heart_small_blue" />
             <!--android:tint="#515151"-->
 
             <TextSwitcher

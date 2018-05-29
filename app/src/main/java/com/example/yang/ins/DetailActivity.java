@@ -1,12 +1,15 @@
 package com.example.yang.ins;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -24,19 +27,23 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.bingoogolapple.photopicker.activity.BGAPhotoPreviewActivity;
 import cn.bingoogolapple.photopicker.widget.BGANinePhotoLayout;
 import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.Call;
 import okhttp3.Response;
+import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
 public class DetailActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks, BGANinePhotoLayout.Delegate{
+    private static final int PRC_PHOTO_PREVIEW = 1;
     private int postId = 0;
     private ImageButton ib_back, ib_menu, ib_like, ib_collect, ib_comment;
     private CircleImageView ci_head;
@@ -77,6 +84,14 @@ public class DetailActivity extends AppCompatActivity implements EasyPermissions
         });
         initData();             //向服务器请求数据
         ninePhotoLayout.setDelegate(DetailActivity.this);
+        ib_comment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(DetailActivity.this, CommentActivity.class);
+                intent.putExtra("post_id", postId);
+                startActivity(intent);
+            }
+        });
     }
 
     private void initData() {
@@ -185,7 +200,13 @@ public class DetailActivity extends AppCompatActivity implements EasyPermissions
 
     @Override
     public void onClickNinePhotoItem(BGANinePhotoLayout ninePhotoLayout, View view, int position, String model, List<String> models) {
+        photoPreviewWrapper();
+    }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
 
     @Override
@@ -195,6 +216,32 @@ public class DetailActivity extends AppCompatActivity implements EasyPermissions
 
     @Override
     public void onPermissionsDenied(int requestCode, List<String> perms) {
+        if (requestCode == PRC_PHOTO_PREVIEW) {
+            Toast.makeText(this, "您拒绝了图片预览所需要的相关权限!", Toast.LENGTH_SHORT).show();
+        }
+    }
 
+    @AfterPermissionGranted(PRC_PHOTO_PREVIEW)
+    private void photoPreviewWrapper() {
+        if (ninePhotoLayout == null) {
+            return;
+        }
+        String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        if (EasyPermissions.hasPermissions(this, perms)) {
+            File downloadDir = new File(Environment.getExternalStorageDirectory(), "InsDownload");
+            BGAPhotoPreviewActivity.IntentBuilder photoPreviewIntentBuilder = new BGAPhotoPreviewActivity.IntentBuilder(this)
+                    .saveImgDir(downloadDir); // 保存图片的目录，如果传 null，则没有保存图片功能
+            if (ninePhotoLayout.getItemCount() == 1) {
+                // 预览单张图片
+                photoPreviewIntentBuilder.previewPhoto(ninePhotoLayout.getCurrentClickItem());
+            } else if (ninePhotoLayout.getItemCount() > 1) {
+                // 预览多张图片
+                photoPreviewIntentBuilder.previewPhotos(ninePhotoLayout.getData())
+                        .currentPosition(ninePhotoLayout.getCurrentClickItemPosition()); // 当前预览图片的索引
+            }
+            startActivity(photoPreviewIntentBuilder.build());
+        } else {
+            EasyPermissions.requestPermissions(this, "图片预览需要以下权限:\n\n1.访问设备上的照片", PRC_PHOTO_PREVIEW, perms);
+        }
     }
 }
