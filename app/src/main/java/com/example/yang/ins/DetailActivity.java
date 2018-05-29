@@ -100,7 +100,9 @@ public class DetailActivity extends AppCompatActivity implements EasyPermissions
             @Override
             public void onFailure(Call call, IOException e) {
                 Log.e("DetailActivity", "FAILURE");
+                Looper.prepare();
                 Toast.makeText(DetailActivity.this, "服务器错误", Toast.LENGTH_SHORT).show();
+                Looper.loop();
             }
 
             @Override
@@ -125,7 +127,9 @@ public class DetailActivity extends AppCompatActivity implements EasyPermissions
                         @Override
                         public void onFailure(Call call, IOException e) {
                             Log.e("DetailActivity", "FAILURE");
+                            Looper.prepare();
                             Toast.makeText(DetailActivity.this, "服务器错误", Toast.LENGTH_SHORT).show();
+                            Looper.loop();
                         }
 
                         @Override

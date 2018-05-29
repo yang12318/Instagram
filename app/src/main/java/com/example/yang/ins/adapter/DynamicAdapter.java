@@ -17,7 +17,7 @@ import java.util.List;
 import cn.bingoogolapple.photopicker.widget.BGANinePhotoLayout;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class DynamicAdapter extends BaseQuickAdapter<Dynamic, BaseViewHolder> {
+/*public class DynamicAdapter extends BaseQuickAdapter<Dynamic, BaseViewHolder> {
 
     public DynamicAdapter(int layoutResId, @Nullable List<Dynamic> data) {
         super(layoutResId, data);
@@ -43,7 +43,8 @@ public class DynamicAdapter extends BaseQuickAdapter<Dynamic, BaseViewHolder> {
         helper.addOnClickListener(R.id.tv_comment);
         helper.addOnClickListener(R.id.ib_menu);
         BGANinePhotoLayout ninePhotoLayout = helper.getView(R.id.npl_item_moment_photos);
-        //ninePhotoLayout.setDelegate();
-        ninePhotoLayout.setData(item.getPhotos());
+        ninePhotoLayout.setDelegate(HomeFragment.this);
+        ninePhotoLayout.setData(item.getThumbnails());
     }
 }
+*/
