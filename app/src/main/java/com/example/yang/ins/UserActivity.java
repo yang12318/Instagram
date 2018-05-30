@@ -148,7 +148,6 @@ public class UserActivity extends AppCompatActivity {
             }
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-                setDefaultFragment();
             }
         });
         Map<String, Object> map = new HashMap<>();
@@ -346,6 +345,11 @@ public class UserActivity extends AppCompatActivity {
             }
         });
     }
+    @Override
+    public void onResume() {
+        super.onResume();
+        tabLayout.getTabAt(0).select();
+    }
     private void setDefaultFragment() {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
@@ -356,50 +360,6 @@ public class UserActivity extends AppCompatActivity {
         transaction.replace(R.id.ll_tbuser, mAlbumFragment);
         transaction.commit();
     }
-//    private void initFragment() {
-//        if(mAlbumFragment == null) {
-//            mAlbumFragment=new AlbumFragment();
-//        }
-//        if(mDynamicFragment == null) {
-//            mDynamicFragment=new DynamicFragment();
-//        }
-//    }
-//    public class MyAdapter extends FragmentPagerAdapter {
-//
-//        private List<Fragment> fragmentList;
-//
-//        public MyAdapter(FragmentManager fm, List<Fragment> fragmentList) {
-//            super(fm);
-//            this.fragmentList = fragmentList;
-//        }
-//        @Override
-//        public Fragment getItem(int position) {
-//            return fragmentList.get(position);
-//        }
-//        @Override
-//        public int getCount() {
-//            return fragmentList.size();
-//        }
-//    }
-//    class MyAdapter extends FragmentPagerAdapter {
-//
-//        private List<Fragment> fragmentList;
-//
-//        public MyAdapter(FragmentManager supportFragmentManager, List<Fragment> fragmentList) {
-//            super(supportFragmentManager);
-//            this.fragmentList = fragmentList;
-//        }
-//
-//        @Override
-//        public Fragment getItem(int position) {
-//            return fragmentList.get(position);
-//        }
-//
-//        @Override
-//        public int getCount() {
-//            return fragmentList.size();
-//        }
-//    }
         @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler(){
         @Override

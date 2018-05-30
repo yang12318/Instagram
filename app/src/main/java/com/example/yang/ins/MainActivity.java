@@ -147,11 +147,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
 
     }
 
-    /*public void gotoHomeFragment() {
-        FragmentManager fm = getFragmentManager();
+    public void gotoMeFragment() {
+        FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        Fragment mHomeFragement = new HomeFragment();
-        ft.replace(R.id.tb, mHomeFragement);
+        Fragment mMeFragement = new MeFragment();
+        ft.replace(R.id.tb, mMeFragement);
         ft.commit();
-    }*/
+    }
 }

@@ -24,11 +24,11 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/ci_head"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="33dp"
+                android:layout_height="33dp"
                 android:layout_marginBottom="10dp"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="8dp"
                 android:layout_weight="0" />
 
             <TextView
@@ -41,7 +41,7 @@
                 android:singleLine="true"
                 android:text="全名"
                 android:layout_toRightOf="@id/ci_head"
-                android:textSize="14sp"
+                android:textSize="15sp"
                 android:textStyle="bold" />
 
             <ImageButton
@@ -76,7 +76,8 @@
             android:id="@+id/npl_item_moment_photos"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             style="@style/MatchWrap"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginLeft="10dp"
             app:bga_npl_itemCornerRadius="0dp"
             app:bga_npl_itemSpanCount="3"
             app:bga_npl_itemWhiteSpacing="4dp"
@@ -101,13 +102,12 @@
                 android:layout_marginTop="8dp"
                 android:background="@null"
                 android:scaleType="centerInside"
-                android:src="@drawable/like1"
-                android:tint="#696969" />
+                android:src="@drawable/like1" />
 
             <ImageButton
                 android:id="@+id/ib_comment"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="23dp"
+                android:layout_height="23dp"
                 android:layout_marginBottom="10dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="8dp"
@@ -115,20 +115,19 @@
                 android:background="@null"
                 android:scaleType="centerInside"
                 android:src="@drawable/comment"
-                android:tint="#696969" />
+                android:tint="#8a8a8a"/>
 
             <ImageButton
                 android:id="@+id/ib_collect"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="23dp"
+                android:layout_height="23dp"
                 android:layout_alignParentRight="true"
                 android:layout_marginBottom="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="8dp"
                 android:background="@null"
                 android:scaleType="centerInside"
-                android:src="@drawable/collect1"
-                android:tint="#696969" />
+                android:src="@drawable/collect1" />
         </RelativeLayout>
 
         <View

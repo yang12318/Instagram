@@ -1,11 +1,14 @@
 package com.example.yang.ins;
 
+import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Handler;
 import android.os.Looper;
+import android.os.Message;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -32,6 +35,7 @@ import org.json.JSONObject;
 import org.w3c.dom.Comment;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -126,6 +130,7 @@ public class CommentActivity extends AppCompatActivity {
         adapter = new ReviewAdapter(R.layout.item_comment, list);
         initView();
         initData();
+        adapter.setNewData(list);
         initAdapter();
         adapter.bindToRecyclerView(recyclerView);
         adapter.setEmptyView(R.layout.empty_comment);
@@ -162,6 +167,7 @@ public class CommentActivity extends AppCompatActivity {
     private void initData() {
         Map<String, Object> map = new HashMap<>();
         map.put("post_id", postid);
+        list = new ArrayList<>();
         HelloHttp.sendGetRequest("api/post/comments", map, new okhttp3.Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -183,10 +189,11 @@ public class CommentActivity extends AppCompatActivity {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         myReview.setId(jsonObject.getInt("id"));
                         myReview.setCommenterId(jsonObject.getInt("user"));
-                        myReview.setPub_time(jsonObject.getString("Pub_time"));
+                        myReview.setPub_time(jsonObject.getString("time"));
                         myReview.setContent(jsonObject.getString("content"));
                         list.add(myReview);
                     }
+                    mHandler.sendEmptyMessageDelayed(1, 0);
                 } catch (JSONException e) {
                     e.printStackTrace();
                     try {
@@ -284,7 +291,17 @@ public class CommentActivity extends AppCompatActivity {
         });
         recyclerView.setAdapter(adapter);
     }
-
+    @SuppressLint("HandlerLeak")
+    private Handler mHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg)
+        {
+            if(msg.what == 1)
+            {
+                adapter.setNewData(list);
+            }
+        }
+    };
     private void deleteComment(int comment_id) {
         Map<String, Object> map = new HashMap<>();
         map.put("comment_id", comment_id);

@@ -61,16 +61,17 @@
             android:textCursorDrawable="@drawable/edit_cursor2"
             android:background="@drawable/editshape2"
             android:scrollbars="vertical"
-            android:textSize="15sp"
+            android:padding="13dp"
+            android:textSize="16sp"
             android:hint="添加评论..."
             />
         <ImageButton
             android:id="@+id/ib_send"
             android:layout_width="40dp"
             android:layout_height="match_parent"
-            android:tint="#401295db"
+            android:tint="#ffffff"
             android:src="@drawable/finish1"
-            android:background="#1296db"
+            android:background="#1bb5eb"
             />
 </LinearLayout>
 </LinearLayout>

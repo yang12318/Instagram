@@ -79,7 +79,7 @@ public class AboutMeFragment extends Fragment{
         view = inflater.inflate(R.layout.fragment_about_me, container, false);
         Log.e("AboutMe", "onCreateView");
         madapter = new AboutMeAdapter(mInfoList);
-        madapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_RIGHT);
+        madapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
 //        recyclerView.setAdapter(madapter);
         //adapter = new Info1Adapter(R.layout.item_about_follow, mInfoList);
         initView();

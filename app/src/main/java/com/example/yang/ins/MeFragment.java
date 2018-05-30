@@ -87,6 +87,7 @@ public class MeFragment extends Fragment {
     public void onResume() {
         super.onResume();
         Log.e("Me", "OnResume");
+        tabLayout.getTabAt(0).select();
         MainApplication app = MainApplication.getInstance();
         Map<String, Integer> mapParam = app.mInfoMap;
         for(Map.Entry<String, Integer> item_map:mapParam.entrySet()) {
@@ -245,7 +246,6 @@ public class MeFragment extends Fragment {
                     default:
                         break;
                 }
-                tabLayout.getTabAt(0).select();
             }
 
             @Override
@@ -255,7 +255,6 @@ public class MeFragment extends Fragment {
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-                setDefaultFragment();
             }
         });
         return view;

@@ -74,6 +74,7 @@ public static AboutFollowFragment newInstance(String mtd_id) {
         Log.e("AboutFollow", "onCreateView");
         Bundle bundle = getArguments();
         adapter = new Info1Adapter(R.layout.item_about_follow, mInfoList);
+        adapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
         initView();
         initData();
         adapter.setNewData(mInfoList);

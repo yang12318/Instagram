@@ -46,7 +46,11 @@ public class AboutFragment extends Fragment{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        mTabLayout.getTabAt(0).select();
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -115,7 +119,6 @@ public class AboutFragment extends Fragment{
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-                setDefaultFragment();
             }
         });
         Bundle bundle = getArguments();
